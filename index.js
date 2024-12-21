@@ -1,4 +1,4 @@
-const express = require('express'); 
+const express = require('express');
 const bodyParser = require('body-parser');
 const axios = require('axios');
 
@@ -32,7 +32,6 @@ app.post('/webhook', (req, res) => {
 
     if (body.object === 'page') {
         body.entry.forEach(entry => {
-            // Check if the entry has any messaging data
             if (entry.messaging && entry.messaging.length > 0) {
                 const webhookEvent = entry.messaging[0];
                 const senderId = webhookEvent.sender.id;
@@ -58,7 +57,6 @@ app.post('/webhook', (req, res) => {
         res.sendStatus(404);
     }
 });
-
 
 // Function to send the main menu with Bill Inquiry option
 function sendMainMenu(senderId) {
@@ -146,7 +144,6 @@ function handleUserMessage(senderId, message) {
             // Validate the account number (replace with your actual verification logic)
             if (validateAccountNumber(message)) {
                 userSessions[senderId].step = 'ask_verification_method';
-                // sendMessage(senderId, 'Where do you want to receive your One-time Password (OTP): MOBILE NUMBER, EMAIL ADDRESS, or UPDATE CONTACT INFO.');
                 sendContactInfoMenu(senderId);
             } else {
                 sendMessage(senderId, 'Sorry, the account number you provided is invalid. Please try again.');
@@ -171,6 +168,7 @@ function handleUserMessage(senderId, message) {
             if (validateVerificationMethod(message)) {
                 userSessions[senderId].step = 'show_balance';
                 sendMessage(senderId, 'Your Total Amount Due for the month of December 2024 is Php1,234.00.');
+                sendGetStartedMenu(senderId); // Show "GET STARTED AGAIN" menu
             } else {
                 sendMessage(senderId, 'Sorry, the information you provided is invalid. Please provide a valid mobile number or email.');
             }
@@ -181,6 +179,12 @@ function handleUserMessage(senderId, message) {
             sendMessage(senderId, 'Your contact info has been updated successfully.');
             userSessions[senderId].step = 'show_balance';
             sendMessage(senderId, 'Your Total Amount Due for the month of December 2024 is Php1,234.00.');
+            sendGetStartedMenu(senderId); // Show "GET STARTED AGAIN" menu
+            break;
+
+        case 'show_balance':
+            sendMessage(senderId, 'Please choose one of the following options:');
+            sendGetStartedMenu(senderId); // Show "GET STARTED AGAIN" menu
             break;
 
         default:
@@ -189,15 +193,43 @@ function handleUserMessage(senderId, message) {
     }
 }
 
+// Function to send the "GET STARTED AGAIN" menu
+function sendGetStartedMenu(senderId) {
+    const messageData = {
+        recipient: { id: senderId },
+        message: {
+            text: "Would you like to get started again?",
+            quick_replies: [
+                {
+                    content_type: "text",
+                    title: "GET STARTED AGAIN",
+                    payload: "GET_STARTED_AGAIN"
+                },
+                {
+                    content_type: "text",
+                    title: "CONTINUE",
+                    payload: "CONTINUE"
+                }
+            ]
+        }
+    };
+
+    axios.post(`https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`, messageData)
+        .then(response => {
+            console.log('Get Started menu sent:', response.data);
+        })
+        .catch(error => {
+            console.error('Error sending Get Started menu:', error);
+        });
+}
+
 // Function to validate account number (replace with actual logic)
 function validateAccountNumber(accountNumber) {
-    // Replace this with actual account number validation logic
     return accountNumber === '12345678';  // Example: Account number "12345" is valid
 }
 
 // Function to validate the verification method (mobile number or email)
 function validateVerificationMethod(info) {
-    // For simplicity, we are just checking if the info looks like an email or phone number
     const phoneRegex = /^[0-9]{10}$/;
     const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
 

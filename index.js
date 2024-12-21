@@ -5,11 +5,14 @@ const axios = require('axios');
 const app = express();
 app.use(bodyParser.json());
 
-const VERIFY_TOKEN = 'EAAGizoa2IFwBO63KQWgiZA1MdrnarUo8iEsOn1WS4hlpyoSRZCNS5ok9cEcxekdFVyH1ZAblGg7a5CrSYG967IxZB1jahELmoxNQq1b77PaYrTk9DTCPeq5Rm8JqGj6PBgJJ7ETmphqlA2fJixMKMEKZCQQ6QO9m64vsgqWGmsbNH6oFKybELCZCZBCSWmlNtcs3AZDZD';
-const PAGE_ACCESS_TOKEN = 'EAAGizoa2IFwBO9h75MsQZCF0mIQUs2ZAOj6np59gElARZCYAEv8vQfQw1f0RekYOav7F25lwz7QaIdz2JRshoM2GAgiqvJZBPK10GziTs4HB6TU5a8ZCkDCMLqGJrGacgZCsZCA3ZCdCSsnVyGFZAZCC2HT7ZAfDmal8YZBOMHSwLI3bkZAQoZBSxwm8zwxZC1DN3lbSvFbywZDZD';
+const VERIFY_TOKEN = 'YOUR_VERIFY_TOKEN';
+const PAGE_ACCESS_TOKEN = 'YOUR_PAGE_ACCESS_TOKEN';
 
 // Define a temporary storage for user conversations (this can be replaced with a database)
 let userSessions = {};
+
+// Temporary storage for OTP generation (to simulate OTP validation)
+let otps = {};
 
 // Webhook verification (Meta setup)
 app.get('/webhook', (req, res) => {
@@ -38,13 +41,10 @@ app.post('/webhook', (req, res) => {
 
                 console.log(webhookEvent);
 
-                // Check if the user is already in the conversation flow
                 if (!userSessions[senderId]) {
-                    // Start the conversation by showing the main menu
                     userSessions[senderId] = { step: 'main_menu' };
                     sendMainMenu(senderId);
                 } else {
-                    // Handle conversation flow based on the current step
                     handleUserMessage(senderId, webhookEvent.message.text);
                 }
             } else {
@@ -77,6 +77,11 @@ function sendMainMenu(senderId) {
                 },
                 {
                     content_type: "text",
+                    title: "UPDATE CONTACT INFO",
+                    payload: "UPDATE_CONTACT"
+                },
+                {
+                    content_type: "text",
                     title: "Other",
                     payload: "OTHER"
                 }
@@ -98,7 +103,7 @@ function sendContactInfoMenu(senderId) {
     const messageData = {
         recipient: { id: senderId },
         message: {
-            text: "Where do you want to receive your One-time Password (OTP)?:",
+            text: "Where would you like to update your contact info?",
             quick_replies: [
                 {
                     content_type: "text",
@@ -109,11 +114,6 @@ function sendContactInfoMenu(senderId) {
                     content_type: "text",
                     title: "EMAIL ADDRESS",
                     payload: "EMAIL_ADDRESS"
-                },
-                {
-                    content_type: "text",
-                    title: "UPDATE CONTACT INFO",
-                    payload: "UPDATE_CONTACT"
                 }
             ]
         }
@@ -128,6 +128,27 @@ function sendContactInfoMenu(senderId) {
         });
 }
 
+// Function to send OTP message
+function sendOTP(senderId) {
+    const otp = Math.floor(100000 + Math.random() * 900000); // Generate a 6-digit OTP
+    otps[senderId] = otp;
+
+    const messageData = {
+        recipient: { id: senderId },
+        message: {
+            text: `You will receive your OTP soon. Here is the code: ${otp}. Please enter it to verify.`
+        }
+    };
+
+    axios.post(`https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`, messageData)
+        .then(response => {
+            console.log('OTP sent:', response.data);
+        })
+        .catch(error => {
+            console.error('Error sending OTP:', error);
+        });
+}
+
 // Handle user responses based on the step they are in
 function handleUserMessage(senderId, message) {
     switch (userSessions[senderId].step) {
@@ -135,97 +156,46 @@ function handleUserMessage(senderId, message) {
             if (message === "BILL INQUIRY") {
                 userSessions[senderId].step = 'ask_account';
                 sendMessage(senderId, 'Please provide your 8-digit account number.');
-            } else {
-                sendMessage(senderId, 'Sorry, I can only assist with Bill Inquiry at the moment. Please choose it from the options.');
-            }
-            break;
-
-        case 'ask_account':
-            // Validate the account number (replace with your actual verification logic)
-            if (validateAccountNumber(message)) {
+            } else if (message === "UPDATE CONTACT INFO") {
                 userSessions[senderId].step = 'ask_verification_method';
                 sendContactInfoMenu(senderId);
             } else {
-                sendMessage(senderId, 'Sorry, the account number you provided is invalid. Please try again.');
+                sendMessage(senderId, 'Sorry, I can only assist with Bill Inquiry and Update Contact Info at the moment. Please choose one.');
             }
             break;
 
         case 'ask_verification_method':
-            // Handle the user's choice for contact method
-            if (message === "MOBILE NUMBER" || message === "EMAIL ADDRESS") {
+            if (message === "MOBILE_NUMBER" || message === "EMAIL_ADDRESS") {
                 userSessions[senderId].step = 'collect_contact_info';
                 sendMessage(senderId, `Please provide your ${message.toLowerCase()}.`);
-            } else if (message === "UPDATE CONTACT INFO") {
-                userSessions[senderId].step = 'update_contact_info';
-                sendMessage(senderId, 'Please provide your new contact information.');
             } else {
                 sendMessage(senderId, 'Invalid selection. Please choose from the options provided.');
             }
             break;
 
         case 'collect_contact_info':
-            // Collect the contact information (mobile or email)
             if (validateVerificationMethod(message)) {
-                userSessions[senderId].step = 'show_balance';
-                sendMessage(senderId, 'Your Total Amount Due for the month of December 2024 is Php1,234.00.');
-                sendGetStartedMenu(senderId); // Show "GET STARTED AGAIN" menu
+                userSessions[senderId].step = 'send_otp';
+                sendOTP(senderId);
             } else {
-                sendMessage(senderId, 'Sorry, the information you provided is invalid. Please provide a valid mobile number or email.');
+                sendMessage(senderId, 'Invalid contact info. Please provide a valid mobile number or email address.');
             }
             break;
 
-        case 'update_contact_info':
-            // Handle the logic for updating contact info
-            sendMessage(senderId, 'Your contact info has been updated successfully.');
-            userSessions[senderId].step = 'show_balance';
-            sendMessage(senderId, 'Your Total Amount Due for the month of December 2024 is Php1,234.00.');
-            sendGetStartedMenu(senderId); // Show "GET STARTED AGAIN" menu
-            break;
-
-        case 'show_balance':
-            sendMessage(senderId, 'Please choose one of the following options:');
-            sendGetStartedMenu(senderId); // Show "GET STARTED AGAIN" menu
+        case 'send_otp':
+            // Validate the OTP
+            if (message === otps[senderId].toString()) {
+                userSessions[senderId].step = 'verified';
+                sendMessage(senderId, 'OTP successfully verified! Your contact information has been updated.');
+            } else {
+                sendMessage(senderId, 'Invalid OTP. Please try again.');
+            }
             break;
 
         default:
             sendMessage(senderId, 'I\'m not sure what you need. Please start again.');
             break;
     }
-}
-
-// Function to send the "GET STARTED AGAIN" menu
-function sendGetStartedMenu(senderId) {
-    const messageData = {
-        recipient: { id: senderId },
-        message: {
-            text: "Would you like to get started again?",
-            quick_replies: [
-                {
-                    content_type: "text",
-                    title: "GET STARTED AGAIN",
-                    payload: "GET_STARTED_AGAIN"
-                },
-                {
-                    content_type: "text",
-                    title: "CONTINUE",
-                    payload: "CONTINUE"
-                }
-            ]
-        }
-    };
-
-    axios.post(`https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`, messageData)
-        .then(response => {
-            console.log('Get Started menu sent:', response.data);
-        })
-        .catch(error => {
-            console.error('Error sending Get Started menu:', error);
-        });
-}
-
-// Function to validate account number (replace with actual logic)
-function validateAccountNumber(accountNumber) {
-    return accountNumber === '12345678';  // Example: Account number "12345" is valid
 }
 
 // Function to validate the verification method (mobile number or email)

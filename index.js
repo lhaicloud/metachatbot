@@ -41,16 +41,19 @@ app.post('/webhook', (req, res) => {
 
                 console.log(webhookEvent);
 
-                // Ensure there's a text message before accessing webhookEvent.message.text
-                if (webhookEvent.message && webhookEvent.message.text) {
-                    if (!userSessions[senderId]) {
-                        userSessions[senderId] = { step: 'main_menu' };
-                        sendMainMenu(senderId);
-                    } else {
-                        handleUserMessage(senderId, webhookEvent.message.text);
-                    }
+                // Check if it's a postback (e.g., from a button click or quick reply)
+                if (webhookEvent.postback) {
+                    const postbackPayload = webhookEvent.postback.payload;
+                    console.log('Postback received:', postbackPayload);
+
+                    // Handle postback action
+                    handlePostback(senderId, postbackPayload);
+                } 
+                // Check if it's a text message
+                else if (webhookEvent.message && webhookEvent.message.text) {
+                    handleUserMessage(senderId, webhookEvent.message.text);
                 } else {
-                    console.log('No text message found');
+                    console.log('No text or postback message found');
                 }
             } else {
                 console.log('No messaging data found in entry:', entry);
@@ -62,7 +65,18 @@ app.post('/webhook', (req, res) => {
         res.sendStatus(404);
     }
 });
-
+function handlePostback(senderId, payload) {
+    switch (payload) {
+        case 'WELCOME_MESSAGE':
+            userSessions[senderId] = { step: 'main_menu' };
+            sendMainMenu(senderId);
+            break;
+        // Add other postback payload cases if necessary
+        default:
+            sendMessage(senderId, 'Sorry, I didn\'t understand that action.');
+            break;
+    }
+}
 // Function to send the main menu with Bill Inquiry option
 function sendMainMenu(senderId) {
     const messageData = {

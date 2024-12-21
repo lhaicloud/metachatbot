@@ -32,19 +32,24 @@ app.post('/webhook', (req, res) => {
 
     if (body.object === 'page') {
         body.entry.forEach(entry => {
-            const webhookEvent = entry.messaging[0];
-            const senderId = webhookEvent.sender.id;
+            // Check if the entry has any messaging data
+            if (entry.messaging && entry.messaging.length > 0) {
+                const webhookEvent = entry.messaging[0];
+                const senderId = webhookEvent.sender.id;
 
-            console.log(webhookEvent);
+                console.log(webhookEvent);
 
-            // Check if the user is already in the conversation flow
-            if (!userSessions[senderId]) {
-                // Start the conversation by showing the main menu
-                userSessions[senderId] = { step: 'main_menu' };
-                sendMainMenu(senderId);
+                // Check if the user is already in the conversation flow
+                if (!userSessions[senderId]) {
+                    // Start the conversation by showing the main menu
+                    userSessions[senderId] = { step: 'main_menu' };
+                    sendMainMenu(senderId);
+                } else {
+                    // Handle conversation flow based on the current step
+                    handleUserMessage(senderId, webhookEvent.message.text);
+                }
             } else {
-                // Handle conversation flow based on the current step
-                handleUserMessage(senderId, webhookEvent.message.text);
+                console.log('No messaging data found in entry:', entry);
             }
         });
 
@@ -53,6 +58,7 @@ app.post('/webhook', (req, res) => {
         res.sendStatus(404);
     }
 });
+
 
 // Function to send the main menu with Bill Inquiry option
 function sendMainMenu(senderId) {
@@ -94,7 +100,7 @@ function sendContactInfoMenu(senderId) {
     const messageData = {
         recipient: { id: senderId },
         message: {
-            text: "Please select how you'd like to proceed:",
+            text: "Where do you want to receive your One-time Password (OTP)?:",
             quick_replies: [
                 {
                     content_type: "text",
@@ -140,7 +146,7 @@ function handleUserMessage(senderId, message) {
             // Validate the account number (replace with your actual verification logic)
             if (validateAccountNumber(message)) {
                 userSessions[senderId].step = 'ask_verification_method';
-                sendMessage(senderId, 'Where do you want to receive your One-time Password (OTP): MOBILE NUMBER, EMAIL ADDRESS, or UPDATE CONTACT INFO.');
+                // sendMessage(senderId, 'Where do you want to receive your One-time Password (OTP): MOBILE NUMBER, EMAIL ADDRESS, or UPDATE CONTACT INFO.');
                 sendContactInfoMenu(senderId);
             } else {
                 sendMessage(senderId, 'Sorry, the account number you provided is invalid. Please try again.');

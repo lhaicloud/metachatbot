@@ -10,6 +10,7 @@ const PAGE_ACCESS_TOKEN = 'EAAGizoa2IFwBO9h75MsQZCF0mIQUs2ZAOj6np59gElARZCYAEv8v
 
 // Define a temporary storage for user conversations (this can be replaced with a database)
 let userSessions = {};
+let otpAttempts = {};
 
 // Temporary storage for OTP generation (to simulate OTP validation)
 let otps = {};
@@ -195,21 +196,33 @@ function handleUserMessage(senderId, message) {
             if (message === "MOBILE NUMBER" || message === "EMAIL ADDRESS") {
                 userSessions[senderId].step = 'validate_otp';
                 sendOTP(senderId, message.toLowerCase());
+                otpAttempts[senderId] = 0; // Initialize OTP attempt counter
             } else {
                 sendMessage(senderId, 'Invalid selection. Please choose from the options provided.');
             }
             break;
-        // case 'send_otp':
-        //     // Wait for OTP input
-        //     userSessions[senderId].step = 'validate_otp';
-        //     sendMessage(senderId, 'Please enter the OTP you received.');
-        //     break;
         case 'validate_otp':
+            // Check if OTP is correct
             if (message === otps[senderId].toString()) {
                 userSessions[senderId].step = 'verified';
                 sendMessage(senderId, 'Your Total Amount Due for the month of December 2024 is Php 1,234.00');
             } else {
-                sendMessage(senderId, 'Invalid OTP. Please try again.');
+                otpAttempts[senderId] = (otpAttempts[senderId] || 0) + 1; // Increment OTP attempts
+                if (otpAttempts[senderId] >= 3) {
+                    sendMessage(senderId, 'You have entered the wrong OTP 3 times. Would you like to resend the OTP?');
+                    userSessions[senderId].step = 'resend_otp'; // Transition to resend OTP step
+                } else {
+                    sendMessage(senderId, 'Invalid OTP. Please try again.');
+                }
+            }
+            break;
+        case 'resend_otp':
+            if (message === "RESEND OTP") {
+                userSessions[senderId].step = 'ask_otp_method'; // Return to OTP method selection
+                sendOTPChoiceMenu(senderId);
+                otpAttempts[senderId] = 0; // Reset OTP attempts
+            } else {
+                sendMessage(senderId, 'Invalid option. Please type "RESEND OTP" to receive a new OTP.');
             }
             break;
         default:

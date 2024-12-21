@@ -174,21 +174,21 @@ function handleUserMessage(senderId, message) {
             break;
         case 'ask_otp_method':
             if (message === "MOBILE NUMBER" || message === "EMAIL ADDRESS") {
-                userSessions[senderId].step = 'send_otp';
+                userSessions[senderId].step = 'validate_otp';
                 sendOTP(senderId, message.toLowerCase());
             } else {
                 sendMessage(senderId, 'Invalid selection. Please choose from the options provided.');
             }
             break;
-        case 'send_otp':
-            // Wait for OTP input
-            userSessions[senderId].step = 'validate_otp';
-            sendMessage(senderId, 'Please enter the OTP you received.');
-            break;
+        // case 'send_otp':
+        //     // Wait for OTP input
+        //     userSessions[senderId].step = 'validate_otp';
+        //     sendMessage(senderId, 'Please enter the OTP you received.');
+        //     break;
         case 'validate_otp':
             if (message === otps[senderId].toString()) {
                 userSessions[senderId].step = 'verified';
-                sendMessage(senderId, 'OTP successfully verified! Here is your balance: $100.00');
+                sendMessage(senderId, 'Your Total Amoun Due for the month of December 2024 is Php 1,234.00');
             } else {
                 sendMessage(senderId, 'Invalid OTP. Please try again.');
             }

@@ -210,7 +210,7 @@ function handleUserMessage(senderId, message) {
                 sendMessage(senderId, 'Invalid selection. Please choose from the options provided.');
             }
             break;
-            case 'validate_otp':
+        case 'validate_otp':
             // Check if the OTP exists for the sender
             if (otps[senderId]) {
                 // Check if OTP has expired (10 minutes)
@@ -241,6 +241,20 @@ function handleUserMessage(senderId, message) {
                 sendOTPChoiceMenu(senderId); // Provide options to request a new OTP
             }
             break;
+        case 'resend_otp':
+            if (message === "RESEND OTP") {
+                sendOTP(senderId, userSessions[senderId].lastContactMethod);
+                userSessions[senderId].step = 'validate_otp'; // Return to OTP validation step
+            } else if (otps[senderId] && message === otps[senderId].otp.toString()) {
+                userSessions[senderId].step = 'verified';
+                sendMessage(senderId, 'Your Total Amount Due for the month of December 2024 is Php 1,234.00');
+                sendMessage(senderId, 'Chat has ended. If you need further assistance, feel free to reach out again.');
+                userSessions[senderId].step = 'chat_ended';
+            } else {
+                sendMessage(senderId, 'Invalid input. Please try again or select "Resend OTP".');
+            }
+            break;
+
             
         default:
             sendMessage(senderId, 'I\'m not sure what you need. Please start again.');
@@ -252,7 +266,6 @@ function sendResendOTPMenu(senderId) {
     const messageData = {
         recipient: { id: senderId },
         message: {
-            text: "Would you like to resend the OTP?",
             quick_replies: [
                 {
                     content_type: "text",

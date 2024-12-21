@@ -10,7 +10,6 @@ const PAGE_ACCESS_TOKEN = 'EAAGizoa2IFwBO9h75MsQZCF0mIQUs2ZAOj6np59gElARZCYAEv8v
 
 // Define a temporary storage for user conversations (this can be replaced with a database)
 let userSessions = {};
-let otpAttempts = {};
 
 // Temporary storage for OTP generation (to simulate OTP validation)
 let otps = {};
@@ -155,7 +154,9 @@ function sendOTPChoiceMenu(senderId) {
 // Function to send OTP message
 function sendOTP(senderId, contactMethod) {
     const otp = Math.floor(100000 + Math.random() * 900000); // Generate a 6-digit OTP
-    otps[senderId] = otp;
+    otps[senderId] = { otp, timestamp: Date.now() };
+
+    userSessions[senderId].lastContactMethod = contactMethod; // Store contact method for resending
 
     const messageData = {
         recipient: { id: senderId },
@@ -209,28 +210,69 @@ function handleUserMessage(senderId, message) {
                 sendMessage(senderId, 'Invalid selection. Please choose from the options provided.');
             }
             break;
-        case 'validate_otp':
-            if (message === otps[senderId].toString()) {
-                userSessions[senderId].step = 'verified';
-                sendMessage(senderId, 'Your Total Amount Due for the month of December 2024 is Php 1,234.00');
-                
-                // Send a message indicating chat has ended
-                sendMessage(senderId, 'Chat has ended. If you need further assistance, feel free to reach out again.');
-                
-                // Reset the session to end the chat and stop further steps
-                userSessions[senderId].step = 'chat_ended';
-                
-                // Send the "Back to previous menu" option
-                sendBackToPreviousMenu(senderId);  // Show the option to go back
+            case 'validate_otp':
+            // Check if the OTP exists for the sender
+            if (otps[senderId]) {
+                // Check if OTP has expired (10 minutes)
+                if (Date.now() - otps[senderId].timestamp > 1 * 60 * 1000) {
+                    sendMessage(senderId, 'Your OTP has expired. Please request a new one.');
+                    userSessions[senderId].step = 'ask_otp_method'; // Prompt user to request a new OTP
+                    sendOTPChoiceMenu(senderId); // Provide options to request a new OTP
+                } else if (message === otps[senderId].otp.toString()) { // Check if OTP is correct
+                    userSessions[senderId].step = 'verified';
+                    sendMessage(senderId, 'Your Total Amount Due for the month of December 2024 is Php 1,234.00');
+
+                    // Send a message indicating chat has ended
+                    sendMessage(senderId, 'Chat has ended. If you need further assistance, feel free to reach out again.');
+
+                    // Reset the session to end the chat and stop further steps
+                    userSessions[senderId].step = 'chat_ended';
+
+                    // Send the "Back to previous menu" option
+                    sendBackToPreviousMenu(senderId); // Show the option to go back
+                } else {
+                    sendMessage(senderId, 'Invalid OTP. Please try again or select "Resend OTP" to get a new one.');
+
+                    sendResendOTPMenu(senderId);
+                }
             } else {
-                sendMessage(senderId, 'Invalid OTP. Please try again.');
+                sendMessage(senderId, 'No OTP found. Please request a new one.');
+                userSessions[senderId].step = 'ask_otp_method'; // Prompt user to request a new OTP
+                sendOTPChoiceMenu(senderId); // Provide options to request a new OTP
             }
             break;
+            
         default:
             sendMessage(senderId, 'I\'m not sure what you need. Please start again.');
             break;
     }
 }
+
+function sendResendOTPMenu(senderId) {
+    const messageData = {
+        recipient: { id: senderId },
+        message: {
+            text: "Would you like to resend the OTP?",
+            quick_replies: [
+                {
+                    content_type: "text",
+                    title: "RESEND OTP",
+                    payload: "RESEND_OTP"
+                }
+            ]
+        }
+    };
+
+    axios.post(`https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`, messageData)
+        .then(response => {
+            console.log('Resend OTP menu sent:', response.data);
+            userSessions[senderId].step = 'resend_otp';
+        })
+        .catch(error => {
+            console.error('Error sending Resend OTP menu:', error);
+        });
+}
+
 function sendBackToPreviousMenu(senderId) {
     const messageData = {
         recipient: { id: senderId },

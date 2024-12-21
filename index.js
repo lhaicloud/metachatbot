@@ -77,8 +77,8 @@ function sendMainMenu(senderId) {
                 },
                 {
                     content_type: "text",
-                    title: "Other",
-                    payload: "OTHER"
+                    title: "UPDATE CONTACT INFO",
+                    payload: "UPDATE_CONTACT"
                 }
             ]
         }
@@ -93,12 +93,12 @@ function sendMainMenu(senderId) {
         });
 }
 
-// Function to send a menu for contact information options
+// Function to send the menu for contact information options after choosing "Update Contact Info"
 function sendContactInfoMenu(senderId) {
     const messageData = {
         recipient: { id: senderId },
         message: {
-            text: "Where do you want to receive your One-time Password (OTP)?:",
+            text: "Where do you want to receive your One-time Password (OTP)?",
             quick_replies: [
                 {
                     content_type: "text",
@@ -109,11 +109,6 @@ function sendContactInfoMenu(senderId) {
                     content_type: "text",
                     title: "EMAIL ADDRESS",
                     payload: "EMAIL_ADDRESS"
-                },
-                {
-                    content_type: "text",
-                    title: "UPDATE CONTACT INFO",
-                    payload: "UPDATE_CONTACT"
                 }
             ]
         }
@@ -128,69 +123,33 @@ function sendContactInfoMenu(senderId) {
         });
 }
 
-// Handle user responses based on the step they are in
-function handleUserMessage(senderId, message) {
-    switch (userSessions[senderId].step) {
-        case 'main_menu':
-            if (message === "BILL INQUIRY") {
-                userSessions[senderId].step = 'ask_account';
-                sendMessage(senderId, 'Please provide your 8-digit account number.');
-            } else {
-                sendMessage(senderId, 'Sorry, I can only assist with Bill Inquiry at the moment. Please choose it from the options.');
-            }
-            break;
+// Function to send OTP instructions based on user's selection
+function sendOTPInstructions(senderId, contactMethod) {
+    const message = contactMethod === "MOBILE_NUMBER"
+        ? "Please check your inbox for the OTP sent and enter it below."
+        : "Please check your inbox for the OTP sent and enter it below.";
 
-        case 'ask_account':
-            // Validate the account number (replace with your actual verification logic)
-            if (validateAccountNumber(message)) {
-                userSessions[senderId].step = 'ask_verification_method';
-                sendContactInfoMenu(senderId);
-            } else {
-                sendMessage(senderId, 'Sorry, the account number you provided is invalid. Please try again.');
-            }
-            break;
+    sendMessage(senderId, message);
+    userSessions[senderId].step = 'enter_otp';
+}
 
-        case 'ask_verification_method':
-            // Handle the user's choice for contact method
-            if (message === "MOBILE NUMBER" || message === "EMAIL ADDRESS") {
-                userSessions[senderId].step = 'collect_contact_info';
-                sendMessage(senderId, `Please provide your ${message.toLowerCase()}.`);
-            } else if (message === "UPDATE CONTACT INFO") {
-                userSessions[senderId].step = 'update_contact_info';
-                sendMessage(senderId, 'Please provide your new contact information.');
-            } else {
-                sendMessage(senderId, 'Invalid selection. Please choose from the options provided.');
-            }
-            break;
+// Function to handle OTP validation
+function handleOTPValidation(senderId, otpEntered) {
+    // Replace with real OTP validation logic
+    const validOTP = "123456";  // Example: OTP for validation
 
-        case 'collect_contact_info':
-            // Collect the contact information (mobile or email)
-            if (validateVerificationMethod(message)) {
-                userSessions[senderId].step = 'show_balance';
-                sendMessage(senderId, 'Your Total Amount Due for the month of December 2024 is Php1,234.00.');
-                sendGetStartedMenu(senderId); // Show "GET STARTED AGAIN" menu
-            } else {
-                sendMessage(senderId, 'Sorry, the information you provided is invalid. Please provide a valid mobile number or email.');
-            }
-            break;
-
-        case 'update_contact_info':
-            // Handle the logic for updating contact info
-            sendMessage(senderId, 'Your contact info has been updated successfully.');
-            userSessions[senderId].step = 'show_balance';
-            sendMessage(senderId, 'Your Total Amount Due for the month of December 2024 is Php1,234.00.');
-            sendGetStartedMenu(senderId); // Show "GET STARTED AGAIN" menu
-            break;
-
-        case 'show_balance':
-            sendMessage(senderId, 'Please choose one of the following options:');
-            sendGetStartedMenu(senderId); // Show "GET STARTED AGAIN" menu
-            break;
-
-        default:
-            sendMessage(senderId, 'I\'m not sure what you need. Please start again.');
-            break;
+    if (otpEntered === validOTP) {
+        sendBalance(senderId);
+    } else {
+        sendMessage(senderId, 'The OTP you entered is incorrect. Please try again.');
     }
+}
+
+// Function to send the balance amount after OTP validation
+function sendBalance(senderId) {
+    const message = "Your Total Amount Due for the month of December 2024 is Php1,234.00.";
+    sendMessage(senderId, message);
+    sendGetStartedMenu(senderId);  // Show "GET STARTED AGAIN" menu
 }
 
 // Function to send the "GET STARTED AGAIN" menu
@@ -223,17 +182,38 @@ function sendGetStartedMenu(senderId) {
         });
 }
 
-// Function to validate account number (replace with actual logic)
-function validateAccountNumber(accountNumber) {
-    return accountNumber === '12345678';  // Example: Account number "12345" is valid
-}
+// Handle user responses based on the step they are in
+function handleUserMessage(senderId, message) {
+    switch (userSessions[senderId].step) {
+        case 'main_menu':
+            if (message === "BILL INQUIRY") {
+                userSessions[senderId].step = 'ask_account';
+                sendMessage(senderId, 'Please provide your 8-digit account number.');
+            } else if (message === "UPDATE_CONTACT") {
+                userSessions[senderId].step = 'update_contact_info';
+                sendContactInfoMenu(senderId);
+            } else {
+                sendMessage(senderId, 'Sorry, I can only assist with Bill Inquiry and Update Contact Info at the moment.');
+            }
+            break;
 
-// Function to validate the verification method (mobile number or email)
-function validateVerificationMethod(info) {
-    const phoneRegex = /^[0-9]{10}$/;
-    const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+        case 'update_contact_info':
+            sendContactInfoMenu(senderId);
+            break;
 
-    return phoneRegex.test(info) || emailRegex.test(info);
+        case 'enter_otp':
+            handleOTPValidation(senderId, message);
+            break;
+
+        case 'show_balance':
+            sendMessage(senderId, 'Your Total Amount Due for the month of December 2024 is Php1,234.00');
+            sendGetStartedMenu(senderId); // Show "GET STARTED AGAIN" menu
+            break;
+
+        default:
+            sendMessage(senderId, 'I\'m not sure what you need. Please start again.');
+            break;
+    }
 }
 
 // Function to send a message via the Messenger API

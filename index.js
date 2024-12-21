@@ -173,7 +173,7 @@ function handleUserMessage(senderId, message) {
             }
             break;
         case 'ask_otp_method':
-            if (message === "MOBILE_NUMBER" || message === "EMAIL_ADDRESS") {
+            if (message === "MOBILE NUMBER" || message === "EMAIL ADDRESS") {
                 userSessions[senderId].step = 'send_otp';
                 sendOTP(senderId, message.toLowerCase());
             } else {

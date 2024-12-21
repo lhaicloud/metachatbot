@@ -32,11 +32,12 @@ app.post('/webhook', (req, res) => {
 
     if (body.object === 'page') {
         body.entry.forEach(entry => {
-            if (entry.messaging && entry.messaging.length > 0) {
+            // Check if 'messaging' exists and is an array with elements
+            if (entry.messaging && Array.isArray(entry.messaging) && entry.messaging.length > 0) {
                 const webhookEvent = entry.messaging[0];
                 const senderId = webhookEvent.sender.id;
 
-                console.log(webhookEvent);
+                console.log(webhookEvent); // Log the webhook event to understand its structure
 
                 // Check if the user is already in the conversation flow
                 if (!userSessions[senderId]) {
@@ -149,38 +150,10 @@ function handleOTPValidation(senderId, otpEntered) {
 function sendBalance(senderId) {
     const message = "Your Total Amount Due for the month of December 2024 is Php1,234.00.";
     sendMessage(senderId, message);
-    sendGetStartedMenu(senderId);  // Show "GET STARTED AGAIN" menu
+    sendMainMenu(senderId)
+    // sendGetStartedMenu(senderId);  // Show "GET STARTED AGAIN" menu
 }
 
-// Function to send the "GET STARTED AGAIN" menu
-function sendGetStartedMenu(senderId) {
-    const messageData = {
-        recipient: { id: senderId },
-        message: {
-            text: "Would you like to get started again?",
-            quick_replies: [
-                {
-                    content_type: "text",
-                    title: "GET STARTED AGAIN",
-                    payload: "GET_STARTED_AGAIN"
-                },
-                {
-                    content_type: "text",
-                    title: "CONTINUE",
-                    payload: "CONTINUE"
-                }
-            ]
-        }
-    };
-
-    axios.post(`https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`, messageData)
-        .then(response => {
-            console.log('Get Started menu sent:', response.data);
-        })
-        .catch(error => {
-            console.error('Error sending Get Started menu:', error);
-        });
-}
 
 // Handle user responses based on the step they are in
 function handleUserMessage(senderId, message) {
@@ -207,7 +180,7 @@ function handleUserMessage(senderId, message) {
 
         case 'show_balance':
             sendMessage(senderId, 'Your Total Amount Due for the month of December 2024 is Php1,234.00');
-            sendGetStartedMenu(senderId); // Show "GET STARTED AGAIN" menu
+            sendMainMenu(senderId); // Show "GET STARTED AGAIN" menu
             break;
 
         default:

@@ -37,16 +37,24 @@ app.post('/webhook', (req, res) => {
                 const webhookEvent = entry.messaging[0];
                 const senderId = webhookEvent.sender.id;
 
-                console.log(webhookEvent); // Log the webhook event to understand its structure
+                console.log('Webhook event:', webhookEvent);  // Log the webhook event to understand its structure
 
-                // Check if the user is already in the conversation flow
-                if (!userSessions[senderId]) {
-                    // Start the conversation by showing the main menu
-                    userSessions[senderId] = { step: 'main_menu' };
-                    sendMainMenu(senderId);
-                } else {
+                // Check if the 'message' and 'text' properties exist before proceeding
+                if (webhookEvent.message && webhookEvent.message.text) {
+                    const userMessage = webhookEvent.message.text;
+
+                    console.log(`Received message from user ${senderId}: ${userMessage}`);
+
                     // Handle conversation flow based on the current step
-                    handleUserMessage(senderId, webhookEvent.message.text);
+                    if (!userSessions[senderId]) {
+                        // Start the conversation by showing the main menu
+                        userSessions[senderId] = { step: 'main_menu' };
+                        sendMainMenu(senderId);
+                    } else {
+                        handleUserMessage(senderId, userMessage);
+                    }
+                } else {
+                    console.log(`No 'text' message found in webhookEvent for sender ${senderId}`);
                 }
             } else {
                 console.log('No messaging data found in entry:', entry);

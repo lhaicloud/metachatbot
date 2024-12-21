@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require('express'); 
 const bodyParser = require('body-parser');
 const axios = require('axios');
 
@@ -63,12 +63,12 @@ function sendMainMenu(senderId) {
             quick_replies: [
                 {
                     content_type: "text",
-                    title: "Bill Inquiry",
+                    title: "BILL INQUIRY",
                     payload: "BILL_INQUIRY"
                 },
                 {
                     content_type: "text",
-                    title: "Apply for New Connection",
+                    title: "APPLY FOR NEW CONNECTION",
                     payload: "NEW_CONNECTION"
                 },
                 {
@@ -89,13 +89,48 @@ function sendMainMenu(senderId) {
         });
 }
 
+// Function to send a menu for contact information options
+function sendContactInfoMenu(senderId) {
+    const messageData = {
+        recipient: { id: senderId },
+        message: {
+            text: "Please select how you'd like to proceed:",
+            quick_replies: [
+                {
+                    content_type: "text",
+                    title: "MOBILE NUMBER",
+                    payload: "MOBILE_NUMBER"
+                },
+                {
+                    content_type: "text",
+                    title: "EMAIL ADDRESS",
+                    payload: "EMAIL_ADDRESS"
+                },
+                {
+                    content_type: "text",
+                    title: "UPDATE CONTACT INFO",
+                    payload: "UPDATE_CONTACT"
+                }
+            ]
+        }
+    };
+
+    axios.post(`https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`, messageData)
+        .then(response => {
+            console.log('Contact info menu sent:', response.data);
+        })
+        .catch(error => {
+            console.error('Error sending contact info menu:', error);
+        });
+}
+
 // Handle user responses based on the step they are in
 function handleUserMessage(senderId, message) {
     switch (userSessions[senderId].step) {
         case 'main_menu':
-            if (message === "Bill Inquiry") {
+            if (message === "BILL INQUIRY") {
                 userSessions[senderId].step = 'ask_account';
-                sendMessage(senderId, 'Please provide your account number.');
+                sendMessage(senderId, 'Please provide your 8-digit account number.');
             } else {
                 sendMessage(senderId, 'Sorry, I can only assist with Bill Inquiry at the moment. Please choose it from the options.');
             }
@@ -105,20 +140,41 @@ function handleUserMessage(senderId, message) {
             // Validate the account number (replace with your actual verification logic)
             if (validateAccountNumber(message)) {
                 userSessions[senderId].step = 'ask_verification_method';
-                sendMessage(senderId, 'Account number verified. Please provide your mobile number or email for verification.');
+                sendMessage(senderId, 'Where do you want to receive your One-time Password (OTP): MOBILE NUMBER, EMAIL ADDRESS, or UPDATE CONTACT INFO.');
+                sendContactInfoMenu(senderId);
             } else {
                 sendMessage(senderId, 'Sorry, the account number you provided is invalid. Please try again.');
             }
             break;
 
         case 'ask_verification_method':
-            // Here you can verify the mobile number or email (replace with actual verification logic)
+            // Handle the user's choice for contact method
+            if (message === "MOBILE NUMBER" || message === "EMAIL ADDRESS") {
+                userSessions[senderId].step = 'collect_contact_info';
+                sendMessage(senderId, `Please provide your ${message.toLowerCase()}.`);
+            } else if (message === "UPDATE CONTACT INFO") {
+                userSessions[senderId].step = 'update_contact_info';
+                sendMessage(senderId, 'Please provide your new contact information.');
+            } else {
+                sendMessage(senderId, 'Invalid selection. Please choose from the options provided.');
+            }
+            break;
+
+        case 'collect_contact_info':
+            // Collect the contact information (mobile or email)
             if (validateVerificationMethod(message)) {
                 userSessions[senderId].step = 'show_balance';
-                sendMessage(senderId, 'Verification successful! Your account balance is $100.');
+                sendMessage(senderId, 'Your Total Amount Due for the month of December 2024 is Php1,234.00.');
             } else {
                 sendMessage(senderId, 'Sorry, the information you provided is invalid. Please provide a valid mobile number or email.');
             }
+            break;
+
+        case 'update_contact_info':
+            // Handle the logic for updating contact info
+            sendMessage(senderId, 'Your contact info has been updated successfully.');
+            userSessions[senderId].step = 'show_balance';
+            sendMessage(senderId, 'Your Total Amount Due for the month of December 2024 is Php1,234.00.');
             break;
 
         default:
@@ -130,7 +186,7 @@ function handleUserMessage(senderId, message) {
 // Function to validate account number (replace with actual logic)
 function validateAccountNumber(accountNumber) {
     // Replace this with actual account number validation logic
-    return accountNumber === '12345';  // Example: Account number "12345" is valid
+    return accountNumber === '12345678';  // Example: Account number "12345" is valid
 }
 
 // Function to validate the verification method (mobile number or email)

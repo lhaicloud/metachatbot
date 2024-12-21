@@ -6,7 +6,7 @@ const app = express();
 app.use(bodyParser.json());
 
 const VERIFY_TOKEN = 'EAAGizoa2IFwBO63KQWgiZA1MdrnarUo8iEsOn1WS4hlpyoSRZCNS5ok9cEcxekdFVyH1ZAblGg7a5CrSYG967IxZB1jahELmoxNQq1b77PaYrTk9DTCPeq5Rm8JqGj6PBgJJ7ETmphqlA2fJixMKMEKZCQQ6QO9m64vsgqWGmsbNH6oFKybELCZCZBCSWmlNtcs3AZDZD';
-const PAGE_ACCESS_TOKEN = 'EAAGizoa2IFwBO9h75MsQZCF0mIQUs2ZAOj6np59gElARZCYAEv8vQfQw1f0RekYOav7F25lwz7QaIdz2JRshoM2GAgiqvJZBPK10GziTs4HB6TU5a8ZCkDCMLqGJrGacgZCsZCA3ZCdCSsnVyGFZAZCC2HT7ZAfDmal8YZBOMHSwLI3bkZAQoZBSxwm8zwxZC1DN3lbSvFbywZDZD'
+const PAGE_ACCESS_TOKEN = 'EAAGizoa2IFwBO9h75MsQZCF0mIQUs2ZAOj6np59gElARZCYAEv8vQfQw1f0RekYOav7F25lwz7QaIdz2JRshoM2GAgiqvJZBPK10GziTs4HB6TU5a8ZCkDCMLqGJrGacgZCsZCA3ZCdCSsnVyGFZAZCC2HT7ZAfDmal8YZBOMHSwLI3bkZAQoZBSxwm8zwxZC1DN3lbSvFbywZDZD';
 
 // Define a temporary storage for user conversations (this can be replaced with a database)
 let userSessions = {};
@@ -39,9 +39,9 @@ app.post('/webhook', (req, res) => {
 
             // Check if the user is already in the conversation flow
             if (!userSessions[senderId]) {
-                // Start the conversation by asking for the account number
-                userSessions[senderId] = { step: 'ask_account' };
-                sendMessage(senderId, 'Please provide your account number.');
+                // Start the conversation by showing the main menu
+                userSessions[senderId] = { step: 'main_menu' };
+                sendMainMenu(senderId);
             } else {
                 // Handle conversation flow based on the current step
                 handleUserMessage(senderId, webhookEvent.message.text);
@@ -54,9 +54,53 @@ app.post('/webhook', (req, res) => {
     }
 });
 
+// Function to send the main menu with Bill Inquiry option
+function sendMainMenu(senderId) {
+    const messageData = {
+        recipient: { id: senderId },
+        message: {
+            text: "Welcome! How can I assist you today?",
+            quick_replies: [
+                {
+                    content_type: "text",
+                    title: "Bill Inquiry",
+                    payload: "BILL_INQUIRY"
+                },
+                {
+                    content_type: "text",
+                    title: "Apply for New Connection",
+                    payload: "NEW_CONNECTION"
+                },
+                {
+                    content_type: "text",
+                    title: "Other",
+                    payload: "OTHER"
+                }
+            ]
+        }
+    };
+
+    axios.post(`https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`, messageData)
+        .then(response => {
+            console.log('Main Menu sent:', response.data);
+        })
+        .catch(error => {
+            console.error('Error sending main menu:', error);
+        });
+}
+
 // Handle user responses based on the step they are in
 function handleUserMessage(senderId, message) {
     switch (userSessions[senderId].step) {
+        case 'main_menu':
+            if (message === "Bill Inquiry") {
+                userSessions[senderId].step = 'ask_account';
+                sendMessage(senderId, 'Please provide your account number.');
+            } else {
+                sendMessage(senderId, 'Sorry, I can only assist with Bill Inquiry at the moment. Please choose it from the options.');
+            }
+            break;
+
         case 'ask_account':
             // Validate the account number (replace with your actual verification logic)
             if (validateAccountNumber(message)) {

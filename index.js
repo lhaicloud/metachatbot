@@ -72,6 +72,10 @@ function handlePostback(senderId, payload) {
             userSessions[senderId] = { step: 'main_menu' };
             sendMainMenu(senderId);
             break;
+        case 'BACK_TO_PREVIOUS_MENU':
+            userSessions[senderId].step = 'main_menu'; // Go back to the main menu
+            sendMainMenu(senderId);  // Send the main menu again
+            break;
         // Add other postback payload cases if necessary
         default:
             sendMessage(senderId, 'Sorry, I didn\'t understand that action.');
@@ -209,9 +213,15 @@ function handleUserMessage(senderId, message) {
             if (message === otps[senderId].toString()) {
                 userSessions[senderId].step = 'verified';
                 sendMessage(senderId, 'Your Total Amount Due for the month of December 2024 is Php 1,234.00');
-                // After showing the balance, send the "get started" menu to start over
-                userSessions[senderId].step = 'main_menu';
-                sendMainMenu(senderId);  // Send the "get started" menu
+                
+                // Send a message indicating chat has ended
+                sendMessage(senderId, 'Chat has ended. If you need further assistance, feel free to reach out again.');
+                
+                // Reset the session to end the chat and stop further steps
+                userSessions[senderId].step = 'chat_ended';
+                
+                // Send the "Back to previous menu" option
+                sendBackToPreviousMenu(senderId);  // Show the option to go back
             } else {
                 sendMessage(senderId, 'Invalid OTP. Please try again.');
             }
@@ -220,6 +230,29 @@ function handleUserMessage(senderId, message) {
             sendMessage(senderId, 'I\'m not sure what you need. Please start again.');
             break;
     }
+}
+function sendBackToPreviousMenu(senderId) {
+    const messageData = {
+        recipient: { id: senderId },
+        message: {
+            text: "Would you like to go back to the previous menu?",
+            quick_replies: [
+                {
+                    content_type: "text",
+                    title: "BACK TO PREVIOUS MENU",
+                    payload: "BACK_TO_PREVIOUS_MENU"
+                }
+            ]
+        }
+    };
+
+    axios.post(`https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`, messageData)
+        .then(response => {
+            console.log('Back to previous menu sent:', response.data);
+        })
+        .catch(error => {
+            console.error('Error sending back to previous menu:', error);
+        });
 }
 
 // Function to validate account number (replace with actual logic)

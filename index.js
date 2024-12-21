@@ -41,11 +41,16 @@ app.post('/webhook', (req, res) => {
 
                 console.log(webhookEvent);
 
-                if (!userSessions[senderId]) {
-                    userSessions[senderId] = { step: 'main_menu' };
-                    sendMainMenu(senderId);
+                // Ensure there's a text message before accessing webhookEvent.message.text
+                if (webhookEvent.message && webhookEvent.message.text) {
+                    if (!userSessions[senderId]) {
+                        userSessions[senderId] = { step: 'main_menu' };
+                        sendMainMenu(senderId);
+                    } else {
+                        handleUserMessage(senderId, webhookEvent.message.text);
+                    }
                 } else {
-                    handleUserMessage(senderId, webhookEvent.message.text);
+                    console.log('No text message found');
                 }
             } else {
                 console.log('No messaging data found in entry:', entry);
@@ -188,7 +193,7 @@ function handleUserMessage(senderId, message) {
         case 'validate_otp':
             if (message === otps[senderId].toString()) {
                 userSessions[senderId].step = 'verified';
-                sendMessage(senderId, 'Your Total Amoun Due for the month of December 2024 is Php 1,234.00');
+                sendMessage(senderId, 'Your Total Amount Due for the month of December 2024 is Php 1,234.00');
             } else {
                 sendMessage(senderId, 'Invalid OTP. Please try again.');
             }

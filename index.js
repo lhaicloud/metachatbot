@@ -231,8 +231,6 @@ function handleUserMessage(senderId, message) {
                     // Send the "Back to previous menu" option
                     sendBackToPreviousMenu(senderId); // Show the option to go back
                 } else {
-                    sendMessage(senderId, 'Invalid OTP. Please try again or select "Resend OTP" to get a new one.');
-
                     sendResendOTPMenu(senderId);
                 }
             } else {
@@ -242,18 +240,18 @@ function handleUserMessage(senderId, message) {
             }
             break;
         case 'resend_otp':
-            if (message === "RESEND OTP") {
-                sendOTP(senderId, userSessions[senderId].lastContactMethod);
-                userSessions[senderId].step = 'validate_otp'; // Return to OTP validation step
-            } else if (otps[senderId] && message === otps[senderId].otp.toString()) {
-                userSessions[senderId].step = 'verified';
-                sendMessage(senderId, 'Your Total Amount Due for the month of December 2024 is Php 1,234.00');
-                sendMessage(senderId, 'Chat has ended. If you need further assistance, feel free to reach out again.');
-                userSessions[senderId].step = 'chat_ended';
-            } else {
-                sendMessage(senderId, 'Invalid input. Please try again or select "Resend OTP".');
-            }
-            break;
+                if (message === "RESEND OTP") {
+                    sendOTP(senderId, userSessions[senderId].lastContactMethod);
+                    userSessions[senderId].step = 'validate_otp'; // Return to OTP validation step
+                } else if (otps[senderId] && message === otps[senderId].otp.toString()) {
+                    userSessions[senderId].step = 'verified';
+                    sendMessage(senderId, 'Your Total Amount Due for the month of December 2024 is Php 1,234.00');
+                    sendMessage(senderId, 'Chat has ended. If you need further assistance, feel free to reach out again.');
+                    userSessions[senderId].step = 'chat_ended';
+                } else {
+                    sendMessage(senderId, 'Invalid input. Please try again or select "Resend OTP".');
+                }
+                break;
 
             
         default:
@@ -266,6 +264,7 @@ function sendResendOTPMenu(senderId) {
     const messageData = {
         recipient: { id: senderId },
         message: {
+            text: 'Invalid OTP. Please try again or select "Resend OTP" to get a new one.',
             quick_replies: [
                 {
                     content_type: "text",

@@ -6,7 +6,7 @@ const app = express();
 app.use(bodyParser.json());
 
 const VERIFY_TOKEN = 'EAAGizoa2IFwBO63KQWgiZA1MdrnarUo8iEsOn1WS4hlpyoSRZCNS5ok9cEcxekdFVyH1ZAblGg7a5CrSYG967IxZB1jahELmoxNQq1b77PaYrTk9DTCPeq5Rm8JqGj6PBgJJ7ETmphqlA2fJixMKMEKZCQQ6QO9m64vsgqWGmsbNH6oFKybELCZCZBCSWmlNtcs3AZDZD';
-const PAGE_ACCESS_TOKEN = 'EAAGizoa2IFwBO9h75MsQZCF0mIQUs2ZAOj6np59gElARZCYAEv8vQfQw1f0RekYOav7F25lwz7QaIdz2JRshoM2GAgiqvJZBPK10GziTs4HB6TU5a8ZCkDCMLqGJrGacgZCsZCA3ZCdCSsnVyGFZAZCC2HT7ZAfDmal8YZBOMHSwLI3bkZAQoZBSxwm8zwxZC1DN3lbSvFbywZDZD'
+const PAGE_ACCESS_TOKEN = 'EAAGizoa2IFwBO9h75MsQZCF0mIQUs2ZAOj6np59gElARZCYAEv8vQfQw1f0RekYOav7F25lwz7QaIdz2JRshoM2GAgiqvJZBPK10GziTs4HB6TU5a8ZCkDCMLqGJrGacgZCsZCA3ZCdCSsnVyGFZAZCC2HT7ZAfDmal8YZBOMHSwLI3bkZAQoZBSxwm8zwxZC1DN3lbSvFbywZDZD';
 
 // Define a temporary storage for user conversations (this can be replaced with a database)
 let userSessions = {};
@@ -98,12 +98,12 @@ function sendMainMenu(senderId) {
         });
 }
 
-// Function to send a menu for contact information options
-function sendContactInfoMenu(senderId) {
+// Function to send OTP delivery choice menu
+function sendOTPChoiceMenu(senderId) {
     const messageData = {
         recipient: { id: senderId },
         message: {
-            text: "Where would you like to update your contact info?",
+            text: "Where would you like to receive your OTP? Please select an option.",
             quick_replies: [
                 {
                     content_type: "text",
@@ -121,22 +121,22 @@ function sendContactInfoMenu(senderId) {
 
     axios.post(`https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`, messageData)
         .then(response => {
-            console.log('Contact info menu sent:', response.data);
+            console.log('OTP choice menu sent:', response.data);
         })
         .catch(error => {
-            console.error('Error sending contact info menu:', error);
+            console.error('Error sending OTP choice menu:', error);
         });
 }
 
 // Function to send OTP message
-function sendOTP(senderId) {
+function sendOTP(senderId, contactMethod) {
     const otp = Math.floor(100000 + Math.random() * 900000); // Generate a 6-digit OTP
     otps[senderId] = otp;
 
     const messageData = {
         recipient: { id: senderId },
         message: {
-            text: `You will receive your OTP soon. Here is the code: ${otp}. Please enter it to verify.`
+            text: `Your OTP is ${otp}. Please enter it to verify. OTP has been sent to your ${contactMethod}.`
         }
     };
 
@@ -158,52 +158,51 @@ function handleUserMessage(senderId, message) {
                 sendMessage(senderId, 'Please provide your 8-digit account number.');
             } else if (message === "UPDATE CONTACT INFO") {
                 userSessions[senderId].step = 'ask_verification_method';
-                sendContactInfoMenu(senderId);
+                sendOTPChoiceMenu(senderId);
             } else {
                 sendMessage(senderId, 'Sorry, I can only assist with Bill Inquiry and Update Contact Info at the moment. Please choose one.');
             }
             break;
-
-        case 'ask_verification_method':
+        case 'ask_account':
+            // Validate the account number (replace with your actual verification logic)
+            if (validateAccountNumber(message)) {
+                userSessions[senderId].step = 'ask_otp_method';
+                sendOTPChoiceMenu(senderId);
+            } else {
+                sendMessage(senderId, 'Sorry, the account number you provided is invalid. Please try again.');
+            }
+            break;
+        case 'ask_otp_method':
             if (message === "MOBILE_NUMBER" || message === "EMAIL_ADDRESS") {
-                userSessions[senderId].step = 'collect_contact_info';
-                sendMessage(senderId, `Please provide your ${message.toLowerCase()}.`);
+                userSessions[senderId].step = 'send_otp';
+                sendOTP(senderId, message.toLowerCase());
             } else {
                 sendMessage(senderId, 'Invalid selection. Please choose from the options provided.');
             }
             break;
-
-        case 'collect_contact_info':
-            if (validateVerificationMethod(message)) {
-                userSessions[senderId].step = 'send_otp';
-                sendOTP(senderId);
-            } else {
-                sendMessage(senderId, 'Invalid contact info. Please provide a valid mobile number or email address.');
-            }
-            break;
-
         case 'send_otp':
-            // Validate the OTP
+            // Wait for OTP input
+            userSessions[senderId].step = 'validate_otp';
+            sendMessage(senderId, 'Please enter the OTP you received.');
+            break;
+        case 'validate_otp':
             if (message === otps[senderId].toString()) {
                 userSessions[senderId].step = 'verified';
-                sendMessage(senderId, 'OTP successfully verified! Your contact information has been updated.');
+                sendMessage(senderId, 'OTP successfully verified! Here is your balance: $100.00');
             } else {
                 sendMessage(senderId, 'Invalid OTP. Please try again.');
             }
             break;
-
         default:
             sendMessage(senderId, 'I\'m not sure what you need. Please start again.');
             break;
     }
 }
 
-// Function to validate the verification method (mobile number or email)
-function validateVerificationMethod(info) {
-    const phoneRegex = /^[0-9]{10}$/;
-    const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
-
-    return phoneRegex.test(info) || emailRegex.test(info);
+// Function to validate account number (replace with actual logic)
+function validateAccountNumber(accountNumber) {
+    // Replace this with actual account number validation logic
+    return accountNumber === '12345678';  // Example: Account number "12345" is valid
 }
 
 // Function to send a message via the Messenger API

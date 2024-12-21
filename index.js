@@ -209,6 +209,9 @@ function handleUserMessage(senderId, message) {
             if (message === otps[senderId].toString()) {
                 userSessions[senderId].step = 'verified';
                 sendMessage(senderId, 'Your Total Amount Due for the month of December 2024 is Php 1,234.00');
+                // After showing the balance, send the "get started" menu to start over
+                userSessions[senderId].step = 'main_menu';
+                sendMainMenu(senderId);  // Send the "get started" menu
             } else {
                 sendMessage(senderId, 'Invalid OTP. Please try again.');
             }

@@ -89,51 +89,23 @@ function sendMainMenu(senderId) {
             attachment: {
                 type: "template",
                 payload: {
-                    template_type: "generic",
-                    elements: [
+                    template_type: "button",
+                    text: "Welcome! How can I assist you today?",
+                    buttons: [
                         {
+                            type: "postback",
                             title: "BILL INQUIRY",
-                            subtitle: "Check your bills easily.",
-                            buttons: [
-                                {
-                                    type: "postback",
-                                    title: "Select",
-                                    payload: "BILL_INQUIRY"
-                                }
-                            ]
+                            payload: "BILL_INQUIRY"
                         },
                         {
+                            type: "postback",
                             title: "APPLY FOR NEW CONNECTION",
-                            subtitle: "Start a new connection.",
-                            buttons: [
-                                {
-                                    type: "postback",
-                                    title: "Select",
-                                    payload: "NEW_CONNECTION"
-                                }
-                            ]
+                            payload: "NEW_CONNECTION"
                         },
                         {
+                            type: "postback",
                             title: "UPDATE CONTACT INFO",
-                            subtitle: "Keep your contact info updated.",
-                            buttons: [
-                                {
-                                    type: "postback",
-                                    title: "Select",
-                                    payload: "UPDATE_CONTACT"
-                                }
-                            ]
-                        },
-                        {
-                            title: "Other",
-                            subtitle: "Other inquiries or support.",
-                            buttons: [
-                                {
-                                    type: "postback",
-                                    title: "Select",
-                                    payload: "OTHER"
-                                }
-                            ]
+                            payload: "UPDATE_CONTACT"
                         }
                     ]
                 }
@@ -143,10 +115,10 @@ function sendMainMenu(senderId) {
 
     axios.post(`https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`, messageData)
     .then(response => {
-        console.log('Generic Menu sent:', response.data);
+        console.log('Button Template sent:', response.data);
     })
     .catch(error => {
-        console.error('Error sending generic menu:', error);
+        console.error('Error sending button template:', error);
     });
 }
 

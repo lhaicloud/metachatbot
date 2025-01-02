@@ -98,7 +98,7 @@ function sendMainMenu(senderId) {
                     buttons: [
                         {
                             type: "postback",
-                            title: "BILL INQUIRY",
+                            title: "Bill Inquiry",
                             payload: "BILL_INQUIRY"
                         },
                         {

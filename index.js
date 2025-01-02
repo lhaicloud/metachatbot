@@ -86,29 +86,35 @@ function sendMainMenu(senderId) {
     const messageData = {
         recipient: { id: senderId },
         message: {
-            text: "Welcome! How can I assist you today?",
-            quick_replies: [
-                {
-                    content_type: "text",
-                    title: "BILL INQUIRY",
-                    payload: "BILL_INQUIRY"
-                },
-                {
-                    content_type: "text",
-                    title: "APPLY FOR NEW CONNECTION",
-                    payload: "NEW_CONNECTION"
-                },
-                {
-                    content_type: "text",
-                    title: "UPDATE CONTACT INFO",
-                    payload: "UPDATE_CONTACT"
-                },
-                {
-                    content_type: "text",
-                    title: "Other",
-                    payload: "OTHER"
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "button",
+                    text: "Welcome! How can I assist you today?",
+                    buttons: [
+                        {
+                            type: "postback",
+                            title: "BILL INQUIRY",
+                            payload: "BILL_INQUIRY"
+                        },
+                        {
+                            type: "postback",
+                            title: "APPLY FOR NEW CONNECTION",
+                            payload: "NEW_CONNECTION"
+                        },
+                        {
+                            type: "postback",
+                            title: "UPDATE CONTACT INFO",
+                            payload: "UPDATE_CONTACT"
+                        },
+                        {
+                            type: "postback",
+                            title: "Other",
+                            payload: "OTHER"
+                        }
+                    ]
                 }
-            ]
+            }
         }
     };
 
@@ -120,6 +126,7 @@ function sendMainMenu(senderId) {
             console.error('Error sending main menu:', error);
         });
 }
+
 
 // Function to send OTP delivery choice menu
 function sendOTPChoiceMenu(senderId) {

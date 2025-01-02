@@ -191,6 +191,7 @@ function handleUserMessage(senderId, message) {
                 sendOTPChoiceMenu(senderId);
             } else {
                 sendMessage(senderId, 'Sorry, I can only assist with Bill Inquiry and Update Contact Info at the moment. Please choose one.');
+                sendMainMenu(senderId);
             }
             break;
         case 'ask_account':
@@ -256,6 +257,7 @@ function handleUserMessage(senderId, message) {
             
         default:
             sendMessage(senderId, 'I\'m not sure what you need. Please start again.');
+            sendMainMenu(senderId);
             break;
     }
 }

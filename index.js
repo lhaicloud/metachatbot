@@ -51,6 +51,7 @@ app.post('/webhook', (req, res) => {
                 } 
                 // Check if it's a text message
                 else if (webhookEvent.message && webhookEvent.message.text) {
+                    console.log('Text received:', postbackPayload);
                     handleUserMessage(senderId, webhookEvent.message.text);
                 } else {
                     console.log('No text or postback message found');
@@ -186,18 +187,18 @@ function handleUserMessage(senderId, message) {
     }
 
     switch (userSessions[senderId].step) {
-        case 'main_menu':
-            if (message === "BILL INQUIRY") {
-                userSessions[senderId].step = 'ask_account';
-                sendMessage(senderId, 'Please provide your 8-digit account number.');
-            } else if (message === "UPDATE CONTACT INFO") {
-                userSessions[senderId].step = 'ask_verification_method';
-                sendOTPChoiceMenu(senderId);
-            } else {
-                sendMessage(senderId, 'Sorry, I can only assist with Bill Inquiry and Update Contact Info at the moment. Please choose one.');
-                sendMainMenu(senderId);
-            }
-            break;
+        // case 'main_menu':
+        //     if (message === "BILL INQUIRY") {
+        //         userSessions[senderId].step = 'ask_account';
+        //         sendMessage(senderId, 'Please provide your 8-digit account number.');
+        //     } else if (message === "UPDATE CONTACT INFO") {
+        //         userSessions[senderId].step = 'ask_verification_method';
+        //         sendOTPChoiceMenu(senderId);
+        //     } else {
+        //         sendMessage(senderId, 'Sorry, I can only assist with Bill Inquiry and Update Contact Info at the moment. Please choose one.');
+        //         sendMainMenu(senderId);
+        //     }
+        //     break;
         case 'ask_account':
             // Validate the account number (replace with your actual verification logic)
             if (validateAccountNumber(message)) {

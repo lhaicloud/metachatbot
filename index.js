@@ -75,6 +75,9 @@ function handlePostback(senderId, payload) {
             userSessions[senderId].step = 'main_menu'; // Go back to the main menu
             sendMainMenu(senderId);  // Send the main menu again
             break;
+        case 'BILL_INQUIRY':
+            userSessions[senderId].step = 'ask_account';
+            sendMessage(senderId, 'Please provide your 8-digit account number.');
         // Add other postback payload cases if necessary
         default:
             sendMessage(senderId, 'Sorry, I didn\'t understand that action.');

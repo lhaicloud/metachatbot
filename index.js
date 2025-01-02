@@ -51,7 +51,7 @@ app.post('/webhook', (req, res) => {
                 } 
                 // Check if it's a text message
                 else if (webhookEvent.message && webhookEvent.message.text) {
-                    console.log('Text received:', postbackPayload);
+                    console.log('Text received:', webhookEvent.message.text);
                     handleUserMessage(senderId, webhookEvent.message.text);
                 } else {
                     console.log('No text or postback message found');

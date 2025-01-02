@@ -86,39 +86,68 @@ function sendMainMenu(senderId) {
     const messageData = {
         recipient: { id: senderId },
         message: {
-            text: "Welcome! How can I assist you today?",
-            quick_replies: [
-                {
-                    content_type: "text",
-                    title: "BILL INQUIRY",
-                    payload: "BILL_INQUIRY"
-                },
-                {
-                    content_type: "text",
-                    title: "APPLY FOR NEW CONNECTION",
-                    payload: "NEW_CONNECTION"
-                },
-                {
-                    content_type: "text",
-                    title: "UPDATE CONTACT INFO",
-                    payload: "UPDATE_CONTACT"
-                },
-                {
-                    content_type: "text",
-                    title: "Other",
-                    payload: "OTHER"
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "generic",
+                    elements: [
+                        {
+                            title: "BILL INQUIRY",
+                            subtitle: "Check your bills easily.",
+                            buttons: [
+                                {
+                                    type: "postback",
+                                    title: "Select",
+                                    payload: "BILL_INQUIRY"
+                                }
+                            ]
+                        },
+                        {
+                            title: "APPLY FOR NEW CONNECTION",
+                            subtitle: "Start a new connection.",
+                            buttons: [
+                                {
+                                    type: "postback",
+                                    title: "Select",
+                                    payload: "NEW_CONNECTION"
+                                }
+                            ]
+                        },
+                        {
+                            title: "UPDATE CONTACT INFO",
+                            subtitle: "Keep your contact info updated.",
+                            buttons: [
+                                {
+                                    type: "postback",
+                                    title: "Select",
+                                    payload: "UPDATE_CONTACT"
+                                }
+                            ]
+                        },
+                        {
+                            title: "Other",
+                            subtitle: "Other inquiries or support.",
+                            buttons: [
+                                {
+                                    type: "postback",
+                                    title: "Select",
+                                    payload: "OTHER"
+                                }
+                            ]
+                        }
+                    ]
                 }
-            ]
+            }
         }
     };
 
-    axios.post(`https://graph.facebook.com/v20.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`, messageData)
-        .then(response => {
-            console.log('Main Menu sent:', response.data);
-        })
-        .catch(error => {
-            console.error('Error sending main menu:', error);
-        });
+    axios.post(`https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`, messageData)
+    .then(response => {
+        console.log('Generic Menu sent:', response.data);
+    })
+    .catch(error => {
+        console.error('Error sending generic menu:', error);
+    });
 }
 
 // Function to send OTP delivery choice menu

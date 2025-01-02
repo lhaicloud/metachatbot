@@ -131,19 +131,25 @@ function sendOTPChoiceMenu(senderId) {
     const messageData = {
         recipient: { id: senderId },
         message: {
-            text: "Where would you like to receive your OTP? Please select an option.",
-            quick_replies: [
-                {
-                    content_type: "text",
-                    title: "MOBILE NUMBER",
-                    payload: "MOBILE_NUMBER"
-                },
-                {
-                    content_type: "text",
-                    title: "EMAIL ADDRESS",
-                    payload: "EMAIL_ADDRESS"
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "button",
+                    text: "Welcome! How can I assist you today?",
+                    buttons: [
+                        {
+                            type: "postback",
+                            title: "MOBILE NUMBER",
+                            payload: "MOBILE_NUMBER"
+                        },
+                        {
+                            type: "postback",
+                            title: "EMAIL ADDRESS",
+                            payload: "EMAIL_ADDRESS"
+                        },
+                    ]
                 }
-            ]
+            }
         }
     };
 

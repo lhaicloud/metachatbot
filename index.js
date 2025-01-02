@@ -79,6 +79,7 @@ function handlePostback(senderId, payload) {
         case 'BILL_INQUIRY':
             userSessions[senderId].step = 'ask_account';
             sendMessage(senderId, 'Please provide your 8-digit account number.');
+            break;
         // Add other postback payload cases if necessary
         default:
             sendMessage(senderId, 'Sorry, I didn\'t understand that action.');
@@ -98,7 +99,7 @@ function sendMainMenu(senderId) {
                     buttons: [
                         {
                             type: "postback",
-                            title: "Bill Inquiry",
+                            title: "BILL INQUIRY",
                             payload: "BILL_INQUIRY"
                         },
                         {

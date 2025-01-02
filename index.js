@@ -99,14 +99,14 @@ function sendMainMenu(senderId) {
                         },
                         {
                             type: "postback",
-                            title: "APPLY FOR NEW CONNECTION",
-                            payload: "NEW_CONNECTION"
+                            title: "REPORT AN INTERRUPTION",
+                            payload: "REPORT_AN_INTERRUPTION"
                         },
                         {
                             type: "postback",
-                            title: "UPDATE CONTACT INFO",
-                            payload: "UPDATE_CONTACT"
-                        }
+                            title: "ACCOUNT CONCERN",
+                            payload: "ACCOUNT_CONCERN"
+                        },
                     ]
                 }
             }

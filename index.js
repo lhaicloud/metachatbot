@@ -5,6 +5,9 @@ const axios = require('axios');
 const app = express();
 app.use(bodyParser.json());
 
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
+
 const VERIFY_TOKEN = 'L3tm3V3ri1fy@2024';
 const PAGE_ACCESS_TOKEN = 'EAAGizoa2IFwBO9h75MsQZCF0mIQUs2ZAOj6np59gElARZCYAEv8vQfQw1f0RekYOav7F25lwz7QaIdz2JRshoM2GAgiqvJZBPK10GziTs4HB6TU5a8ZCkDCMLqGJrGacgZCsZCA3ZCdCSsnVyGFZAZCC2HT7ZAfDmal8YZBOMHSwLI3bkZAQoZBSxwm8zwxZC1DN3lbSvFbywZDZD';
 
@@ -13,6 +16,7 @@ let userSessions = {};
 
 // Temporary storage for OTP generation (to simulate OTP validation)
 let otps = {};
+
 
 // Webhook verification (Meta setup)
 app.get('/webhook', (req, res) => {

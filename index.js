@@ -396,7 +396,7 @@ function sendMessage(senderId, messageText, withImage = false) {
                     "elements": [{
                         "title": "INVALID ACCOUNT",
                         "subtitle": messageText,
-                        "image_url": "https://metabillinquiry.onrender.com/billing_notice.jpg",
+                        "image_url": "https://metabillinquiry.onrender.com/billing_notice2.jpg",
                     }]
                 }
             }

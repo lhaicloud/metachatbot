@@ -217,7 +217,7 @@ function handleUserMessage(senderId, message) {
                 userSessions[senderId].step = 'ask_otp_method';
                 sendOTPChoiceMenu(senderId);
             } else {
-                sendMessage(senderId, 'Sorry, the account number you provided is invalid. Please try again. You can find your account number here.',true);
+                sendMessage(senderId, 'Sorry, the account number you provided is invalid. See image for your reference.',true);
             }
             break;
         case 'ask_otp_method':

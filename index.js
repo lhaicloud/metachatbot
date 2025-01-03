@@ -347,7 +347,7 @@ function sendMessage(senderId, messageText, withImage = false) {
             attachment: {
                 type: "image",
                 payload: {
-                    url: "billing_notice.jpg", // Image URL
+                    url: "https://metabillinquiry.onrender.com/billing_notice.jpg", // Image URL
                     is_reusable: true // Optional: allows reusing the image in future messages
                 }
             }

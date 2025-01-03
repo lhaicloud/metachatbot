@@ -85,6 +85,12 @@ function handlePostback(senderId, payload) {
             userSessions[senderId].step = 'ask_account';
             sendMessage(senderId, 'Please provide your 8-digit account number.');
             break;
+        case 'MOBILE_NUMBER':
+            userSessions[senderId].step = 'validate_otp';
+            sendOTP(senderId,'mobile number');
+            sendMobileOTPMessage(senderId, 'Thank you. Please enter the One-time Password (OTP) send to your registered mobile number.');
+            break;
+        
         // Add other postback payload cases if necessary
         default:
             sendMessage(senderId, 'Sorry, I didn\'t understand that action.');
@@ -132,6 +138,41 @@ function sendMainMenu(senderId) {
     });
 }
 
+function sendMobileOTPMessage(senderId,messageText) {
+    const messageData = {
+        recipient: { id: senderId },
+        message: {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "button",
+                    text: messageText,
+                    buttons: [
+                        {
+                            type: "postback",
+                            title: "RESEND OTP",
+                            payload: "RESEND_OTP"
+                        },
+                        {
+                            type: "postback",
+                            title: "CHANGE OTP METHOD",
+                            payload: "CHANGE_OTP_METHOD"
+                        },
+                    ]
+                }
+            }
+        }
+    };
+
+    axios.post(`https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`, messageData)
+        .then(response => {
+            console.log('OTP choice menu sent:', response.data);
+        })
+        .catch(error => {
+            console.error('Error sending OTP choice menu:', error);
+        });
+}
+
 // Function to send OTP delivery choice menu
 function sendOTPChoiceMenu(senderId) {
     const messageData = {
@@ -141,7 +182,7 @@ function sendOTPChoiceMenu(senderId) {
                 type: "template",
                 payload: {
                     template_type: "button",
-                    text: "Welcome! How can I assist you today?",
+                    text: "Where do you want to receive your One-Time Password (OTP)?",
                     buttons: [
                         {
                             type: "postback",
@@ -152,6 +193,11 @@ function sendOTPChoiceMenu(senderId) {
                             type: "postback",
                             title: "EMAIL ADDRESS",
                             payload: "EMAIL_ADDRESS"
+                        },
+                        {
+                            type: "postback",
+                            title: "UPDATE CONTACT INFO",
+                            payload: "UPDATE_CONTACT_INFO"
                         },
                     ]
                 }

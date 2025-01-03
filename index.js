@@ -343,7 +343,6 @@ function sendMessage(senderId, messageText, withImage = false) {
     const messageWithImage = {
         recipient: { id: senderId },
         message: { 
-            text: messageText,
             attachment: {
                 type: "image",
                 payload: {

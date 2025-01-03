@@ -212,7 +212,7 @@ function handleUserMessage(senderId, message) {
                 userSessions[senderId].step = 'ask_otp_method';
                 sendOTPChoiceMenu(senderId);
             } else {
-                sendMessage(senderId, 'Sorry, the account number you provided is invalid. Please try again.');
+                sendMessage(senderId, 'Sorry, the account number you provided is invalid. Please try again.',true);
             }
             break;
         case 'ask_otp_method':
@@ -330,11 +330,28 @@ function validateAccountNumber(accountNumber) {
 }
 
 // Function to send a message via the Messenger API
-function sendMessage(senderId, messageText) {
-    const messageData = {
+function sendMessage(senderId, messageText, withImage = false) {
+    const message = {
         recipient: { id: senderId },
         message: { text: messageText }
     };
+    const messageWithImage = {
+        recipient: { id: senderId },
+        message: { 
+            text: messageText,
+            attachment: {
+                type: "image",
+                payload: {
+                    url: "billing_notice.jpg", // Image URL
+                    is_reusable: true // Optional: allows reusing the image in future messages
+                }
+            }
+        }
+    };
+
+    messageData = withImage ? messageWithImage : message
+
+
 
     axios.post(`https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`, messageData)
         .then(response => {

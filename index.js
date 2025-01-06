@@ -116,7 +116,10 @@ function handlePostback(senderId, payload) {
             userSessions[senderId].step = 'update_contact_info';
             sendContactInfoMenu(senderId);
             break;
-       
+        case 'UPDATE_NOW':
+            userSessions[senderId].updating_information = true;
+            sendChooseMobileorEmailMenu(senderId);
+            break;
         // Add other postback payload cases if necessary
         default:
             sendMessage(senderId, 'Sorry, I didn\'t understand that action.');
@@ -184,6 +187,42 @@ function sendOTPMessage(senderId,messageText) {
                             type: "postback",
                             title: "CHANGE OTP METHOD",
                             payload: "CHANGE_OTP_METHOD"
+                        },
+                    ]
+                }
+            }
+        }
+    };
+
+    axios.post(`https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`, messageData)
+        .then(response => {
+            console.log('OTP choice menu sent:', response.data);
+        })
+        .catch(error => {
+            console.error('Error sending OTP choice menu:', error);
+        });
+}
+
+
+function sendChooseMobileorEmailMenu(senderId) {
+    const messageData = {
+        recipient: { id: senderId },
+        message: {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "button",
+                    text: "Please choose what information you want to update.",
+                    buttons: [
+                        {
+                            type: "postback",
+                            title: "MOBILE NUMBER",
+                            payload: "MOBILE_NUMBER"
+                        },
+                        {
+                            type: "postback",
+                            title: "EMAIL ADDRESS",
+                            payload: "EMAIL_ADDRESS"
                         },
                     ]
                 }
@@ -352,6 +391,12 @@ function handleUserMessage(senderId, message) {
                     userSessions[senderId].step = 'ask_otp_method'; // Prompt user to request a new OTP
                     sendOTPChoiceMenu(senderId); // Provide options to request a new OTP
                 } else if (message === otps[senderId].otp.toString()) { // Check if OTP is correct
+
+                    if(userSessions[senderId].updating_information){
+                        sendMessage(senderId, 'Your contact information has been updated successfully.');
+                        sendFinalMenu(senderId);
+                        break;
+                    }
                     userSessions[senderId].step = 'verified';
                     sendMessage(senderId, 'Your Total Amount Due for the month of December 2024 is Php 1,234.00');
 
@@ -394,30 +439,42 @@ function handleUserMessage(senderId, message) {
     }
 }
 
-function sendResendOTPMenu(senderId) {
+
+function sendFinalMenu(senderId) {
     const messageData = {
         recipient: { id: senderId },
         message: {
-            text: 'Invalid OTP. Please try again or select "Resend OTP" to get a new one.',
-            quick_replies: [
-                {
-                    content_type: "text",
-                    title: "RESEND OTP",
-                    payload: "RESEND_OTP"
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "button",
+                    text: "Do you have another concern?",
+                    buttons: [
+                        {
+                            type: "postback",
+                            title: "YES",
+                            payload: "YES_ANOTHER_CONCERN"
+                        },
+                        {
+                            type: "postback",
+                            title: "NO",
+                            payload: "END_CHAT"
+                        },
+                    ]
                 }
-            ]
+            }
         }
     };
 
     axios.post(`https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`, messageData)
         .then(response => {
-            console.log('Resend OTP menu sent:', response.data);
-            userSessions[senderId].step = 'resend_otp';
+            console.log('OTP choice menu sent:', response.data);
         })
         .catch(error => {
-            console.error('Error sending Resend OTP menu:', error);
+            console.error('Error sending OTP choice menu:', error);
         });
 }
+
 
 function sendBackToPreviousMenu(senderId) {
     const messageData = {

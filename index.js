@@ -184,7 +184,7 @@ function sendMainMenu(senderId) {
 }
 
 
-function sendOTPMessage(senderId,messageText, showChangeOtp = true) {
+function sendOTPMessage(senderId,messageText) {
     const buttons = [
         {
             type: "postback",
@@ -193,7 +193,7 @@ function sendOTPMessage(senderId,messageText, showChangeOtp = true) {
         }
     ];
 
-    if (showChangeOtp) {
+    if (userSessions[senderId].updating_information) {
         buttons.push({
             type: "postback",
             title: "CHANGE OTP METHOD",
@@ -454,12 +454,12 @@ function handleUserMessage(senderId, message) {
         case 'ask_mobile_number':
             userSessions[senderId].step = 'validate_otp';
             sendOTP(senderId,'MOBILE NUMBER');
-            sendOTPMessage(senderId, 'Thank you. Please enter the One-time Password (OTP) send to your registered mobile number.', false);
+            sendOTPMessage(senderId, 'Thank you. Please enter the One-time Password (OTP) send to your registered mobile number.');
             break;
         case 'ask_email_address':
             userSessions[senderId].step = 'validate_otp';
             sendOTP(senderId,'EMAIL ADDRESS');
-            sendOTPMessage(senderId, 'Thank you. Please enter the One-time Password (OTP) send to your registered email address.', false);
+            sendOTPMessage(senderId, 'Thank you. Please enter the One-time Password (OTP) send to your registered email address.');
             break;    
         default:
             // sendMessage(senderId, 'I\'m not sure what you need. Please start again.');

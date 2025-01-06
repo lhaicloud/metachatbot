@@ -120,6 +120,10 @@ function handlePostback(senderId, payload) {
             userSessions[senderId].updating_information = true;
             sendChooseMobileorEmailMenu(senderId);
             break;
+        case 'END_CHAT':
+            endChat(senderId);
+            delete userSessions[senderId];
+            break;
         // Add other postback payload cases if necessary
         default:
             sendMessage(senderId, 'Sorry, I didn\'t understand that action.');
@@ -472,6 +476,37 @@ function sendFinalMenu(senderId) {
         })
         .catch(error => {
             console.error('Error sending OTP choice menu:', error);
+        });
+}
+
+function endChat(senderId) {
+    const message = {
+        recipient: { id: senderId },
+        message: {
+            text: "Thank you for contacting us! If you have any further questions, feel free to reach out anytime. Have a great day!"
+        }
+    };
+
+    axios.post(`https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`, message)
+        .then(response => {
+            console.log('Chat ended message sent:', response.data);
+        })
+        .catch(error => {
+            console.error('Error ending chat:', error);
+        });
+}
+function markAsDone(senderId) {
+    const data = {
+        recipient: { id: senderId },
+        sender_action: "mark_seen"
+    };
+
+    axios.post(`https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`, data)
+        .then(response => {
+            console.log('Conversation marked as done:', response.data);
+        })
+        .catch(error => {
+            console.error('Error marking as done:', error);
         });
 }
 

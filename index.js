@@ -193,7 +193,7 @@ function sendOTPMessage(senderId,messageText) {
         }
     ];
 
-    if (userSessions[senderId].updating_information) {
+    if (!userSessions[senderId].updating_information) {
         buttons.push({
             type: "postback",
             title: "CHANGE OTP METHOD",

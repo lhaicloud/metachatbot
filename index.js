@@ -415,14 +415,16 @@ function handleUserMessage(senderId, message) {
 
                     if(userSessions[senderId].updating_information){
                         sendMessage(senderId, 'Your contact information has been updated successfully.');
-                        sendFinalMenu(senderId);
+                        setTimeout(() => {
+                            sendFinalMenu(senderId);
+                        }, 200);
+                        
                         break;
                     }
                     userSessions[senderId].step = 'verified';
                     sendMessage(senderId, 'Your Total Amount Due for the month of December 2024 is 1,234.00 pesos.');
                     setTimeout(() => {
-                        endChat(senderId);
-                        delete userSessions[senderId];
+                        sendFinalMenu(senderId);
                     }, 200);
                     // Send a message indicating chat has ended
                     // sendMessage(senderId, 'Chat has ended. If you need further assistance, feel free to reach out again.');
@@ -449,8 +451,7 @@ function handleUserMessage(senderId, message) {
                 userSessions[senderId].step = 'verified';
                 sendMessage(senderId, 'Your Total Amount Due for the month of December 2024 is Php 1,234.00 pesos');
                 setTimeout(() => {
-                    endChat(senderId);
-                    delete userSessions[senderId];
+                    sendFinalMenu(senderId);
                 }, 200);
             } else {
                 sendMessage(senderId, 'Invalid input. Please try again or select "Resend OTP".');

@@ -127,6 +127,11 @@ function handlePostback(senderId, payload) {
         case 'ASK_MOBILE_NUMBER':
             userSessions[senderId].step = 'ask_mobile_number';
             sendMessage(senderId,"Please enter your mobile number");
+            break;
+        case 'ASK_EMAIL_ADDRESS':
+            userSessions[senderId].step = 'ask_email_address';
+            sendMessage(senderId,"Please enter your email address");
+            break;
         // Add other postback payload cases if necessary
         default:
             sendMessage(senderId, 'Sorry, I didn\'t understand that action.');
@@ -438,9 +443,11 @@ function handleUserMessage(senderId, message) {
             }
             break;
         case 'ask_mobile_number':
-            sendOTP(senderId, userSessions[senderId].lastContactMethod);
+            sendOTP(senderId,'MOBILE NUMBER');
             break;
-            
+        case 'ask_email_address':
+            sendOTP(senderId,'EMAIL ADDRESS');
+            break;    
         default:
             sendMessage(senderId, 'I\'m not sure what you need. Please start again.');
             sendMainMenu(senderId);

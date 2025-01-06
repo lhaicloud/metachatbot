@@ -90,7 +90,8 @@ function handlePostback(senderId, payload) {
             sendOTP(senderId,'mobile number');
             sendMobileOTPMessage(senderId, 'Thank you. Please enter the One-time Password (OTP) send to your registered mobile number.');
             break;
-        
+        case 'RESEND_OTP':
+            sendMessage(senderId,userSessions[senderId].lastContactMethod)
         // Add other postback payload cases if necessary
         default:
             sendMessage(senderId, 'Sorry, I didn\'t understand that action.');

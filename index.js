@@ -98,13 +98,16 @@ function handlePostback(senderId, payload) {
         case 'RESEND_OTP':
             if(userSessions[senderId].lastContactMethod){
                 if(userSessions[senderId].lastContactMethod == 'MOBILE NUMBER'){
+                    sendOTP(senderId,'MOBILE NUMBER');
                     sendOTPMessage(senderId, 'Thank you. Please enter the One-time Password (OTP) send to your registered mobile number.');
                 }else if(userSessions[senderId].lastContactMethod == 'EMAIL ADDRESS'){
+                    sendOTP(senderId,'EMAIL ADDRESS');
                     sendOTPMessage(senderId, 'Thank you. Please enter the One-time Password (OTP send to your registered email address.');
                 }
             }else{
                 sendOTPChoiceMenu(senderId);
             }
+            break;
         // Add other postback payload cases if necessary
         default:
             sendMessage(senderId, 'Sorry, I didn\'t understand that action.');

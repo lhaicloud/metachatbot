@@ -182,7 +182,7 @@ function sendOTPChoiceMenu(senderId) {
                 type: "template",
                 payload: {
                     template_type: "button",
-                    text: "Where do you want to receive your One-Time Password (OTP)?",
+                    text: "Hi Jason! Where do you want to receive your One-Time Password (OTP)?",
                     buttons: [
                         {
                             type: "postback",
@@ -376,8 +376,10 @@ function sendBackToPreviousMenu(senderId) {
 
 // Function to validate account number (replace with actual logic)
 function validateAccountNumber(accountNumber) {
+    const cleanedAccountNumber = accountNumber.replace(/[^0-9]/g, ''); // Keeps only digits
+
     // Replace this with actual account number validation logic
-    return accountNumber === '12345678';  // Example: Account number "12345" is valid
+    return cleanedAccountNumber === '12345678';  // Example: Account number "12345" is valid
 }
 
 // Function to send a message via the Messenger API

@@ -444,9 +444,11 @@ function handleUserMessage(senderId, message) {
             break;
         case 'ask_mobile_number':
             sendOTP(senderId,'MOBILE NUMBER');
+            sendOTPMessage(senderId, 'Thank you. Please enter the One-time Password (OTP) send to your registered mobile number.');
             break;
         case 'ask_email_address':
             sendOTP(senderId,'EMAIL ADDRESS');
+            sendOTPMessage(senderId, 'Thank you. Please enter the One-time Password (OTP) send to your registered email address.');
             break;    
         default:
             sendMessage(senderId, 'I\'m not sure what you need. Please start again.');

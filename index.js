@@ -420,12 +420,15 @@ function handleUserMessage(senderId, message) {
                     }
                     userSessions[senderId].step = 'verified';
                     sendMessage(senderId, 'Your Total Amount Due for the month of December 2024 is 1,234.00 pesos.');
-
+                    setTimeout(() => {
+                        endChat(senderId);
+                        delete userSessions[senderId];
+                    }, 200);
                     // Send a message indicating chat has ended
-                    sendMessage(senderId, 'Chat has ended. If you need further assistance, feel free to reach out again.');
+                    // sendMessage(senderId, 'Chat has ended. If you need further assistance, feel free to reach out again.');
 
                     // Reset the session to end the chat and stop further steps
-                    userSessions[senderId].step = 'chat_ended';
+                    // userSessions[senderId].step = 'chat_ended';
 
                     // Send the "Back to previous menu" option
                     // sendBackToPreviousMenu(senderId); // Show the option to go back
@@ -444,9 +447,11 @@ function handleUserMessage(senderId, message) {
                 userSessions[senderId].step = 'validate_otp'; // Return to OTP validation step
             } else if (otps[senderId] && message === otps[senderId].otp.toString()) {
                 userSessions[senderId].step = 'verified';
-                sendMessage(senderId, 'Your Total Amount Due for the month of December 2024 is Php 1,234.00');
-                endChat(senderId);
-                delete userSessions[senderId];
+                sendMessage(senderId, 'Your Total Amount Due for the month of December 2024 is Php 1,234.00 pesos');
+                setTimeout(() => {
+                    endChat(senderId);
+                    delete userSessions[senderId];
+                }, 200);
             } else {
                 sendMessage(senderId, 'Invalid input. Please try again or select "Resend OTP".');
             }

@@ -112,6 +112,11 @@ function handlePostback(senderId, payload) {
             userSessions[senderId].step = 'ask_otp_method';
             sendOTPChoiceMenu(senderId);
             break;
+        case 'UPDATE_CONTACT_INFO':
+            userSessions[senderId].step = 'update_contact_info';
+            sendContactInfoMenu(senderId);
+            break;
+       
         // Add other postback payload cases if necessary
         default:
             sendMessage(senderId, 'Sorry, I didn\'t understand that action.');
@@ -220,6 +225,46 @@ function sendOTPChoiceMenu(senderId) {
                             type: "postback",
                             title: "UPDATE CONTACT INFO",
                             payload: "UPDATE_CONTACT_INFO"
+                        },
+                    ]
+                }
+            }
+        }
+    };
+
+    axios.post(`https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`, messageData)
+        .then(response => {
+            console.log('OTP choice menu sent:', response.data);
+        })
+        .catch(error => {
+            console.error('Error sending OTP choice menu:', error);
+        });
+}
+
+function sendContactInfoMenu(senderId) {
+    const messageData = {
+        recipient: { id: senderId },
+        message: {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "button",
+                    text: "You can update your contact information via the CASURECO 1 App or by clicking the UPDATE NOW button.",
+                    buttons: [
+                        {
+                            type: "web_url",
+                            url: 'https://play.google.com/store/apps/details?id=org.casureco1.dev&hl=en&pli=1',
+                            title: "OPEN APP",
+                        },
+                        {
+                            type: "postback",
+                            title: "UPDATE NOW",
+                            payload: "UPDATE_NOW"
+                        },
+                        {
+                            type: "postback",
+                            title: "BACK TO PREVIOUS MENU",
+                            payload: "BACK_TO_PREVIOUS_MENU"
                         },
                     ]
                 }

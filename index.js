@@ -295,7 +295,7 @@ function handleUserMessage(senderId, message) {
                     // Send the "Back to previous menu" option
                     sendBackToPreviousMenu(senderId); // Show the option to go back
                 } else {
-                    sendResendOTPMenu(senderId);
+                    sendMobileOTPMessage(senderId,'Invalid OTP. Please try again or select "Resend OTP" to get a new one.');
                 }
             } else {
                 sendMessage(senderId, 'No OTP found. Please request a new one.');

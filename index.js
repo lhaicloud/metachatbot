@@ -132,6 +132,10 @@ function handlePostback(senderId, payload) {
             userSessions[senderId].step = 'ask_email_address';
             sendMessage(senderId,"Please enter your email address");
             break;
+        case 'YES_ANOTHER_CONCERN':
+            userSessions[senderId] = { step: 'main_menu' };
+            sendMainMenu(senderId);
+            break;
         // Add other postback payload cases if necessary
         default:
             sendMessage(senderId, 'Sorry, I didn\'t understand that action.');
@@ -180,7 +184,23 @@ function sendMainMenu(senderId) {
 }
 
 
-function sendOTPMessage(senderId,messageText) {
+function sendOTPMessage(senderId,messageText, showChangeOtp = true) {
+    const buttons = [
+        {
+            type: "postback",
+            title: "RESEND OTP",
+            payload: "RESEND_OTP"
+        }
+    ];
+
+    if (showChangeOtp) {
+        buttons.push({
+            type: "postback",
+            title: "CHANGE OTP METHOD",
+            payload: "CHANGE_OTP_METHOD"
+        });
+    }
+
     const messageData = {
         recipient: { id: senderId },
         message: {
@@ -189,18 +209,7 @@ function sendOTPMessage(senderId,messageText) {
                 payload: {
                     template_type: "button",
                     text: messageText,
-                    buttons: [
-                        {
-                            type: "postback",
-                            title: "RESEND OTP",
-                            payload: "RESEND_OTP"
-                        },
-                        {
-                            type: "postback",
-                            title: "CHANGE OTP METHOD",
-                            payload: "CHANGE_OTP_METHOD"
-                        },
-                    ]
+                    buttons: buttons
                 }
             }
         }
@@ -445,12 +454,12 @@ function handleUserMessage(senderId, message) {
         case 'ask_mobile_number':
             userSessions[senderId].step = 'validate_otp';
             sendOTP(senderId,'MOBILE NUMBER');
-            sendOTPMessage(senderId, 'Thank you. Please enter the One-time Password (OTP) send to your registered mobile number.');
+            sendOTPMessage(senderId, 'Thank you. Please enter the One-time Password (OTP) send to your registered mobile number.', false);
             break;
         case 'ask_email_address':
             userSessions[senderId].step = 'validate_otp';
             sendOTP(senderId,'EMAIL ADDRESS');
-            sendOTPMessage(senderId, 'Thank you. Please enter the One-time Password (OTP) send to your registered email address.');
+            sendOTPMessage(senderId, 'Thank you. Please enter the One-time Password (OTP) send to your registered email address.', false);
             break;    
         default:
             // sendMessage(senderId, 'I\'m not sure what you need. Please start again.');

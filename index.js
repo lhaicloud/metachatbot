@@ -124,6 +124,9 @@ function handlePostback(senderId, payload) {
             endChat(senderId);
             delete userSessions[senderId];
             break;
+        case 'ASK_MOBILE_NUMBER':
+            userSessions[senderId].step = 'ask_mobile_number';
+            sendMessage(senderId,"Please enter your mobile number");
         // Add other postback payload cases if necessary
         default:
             sendMessage(senderId, 'Sorry, I didn\'t understand that action.');
@@ -221,12 +224,12 @@ function sendChooseMobileorEmailMenu(senderId) {
                         {
                             type: "postback",
                             title: "MOBILE NUMBER",
-                            payload: "MOBILE_NUMBER"
+                            payload: "ASK_MOBILE_NUMBER"
                         },
                         {
                             type: "postback",
                             title: "EMAIL ADDRESS",
-                            payload: "EMAIL_ADDRESS"
+                            payload: "ASK_EMAIL_ADDRESS"
                         },
                     ]
                 }
@@ -422,19 +425,21 @@ function handleUserMessage(senderId, message) {
             }
             break;
         case 'resend_otp':
-                if (message === "RESEND OTP") {
-                    sendOTP(senderId, userSessions[senderId].lastContactMethod);
-                    userSessions[senderId].step = 'validate_otp'; // Return to OTP validation step
-                } else if (otps[senderId] && message === otps[senderId].otp.toString()) {
-                    userSessions[senderId].step = 'verified';
-                    sendMessage(senderId, 'Your Total Amount Due for the month of December 2024 is Php 1,234.00');
-                    sendMessage(senderId, 'Chat has ended. If you need further assistance, feel free to reach out again.');
-                    userSessions[senderId].step = 'chat_ended';
-                } else {
-                    sendMessage(senderId, 'Invalid input. Please try again or select "Resend OTP".');
-                }
-                break;
-
+            if (message === "RESEND OTP") {
+                sendOTP(senderId, userSessions[senderId].lastContactMethod);
+                userSessions[senderId].step = 'validate_otp'; // Return to OTP validation step
+            } else if (otps[senderId] && message === otps[senderId].otp.toString()) {
+                userSessions[senderId].step = 'verified';
+                sendMessage(senderId, 'Your Total Amount Due for the month of December 2024 is Php 1,234.00');
+                sendMessage(senderId, 'Chat has ended. If you need further assistance, feel free to reach out again.');
+                userSessions[senderId].step = 'chat_ended';
+            } else {
+                sendMessage(senderId, 'Invalid input. Please try again or select "Resend OTP".');
+            }
+            break;
+        case 'ask_mobile_number':
+            sendOTP(senderId, userSessions[senderId].lastContactMethod);
+            break;
             
         default:
             sendMessage(senderId, 'I\'m not sure what you need. Please start again.');

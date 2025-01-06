@@ -87,11 +87,24 @@ function handlePostback(senderId, payload) {
             break;
         case 'MOBILE_NUMBER':
             userSessions[senderId].step = 'validate_otp';
-            sendOTP(senderId,'mobile number');
-            sendMobileOTPMessage(senderId, 'Thank you. Please enter the One-time Password (OTP) send to your registered mobile number.');
+            sendOTP(senderId,'MOBILE NUMBER');
+            sendOTPMessage(senderId, 'Thank you. Please enter the One-time Password (OTP) send to your registered mobile number.');
+            break;
+        case 'EMAIL_ADDRESS':
+            userSessions[senderId].step = 'validate_otp';
+            sendOTP(senderId,'EMAIL ADDRESS');
+            sendOTPMessage(senderId, 'Thank you. Please enter the One-time Password (OTP) send to your registered email address.');
             break;
         case 'RESEND_OTP':
-            sendMessage(senderId,userSessions[senderId].lastContactMethod)
+            if(userSessions[senderId].lastContactMethod){
+                if(userSessions[senderId].lastContactMethod == 'MOBILE NUMBER'){
+                    sendOTPMessage(senderId, 'Thank you. Please enter the One-time Password (OTP) send to your registered mobile number.');
+                }else if(userSessions[senderId].lastContactMethod == 'EMAIL ADDRESS'){
+                    sendOTPMessage(senderId, 'Thank you. Please enter the One-time Password (OTP send to your registered email address.');
+                }
+            }else{
+                sendOTPChoiceMenu(senderId);
+            }
         // Add other postback payload cases if necessary
         default:
             sendMessage(senderId, 'Sorry, I didn\'t understand that action.');
@@ -139,7 +152,8 @@ function sendMainMenu(senderId) {
     });
 }
 
-function sendMobileOTPMessage(senderId,messageText) {
+
+function sendOTPMessage(senderId,messageText) {
     const messageData = {
         recipient: { id: senderId },
         message: {
@@ -270,7 +284,7 @@ function handleUserMessage(senderId, message) {
         case 'ask_otp_method':
             if (message === "MOBILE NUMBER" || message === "EMAIL ADDRESS") {
                 userSessions[senderId].step = 'validate_otp';
-                sendOTP(senderId, message.toLowerCase());
+                sendOTP(senderId, message.toUpperCase());
             } else {
                 sendMessage(senderId, 'Invalid selection. Please choose from the options provided.');
             }
@@ -296,7 +310,7 @@ function handleUserMessage(senderId, message) {
                     // Send the "Back to previous menu" option
                     sendBackToPreviousMenu(senderId); // Show the option to go back
                 } else {
-                    sendMobileOTPMessage(senderId,'Invalid OTP. Please try again or select "Resend OTP" to get a new one.');
+                    sendOTPMessage(senderId,'Invalid OTP. Please try again or select "Resend OTP" to get a new one.');
                 }
             } else {
                 sendMessage(senderId, 'No OTP found. Please request a new one.');

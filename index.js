@@ -108,6 +108,10 @@ function handlePostback(senderId, payload) {
                 sendOTPChoiceMenu(senderId);
             }
             break;
+        case 'CHANGE_OTP_METHOD':
+            userSessions[senderId].step = 'ask_otp_method';
+            sendOTPChoiceMenu(senderId);
+            break;
         // Add other postback payload cases if necessary
         default:
             sendMessage(senderId, 'Sorry, I didn\'t understand that action.');
@@ -239,10 +243,12 @@ function sendOTP(senderId, contactMethod) {
 
     userSessions[senderId].lastContactMethod = contactMethod; // Store contact method for resending
 
+    contactMethodText = contactMethod.toLowerCase()
+    
     const messageData = {
         recipient: { id: senderId },
         message: {
-            text: `Your OTP is ${otp}. Please enter it to verify. OTP has been sent to your ${contactMethod}.`
+            text: `Your OTP is ${otp}. Please enter it to verify. OTP has been sent to your ${contactMethodText}.`
         }
     };
 

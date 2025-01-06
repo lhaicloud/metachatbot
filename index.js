@@ -451,7 +451,7 @@ function handleUserMessage(senderId, message) {
             sendOTPMessage(senderId, 'Thank you. Please enter the One-time Password (OTP) send to your registered email address.');
             break;    
         default:
-            sendMessage(senderId, 'I\'m not sure what you need. Please start again.');
+            // sendMessage(senderId, 'I\'m not sure what you need. Please start again.');
             sendMainMenu(senderId);
             break;
     }

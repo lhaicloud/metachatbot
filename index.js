@@ -419,7 +419,7 @@ function handleUserMessage(senderId, message) {
                         break;
                     }
                     userSessions[senderId].step = 'verified';
-                    sendMessage(senderId, 'Your Total Amount Due for the month of December 2024 is Php 1,234.00');
+                    sendMessage(senderId, 'Your Total Amount Due for the month of December 2024 is 1,234.00 pesos.');
 
                     // Send a message indicating chat has ended
                     sendMessage(senderId, 'Chat has ended. If you need further assistance, feel free to reach out again.');
@@ -428,7 +428,7 @@ function handleUserMessage(senderId, message) {
                     userSessions[senderId].step = 'chat_ended';
 
                     // Send the "Back to previous menu" option
-                    sendBackToPreviousMenu(senderId); // Show the option to go back
+                    // sendBackToPreviousMenu(senderId); // Show the option to go back
                 } else {
                     sendOTPMessage(senderId,'Invalid OTP. Please try again or select "Resend OTP" to get a new one.');
                 }
@@ -445,8 +445,8 @@ function handleUserMessage(senderId, message) {
             } else if (otps[senderId] && message === otps[senderId].otp.toString()) {
                 userSessions[senderId].step = 'verified';
                 sendMessage(senderId, 'Your Total Amount Due for the month of December 2024 is Php 1,234.00');
-                sendMessage(senderId, 'Chat has ended. If you need further assistance, feel free to reach out again.');
-                userSessions[senderId].step = 'chat_ended';
+                endChat(senderId);
+                delete userSessions[senderId];
             } else {
                 sendMessage(senderId, 'Invalid input. Please try again or select "Resend OTP".');
             }

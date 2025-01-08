@@ -113,8 +113,10 @@ function handlePostback(senderId, payload) {
             sendOTPChoiceMenu(senderId);
             break;
         case 'UPDATE_CONTACT_INFO':
+            userSessions[senderId].updating_information = true;
             userSessions[senderId].step = 'update_contact_info';
-            sendContactInfoMenu(senderId);
+            // sendContactInfoMenu(senderId);
+            sendChooseMobileorEmailMenu(senderId);
             break;
         case 'UPDATE_NOW':
             userSessions[senderId].updating_information = true;
@@ -244,6 +246,11 @@ function sendChooseMobileorEmailMenu(senderId) {
                             type: "postback",
                             title: "EMAIL ADDRESS",
                             payload: "ASK_EMAIL_ADDRESS"
+                        },
+                        {
+                            type: "postback",
+                            title: "BACK TO PREVIOUS MENU",
+                            payload: "BACK_TO_PREVIOUS_MENU"
                         },
                     ]
                 }

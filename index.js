@@ -394,7 +394,7 @@ function sendOTP(senderId, contactMethod) {
 }
 
 // Handle user responses based on the step they are in
-function handleUserMessage(senderId, message) {
+async function handleUserMessage(senderId, message) {
     // Ensure that the user session exists
     if (!userSessions[senderId]) {
         userSessions[senderId] = { step: 'main_menu' };  // Initialize the session with 'main_menu'
@@ -415,7 +415,7 @@ function handleUserMessage(senderId, message) {
         //     break;
         case 'ask_account':
             // Validate the account number (replace with your actual verification logic)
-            if (validateAccountNumber(message,senderId) == true) {
+            if (await validateAccountNumber(message,senderId) == true) {
                 userSessions[senderId].step = 'ask_otp_method';
                 sendOTPChoiceMenu(senderId);
             } else {
@@ -608,8 +608,10 @@ async function validateAccountNumber (accountNumber,senderId){
             if(response.data.success == true){
                 userSessions[senderId].account = response.data.data
                 return true;
+            }else{
+                return false;
             }    
-            return false;
+            
         })
         .catch(error => {
             console.error('Error :', error);

@@ -415,12 +415,13 @@ async function handleUserMessage(senderId, message) {
         //     break;
         case 'ask_account':
             // Validate the account number (replace with your actual verification logic)
-            if (await validateAccountNumber(message,senderId) == true) {
-                userSessions[senderId].step = 'ask_otp_method';
-                sendOTPChoiceMenu(senderId);
-            } else {
-                sendMessage(senderId, 'Sorry, the account number you provided is invalid. See image for your reference.',true);
-            }
+            console.log(validateAccountNumber(message,senderId))
+            // if (validateAccountNumber(message,senderId) == true) {
+            //     userSessions[senderId].step = 'ask_otp_method';
+            //     sendOTPChoiceMenu(senderId);
+            // } else {
+            //     sendMessage(senderId, 'Sorry, the account number you provided is invalid. See image for your reference.',true);
+            // }
             break;
         case 'ask_otp_method':
             if (message === "MOBILE NUMBER" || message === "EMAIL ADDRESS") {
@@ -604,7 +605,6 @@ async function validateAccountNumber (accountNumber,senderId){
                 Authorization: `Bearer ${process.env.API_KEY}` // Authorization Bearer Token
             }
         }).then(response => {
-            console.log(response.data.success)
             if(response.data.success == true){
                 userSessions[senderId].account = response.data.data
                 return true;

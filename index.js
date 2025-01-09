@@ -594,31 +594,24 @@ function sendBackToPreviousMenu(senderId) {
 }
 
 // Function to validate account number (replace with actual logic)
-function  validateAccountNumber (accountNumber,senderId){ 
+async function validateAccountNumber(accountNumber, senderId) { 
     const cleanedAccountNumber = accountNumber.replace(/[^0-9]/g, ''); // Keeps only digits
     
     try {
-        axios.get(`https://casureco1api.com/billinquiry/findCAN`, {
+        const response = await axios.get(`https://casureco1api.com/billinquiry/findCAN`, {
             params: { account_number: cleanedAccountNumber },
             headers: {
                 Authorization: `Bearer ${process.env.API_KEY}` // Authorization Bearer Token
             }
-        }).then(response => {
-            if(response.data.success === true){
-                userSessions[senderId].account = response.data.data
-                return true;
-            }    
-            return false;
-        })
-        .catch(error => {
-            console.error('Error :', error);
-            return false;
         });
 
+        if(response.data.success === true){
+            userSessions[senderId].account = response.data.data;
+            return true;
+        }    
         return false;
-        
     } catch (error) {
-        console.error(error.response ? error.response.data : error.message);
+        console.error('Error :', error);
         return false;
     }
 }

@@ -415,13 +415,12 @@ function handleUserMessage(senderId, message) {
         //     break;
         case 'ask_account':
             // Validate the account number (replace with your actual verification logic)
-            console.log(validateAccountNumber(message,senderId))
-            // if (validateAccountNumber(message,senderId)) {
-            //     userSessions[senderId].step = 'ask_otp_method';
-            //     sendOTPChoiceMenu(senderId);
-            // } else {
-            //     sendMessage(senderId, 'Sorry, the account number you provided is invalid. See image for your reference.',true);
-            // }
+            if (validateAccountNumber(message,senderId)) {
+                userSessions[senderId].step = 'ask_otp_method';
+                sendOTPChoiceMenu(senderId);
+            } else {
+                sendMessage(senderId, 'Sorry, the account number you provided is invalid. See image for your reference.',true);
+            }
             break;
         case 'ask_otp_method':
             if (message === "MOBILE NUMBER" || message === "EMAIL ADDRESS") {
@@ -595,24 +594,31 @@ function sendBackToPreviousMenu(senderId) {
 }
 
 // Function to validate account number (replace with actual logic)
-async function validateAccountNumber(accountNumber, senderId) { 
+async function validateAccountNumber (accountNumber,senderId){ 
     const cleanedAccountNumber = accountNumber.replace(/[^0-9]/g, ''); // Keeps only digits
     
     try {
-        const response = await axios.get(`https://casureco1api.com/billinquiry/findCAN`, {
+        await axios.get(`https://casureco1api.com/billinquiry/findCAN`, {
             params: { account_number: cleanedAccountNumber },
             headers: {
                 Authorization: `Bearer ${process.env.API_KEY}` // Authorization Bearer Token
             }
+        }).then(response => {
+            if(response.data.success === true){
+                userSessions[senderId].account = response.data.data
+                return true;
+            }    
+            return false;
+        })
+        .catch(error => {
+            console.error('Error :', error);
+            return false;
         });
-        console.log(response.data)
-        if(response.data.success === true){
-            userSessions[senderId].account = response.data.data;
-            return true;
-        }    
+
         return false;
+        
     } catch (error) {
-        console.error('Error :', error);
+        console.error(error.response ? error.response.data : error.message);
         return false;
     }
 }

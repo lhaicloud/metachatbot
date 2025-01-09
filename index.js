@@ -415,7 +415,7 @@ function handleUserMessage(senderId, message) {
         //     break;
         case 'ask_account':
             // Validate the account number (replace with your actual verification logic)
-            validateAccountNumber(accountNumber, senderId)
+            validateAccountNumber(message, senderId)
             .then((isValid) => {
                 if (isValid) {
                     userSessions[senderId].step = 'ask_otp_method';

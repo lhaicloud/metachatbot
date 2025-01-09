@@ -415,7 +415,7 @@ function handleUserMessage(senderId, message) {
         //     break;
         case 'ask_account':
             // Validate the account number (replace with your actual verification logic)
-            console.log(validateAccountNumber(message))
+            console.log(validateAccountNumber("RESPONSE: " + message))
             // if (validateAccountNumber(message)) {
             //     userSessions[senderId].step = 'ask_otp_method';
             //     sendOTPChoiceMenu(senderId);

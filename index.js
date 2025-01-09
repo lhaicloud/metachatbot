@@ -608,15 +608,14 @@ const  validateAccountNumber = async (accountNumber) => {
         if(response.data.success === true){
             userSessions[senderId].account = response.data.data
             return true;
-        }else{
-            return false;
         }
+
+        return false;
         
     } catch (error) {
         console.error(error.response ? error.response.data : error.message);
         return false;
     }
-    
 }
 
 // Function to send a message via the Messenger API

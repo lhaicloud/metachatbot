@@ -415,7 +415,7 @@ function handleUserMessage(senderId, message) {
         //     break;
         case 'ask_account':
             // Validate the account number (replace with your actual verification logic)
-            if (validateAccountNumber(message)) {
+            if (validateAccountNumber(message,senderId)) {
                 userSessions[senderId].step = 'ask_otp_method';
                 sendOTPChoiceMenu(senderId);
             } else {
@@ -594,7 +594,7 @@ function sendBackToPreviousMenu(senderId) {
 }
 
 // Function to validate account number (replace with actual logic)
-function  validateAccountNumber (accountNumber){ 
+function  validateAccountNumber (accountNumber,senderId){ 
     const cleanedAccountNumber = accountNumber.replace(/[^0-9]/g, ''); // Keeps only digits
     
     try {
@@ -614,7 +614,7 @@ function  validateAccountNumber (accountNumber){
             console.error('Error :', error);
             return false;
         });
-        
+
         return false;
         
     } catch (error) {

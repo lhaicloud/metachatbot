@@ -294,7 +294,7 @@ function sendOTPChoiceMenu(senderId) {
                 type: "template",
                 payload: {
                     template_type: "button",
-                    text: `Hi Mr./Ms. ${capitalizeWords(userSessions[senderId].account.cflastname)}! Where do you want to receive your One-Time Password (OTP)? `,
+                    text: `Hi Mr./Mrs. ${capitalizeWords(userSessions[senderId].account.cflastname)}! Where do you want to receive your One-Time Password (OTP)? `,
                     buttons: [
                         {
                             type: "postback",
@@ -375,10 +375,7 @@ function sendOTP(senderId, contactMethod) {
 
     contactMethodText = contactMethod.toLowerCase()
     
-    content = `Dear Mr./Mrs. ${capitalizeWords(userSessions[senderId].account.cflastname)},\n
-    Your One-Time Password (OTP) is ${otp}.\n\n
-    Please use this OTP to complete your verification process. Do not share this code with anyone.\n
-    Thank you.`
+    content = `Dear Mr./Mrs. ${capitalizeWords(userSessions[senderId].account.cflastname)},\nYour One-Time Password (OTP) is ${otp}.\n\nPlease use this OTP to complete your verification process. Do not share this code with anyone.\nThank you.`
     sendEmail('lhaicloud123@gmail.com', 'CASURECO 1 OTP', content);
     
     // const messageData = {

@@ -164,6 +164,9 @@ function handlePostback(senderId, payload) {
             userSessions[senderId].step = 'ask_otp_method';
             sendOTPChoiceMenu(senderId);
             break;
+        case 'REPORT_AN_INTERRUPTION':
+            requestLocation(senderId);
+            break;
         // Add other postback payload cases if necessary
         default:
             sendMessage(senderId, 'Sorry, I didn\'t understand that action.');

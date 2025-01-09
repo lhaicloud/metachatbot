@@ -415,12 +415,13 @@ function handleUserMessage(senderId, message) {
         //     break;
         case 'ask_account':
             // Validate the account number (replace with your actual verification logic)
-            if (validateAccountNumber(message)) {
-                userSessions[senderId].step = 'ask_otp_method';
-                sendOTPChoiceMenu(senderId);
-            } else {
-                sendMessage(senderId, 'Sorry, the account number you provided is invalid. See image for your reference.',true);
-            }
+            console.log(validateAccountNumber(message))
+            // if (validateAccountNumber(message)) {
+            //     userSessions[senderId].step = 'ask_otp_method';
+            //     sendOTPChoiceMenu(senderId);
+            // } else {
+            //     sendMessage(senderId, 'Sorry, the account number you provided is invalid. See image for your reference.',true);
+            // }
             break;
         case 'ask_otp_method':
             if (message === "MOBILE NUMBER" || message === "EMAIL ADDRESS") {

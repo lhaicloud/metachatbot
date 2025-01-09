@@ -394,7 +394,7 @@ function sendOTP(senderId, contactMethod) {
 }
 
 // Handle user responses based on the step they are in
-async function handleUserMessage(senderId, message) {
+function handleUserMessage(senderId, message) {
     // Ensure that the user session exists
     if (!userSessions[senderId]) {
         userSessions[senderId] = { step: 'main_menu' };  // Initialize the session with 'main_menu'
@@ -415,7 +415,18 @@ async function handleUserMessage(senderId, message) {
         //     break;
         case 'ask_account':
             // Validate the account number (replace with your actual verification logic)
-            console.log(validateAccountNumber(message,senderId))
+            validateAccountNumber(accountNumber, senderId)
+            .then((isValid) => {
+                if (isValid) {
+                    userSessions[senderId].step = 'ask_otp_method';
+                    sendOTPChoiceMenu(senderId);
+                } else {
+                    sendMessage(senderId, 'Sorry, the account number you provided is invalid. See image for your reference.',true);
+                }
+            })
+            .catch((error) => {
+                console.error("Error occurred while validating account number:", error);
+            });
             // if (validateAccountNumber(message,senderId) == true) {
             //     userSessions[senderId].step = 'ask_otp_method';
             //     sendOTPChoiceMenu(senderId);

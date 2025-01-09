@@ -2,6 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const axios = require('axios');
 const path = require('path');
+require('dotenv').config();
+
+const nodemailer = require('nodemailer');
 
 const app = express();
 app.use(bodyParser.json());
@@ -18,6 +21,15 @@ let userSessions = {};
 // Temporary storage for OTP generation (to simulate OTP validation)
 let otps = {};
 
+let transporter = nodemailer.createTransport({
+    host: process.env.WP_SMTP_HOST,
+    port: process.env.WP_SMTP_PORT || 465, // Use 465 for SSL
+    secure: true, // Use SSL/TLS
+    auth: {
+        user: process.env.WP_SMTP_USER,
+        pass: process.env.WP_SMTP_PASS
+    }
+});
 
 // Webhook verification (Meta setup)
 app.get('/webhook', (req, res) => {
@@ -622,6 +634,25 @@ function sendMessage(senderId, messageText, withImage = false) {
             console.error('Error sending message:', error);
         });
 }
+
+function sendEmail(to, subject, text) {
+    let mailOptions = {
+        from: process.env.WP_SMTP_USER,
+        to: to,
+        subject: subject,
+        text: text
+    };
+
+    transporter.sendMail(mailOptions, function(error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
+}
+
+sendEmail('lhaicloud123@gmail.com', 'Your OTP', 'Your OTP is 123456');
 
 const PORT = 3000;
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

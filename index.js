@@ -394,7 +394,7 @@ function sendOTP(senderId, contactMethod) {
 }
 
 // Handle user responses based on the step they are in
-function handleUserMessage(senderId, message) {
+async function handleUserMessage(senderId, message) {
     // Ensure that the user session exists
     if (!userSessions[senderId]) {
         userSessions[senderId] = { step: 'main_menu' };  // Initialize the session with 'main_menu'
@@ -417,7 +417,7 @@ function handleUserMessage(senderId, message) {
             // Validate the account number (replace with your actual verification logic)
             validateAccountNumber(message, senderId)
             .then((isValid) => {
-                console.log(`ISVALID: ${isValid}`)
+                console.log("Is Valid Account Number:", isValid);
                 if (isValid == true) {
                     userSessions[senderId].step = 'ask_otp_method';
                     sendOTPChoiceMenu(senderId);
@@ -607,32 +607,26 @@ function sendBackToPreviousMenu(senderId) {
 }
 
 // Function to validate account number (replace with actual logic)
-async function validateAccountNumber (accountNumber,senderId){ 
+async function validateAccountNumber(accountNumber, senderId) { 
     const cleanedAccountNumber = accountNumber.replace(/[^0-9]/g, ''); // Keeps only digits
     
     try {
-        await axios.get(`https://casureco1api.com/billinquiry/findCAN`, {
+        const response = await axios.get(`https://casureco1api.com/billinquiry/findCAN`, {
             params: { account_number: cleanedAccountNumber },
             headers: {
                 Authorization: `Bearer ${process.env.API_KEY}` // Authorization Bearer Token
             }
-        }).then(response => {
-            if(response.data.success == true){
-                userSessions[senderId].account = response.data.data
-                return true;
-            }else{
-                return false;
-            }    
-            
-        })
-        .catch(error => {
-            console.error('Error :', error);
-            return false;
         });
-        
+
+        if (response.data.success === true) {
+            userSessions[senderId].account = response.data.data;
+            return true; // Return true for valid account number
+        } else {
+            return false; // Return false for invalid account number
+        }
     } catch (error) {
-        console.error(error.response ? error.response.data : error.message);
-        return false;
+        console.error('Error:', error.message);
+        return false; // Return false in case of an error
     }
 }
 

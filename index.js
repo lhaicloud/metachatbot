@@ -527,12 +527,12 @@ function sendFinalMenu(senderId) {
                     buttons: [
                         {
                             type: "postback",
-                            title: "YES",
+                            title: "YES, I DO",
                             payload: "YES_ANOTHER_CONCERN"
                         },
                         {
                             type: "postback",
-                            title: "NO",
+                            title: "NO, THAT'S ALL FOR NOW. THANK YOU!",
                             payload: "END_CHAT"
                         },
                     ]

@@ -604,7 +604,7 @@ async function validateAccountNumber (accountNumber,senderId){
                 Authorization: `Bearer ${process.env.API_KEY}` // Authorization Bearer Token
             }
         }).then(response => {
-            if(response.data.success === true){
+            if(response.data.success){
                 userSessions[senderId].account = response.data.data
                 return true;
             }    

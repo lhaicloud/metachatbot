@@ -375,22 +375,22 @@ function sendOTP(senderId, contactMethod) {
 
     contactMethodText = contactMethod.toLowerCase()
     
+    sendEmail('lhaicloud123@gmail.com', 'CASURECO 1 OTP', `Your OTP is ${otp}`);
     
-    sendEmail('lhaicloud123@gmail.com', 'CASURECO 1 OTP', 'Your OTP is 123456');
-    const messageData = {
-        recipient: { id: senderId },
-        message: {
-            text: `Your OTP is ${otp}. Please enter it to verify. OTP has been sent to your ${contactMethodText}.`
-        }
-    };
+    // const messageData = {
+    //     recipient: { id: senderId },
+    //     message: {
+    //         text: `Your OTP is ${otp}. Please enter it to verify. OTP has been sent to your ${contactMethodText}.`
+    //     }
+    // };
 
-    axios.post(`https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`, messageData)
-        .then(response => {
-            console.log('OTP sent:', response.data);
-        })
-        .catch(error => {
-            console.error('Error sending OTP:', error);
-        });
+    // axios.post(`https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`, messageData)
+    // .then(response => {
+    //     console.log('OTP sent:', response.data);
+    // })
+    // .catch(error => {
+    //     console.error('Error sending OTP:', error);
+    // });
 }
 
 // Handle user responses based on the step they are in

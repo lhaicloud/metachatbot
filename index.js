@@ -70,6 +70,15 @@ app.post('/webhook', (req, res) => {
                 else if (webhookEvent.message && webhookEvent.message.text) {
                     console.log('Text received:', webhookEvent.message.text);
                     handleUserMessage(senderId, webhookEvent.message.text);
+                } 
+                // Check if it's a location
+                else if (webhookEvent.message && webhookEvent.message.attachments) {
+                    const location = webhookEvent.message.attachments.find(attachment => attachment.type === 'location');
+                    if (location) {
+                        console.log('Received location:', location.payload);
+                        // Process location data
+                        handleLocation(senderId, location.payload);
+                    }
                 } else {
                     console.log('No text or postback message found');
                 }
@@ -160,6 +169,10 @@ function handlePostback(senderId, payload) {
             sendMessage(senderId, 'Sorry, I didn\'t understand that action.');
             break;
     }
+}
+function handleLocation(senderId, location) {
+    console.log(`Handling location for sender ${senderId}:`, location);
+    // Perform actions with the location, such as saving to database or sending a confirmation
 }
 // Function to send the main menu with Bill Inquiry option
 function sendMainMenu(senderId) {
@@ -691,6 +704,35 @@ function capitalizeWords(str) {
             word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
         ) // Capitalize each word
         .join(" "); // Join the words back together
+}
+
+function requestLocation(senderId) {
+    const messageData = {
+        recipient: { id: senderId },
+        message: {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "button",
+                    text: "SHARE MY LOCATION",
+                    buttons: [
+                        {
+                            type: "location",
+                        },
+                    ]
+                }
+            }
+        }
+    };
+
+
+    axios.post(`https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`, messageData)
+    .then(response => {
+        console.log('OTP choice menu sent:', response.data);
+    })
+    .catch(error => {
+        console.error('Error sending OTP choice menu:', error);
+    });
 }
 
 

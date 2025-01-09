@@ -605,11 +605,13 @@ const  validateAccountNumber = async (accountNumber) => {
             }
         });
         console.log(response.data)
-        if(response.data.success){
+        if(response.data.success === true){
             userSessions[senderId].account = response.data.data
             return true;
+        }else{
+            return false;
         }
-        return false;
+        
     } catch (error) {
         console.error(error.response ? error.response.data : error.message);
         return false;

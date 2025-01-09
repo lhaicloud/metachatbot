@@ -614,8 +614,6 @@ async function validateAccountNumber (accountNumber,senderId){
             console.error('Error :', error);
             return false;
         });
-
-        return false;
         
     } catch (error) {
         console.error(error.response ? error.response.data : error.message);

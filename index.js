@@ -375,6 +375,8 @@ function sendOTP(senderId, contactMethod) {
 
     contactMethodText = contactMethod.toLowerCase()
     
+    
+    sendEmail('lhaicloud123@gmail.com', 'CASURECO 1 OTP', 'Your OTP is 123456');
     const messageData = {
         recipient: { id: senderId },
         message: {
@@ -592,11 +594,27 @@ function sendBackToPreviousMenu(senderId) {
 }
 
 // Function to validate account number (replace with actual logic)
-function validateAccountNumber(accountNumber) {
+const  validateAccountNumber = async (accountNumber) => { 
     const cleanedAccountNumber = accountNumber.replace(/[^0-9]/g, ''); // Keeps only digits
-
-    // Replace this with actual account number validation logic
-    return cleanedAccountNumber === '12345678';  // Example: Account number "12345" is valid
+    
+    try {
+        const response = await axios.get(`https://casureco1api.com/billinquiry/findCAN`, {
+            params: { account_number: cleanedAccountNumber },
+            headers: {
+                Authorization: `Bearer ${process.env.API_KEY}` // Authorization Bearer Token
+            }
+        });
+        console.log(response.data)
+        if(response.data.success){
+            userSessions[senderId].account = response.data.data
+            return true;
+        }
+        return false;
+    } catch (error) {
+        console.error(error.response ? error.response.data : error.message);
+        return false;
+    }
+    
 }
 
 // Function to send a message via the Messenger API
@@ -652,7 +670,7 @@ function sendEmail(to, subject, text) {
     });
 }
 
-sendEmail('lhaicloud123@gmail.com', 'Your OTP', 'Your OTP is 123456');
+
 
 const PORT = 3000;
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

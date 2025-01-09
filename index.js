@@ -728,14 +728,13 @@ function requestLocation(senderId) {
         }
     };
 
-
     axios.post(`https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`, messageData)
-    .then(response => {
-        console.log('OTP choice menu sent:', response.data);
-    })
-    .catch(error => {
-        console.error('Error sending OTP choice menu:', error);
-    });
+        .then(response => {
+            console.log('Request Location sent:', response.data);
+        })
+        .catch(error => {
+            console.error('Error requesting location:', error);
+        });
 }
 
 

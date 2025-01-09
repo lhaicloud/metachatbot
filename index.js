@@ -138,6 +138,11 @@ function handlePostback(senderId, payload) {
             userSessions[senderId] = { step: 'main_menu' };
             sendMainMenu(senderId);
             break;
+        case 'BACK_TO_PREVIOUS_MENU2':
+            userSessions[senderId].updating_information = false;
+            userSessions[senderId].step = 'ask_otp_method';
+            sendOTPChoiceMenu(senderId);
+            break;
         // Add other postback payload cases if necessary
         default:
             sendMessage(senderId, 'Sorry, I didn\'t understand that action.');
@@ -228,7 +233,7 @@ function sendOTPMessage(senderId,messageText) {
 
 
 function sendChooseMobileorEmailMenu(senderId) {
-    
+
     const messageData = {
         recipient: { id: senderId },
         message: {
@@ -251,7 +256,7 @@ function sendChooseMobileorEmailMenu(senderId) {
                         {
                             type: "postback",
                             title: "BACK TO PREVIOUS MENU",
-                            payload: "BACK_TO_PREVIOUS_MENU"
+                            payload: "BACK_TO_PREVIOUS_MENU2"
                         },
                     ]
                 }

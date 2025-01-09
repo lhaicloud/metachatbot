@@ -294,7 +294,7 @@ function sendOTPChoiceMenu(senderId) {
                 type: "template",
                 payload: {
                     template_type: "button",
-                    text: `Hi Mr./Mrs. ${userSessions[senderId].account.cflastname}! Where do you want to receive your One-Time Password (OTP)? `,
+                    text: `Hi Mr./Ms. ${capitalizeWords(userSessions[senderId].account.cflastname)}! Where do you want to receive your One-Time Password (OTP)? `,
                     buttons: [
                         {
                             type: "postback",
@@ -375,7 +375,11 @@ function sendOTP(senderId, contactMethod) {
 
     contactMethodText = contactMethod.toLowerCase()
     
-    sendEmail('lhaicloud123@gmail.com', 'CASURECO 1 OTP', `Your OTP is ${otp}`);
+    content = `Dear Mr./Mrs. ${capitalizeWords(userSessions[senderId].account.cflastname)},\n
+    Your One-Time Password (OTP) is ${otp}.\n\n
+    Please use this OTP to complete your verification process. Do not share this code with anyone.\n
+    Thank you.`
+    sendEmail('lhaicloud123@gmail.com', 'CASURECO 1 OTP', content);
     
     // const messageData = {
     //     recipient: { id: senderId },
@@ -681,6 +685,15 @@ function sendEmail(to, subject, text) {
             console.log('Email sent: ' + info.response);
         }
     });
+}
+function capitalizeWords(str) {
+    if (!str) return str; // Handle empty or null strings
+    return str
+        .split(" ") // Split the string into words
+        .map(word => 
+            word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+        ) // Capitalize each word
+        .join(" "); // Join the words back together
 }
 
 

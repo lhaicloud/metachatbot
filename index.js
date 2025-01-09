@@ -294,7 +294,7 @@ function sendOTPChoiceMenu(senderId) {
                 type: "template",
                 payload: {
                     template_type: "button",
-                    text: "Hi Jason! Where do you want to receive your One-Time Password (OTP)?",
+                    text: `Hi Mr./Mrs. ${userSessions[senderId].account.cflastname}! Where do you want to receive your One-Time Password (OTP)? `,
                     buttons: [
                         {
                             type: "postback",

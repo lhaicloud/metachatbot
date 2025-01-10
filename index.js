@@ -3,7 +3,8 @@ import bodyParser from "body-parser";
 import axios from "axios";
 import path from "path";
 import nodemailer from "nodemailer";
-
+import dotenv from 'dotenv';
+dotenv.config();
 
 const app = express();
 app.use(bodyParser.json());

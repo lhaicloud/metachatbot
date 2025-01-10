@@ -1,5 +1,6 @@
 {
     "scripts": {
+        "prestart": "npm install",
         "start": "node index.js"
     },
     "dependencies": {

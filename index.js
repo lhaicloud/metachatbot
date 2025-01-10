@@ -19,38 +19,38 @@ app.use(express.static(path.join(__dirname, "public")));
 // twilio credentials
 const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
-async function sendOtp(phoneNumber) {
-    try {
-        const verification = await client.verify.v2.services(process.env.TWILIO_SERVICE_ID)
-            .verifications
-            .create({ to: phoneNumber, channel: 'sms' });
+// async function sendOtp(phoneNumber) {
+//     try {
+//         const verification = await client.verify.v2.services(process.env.TWILIO_SERVICE_ID)
+//             .verifications
+//             .create({ to: phoneNumber, channel: 'sms' });
 
-        console.log('Verification sent:', verification);
-    } catch (error) {
-        console.error('Error sending verification:', error);
-    }
-}
+//         console.log('Verification sent:', verification);
+//     } catch (error) {
+//         console.error('Error sending verification:', error);
+//     }
+// }
 
-async function verifyOtp(phoneNumber, otp) {
-    try {
-        const verification_check = await client.verify.v2.services(process.env.TWILIO_SERVICE_ID)
-            .verificationChecks
-            .create({ to: phoneNumber, code: otp });
+// async function verifyOtp(phoneNumber, otp) {
+//     try {
+//         const verification_check = await client.verify.v2.services(process.env.TWILIO_SERVICE_ID)
+//             .verificationChecks
+//             .create({ to: phoneNumber, code: otp });
 
-        if (verification_check.valid) {
-            console.log('OTP Verified');
-            return true;
-        } else {
-            console.log('Invalid OTP');
-            return false;
-        }
-    } catch (error) {
-        console.error('Error verifying OTP:', error);
-        return false;
-    }
-}
+//         if (verification_check.valid) {
+//             console.log('OTP Verified');
+//             return true;
+//         } else {
+//             console.log('Invalid OTP');
+//             return false;
+//         }
+//     } catch (error) {
+//         console.error('Error verifying OTP:', error);
+//         return false;
+//     }
+// }
 
-await sendOtp("09108421896");
+// await sendOtp("09108421896");
 // Define a temporary storage for user conversations (this can be replaced with a database)
 let userSessions = {};
 

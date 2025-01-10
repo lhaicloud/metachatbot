@@ -4,11 +4,8 @@ const axios = require("axios");
 const path = require("path");
 require("dotenv").config();
 
-//// please keep this part
 const nodemailer = require("nodemailer");
 
-
-//also revise this 
 const app = express();
 app.use(bodyParser.json());
 
@@ -16,8 +13,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
 
 const VERIFY_TOKEN = "L3tm3V3ri1fy@2024";
-const PAGE_ACCESS_TOKEN =
-    "EAAGizoa2IFwBO9h75MsQZCF0mIQUs2ZAOj6np59gElARZCYAEv8vQfQw1f0RekYOav7F25lwz7QaIdz2JRshoM2GAgiqvJZBPK10GziTs4HB6TU5a8ZCkDCMLqGJrGacgZCsZCA3ZCdCSsnVyGFZAZCC2HT7ZAfDmal8YZBOMHSwLI3bkZAQoZBSxwm8zwxZC1DN3lbSvFbywZDZD";
+const PAGE_ACCESS_TOKEN = "EAAGizoa2IFwBO9h75MsQZCF0mIQUs2ZAOj6np59gElARZCYAEv8vQfQw1f0RekYOav7F25lwz7QaIdz2JRshoM2GAgiqvJZBPK10GziTs4HB6TU5a8ZCkDCMLqGJrGacgZCsZCA3ZCdCSsnVyGFZAZCC2HT7ZAfDmal8YZBOMHSwLI3bkZAQoZBSxwm8zwxZC1DN3lbSvFbywZDZD";
 
 // Define a temporary storage for user conversations (this can be replaced with a database)
 let userSessions = {};
@@ -653,51 +649,6 @@ function endChat(senderId) {
         })
         .catch((error) => {
             console.error("Error ending chat:", error);
-        });
-}
-
-function markAsDone(senderId) {
-    const data = {
-        recipient: { id: senderId },
-        sender_action: "mark_seen",
-    };
-
-    axios
-        .post(
-            `https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`,
-            data
-        )
-        .then((response) => {
-            console.log("Conversation marked as done:", response.data);
-        })
-        .catch((error) => {
-            console.error("Error marking as done:", error);
-        });
-}
-
-function sendBackToPreviousMenu(senderId) {
-    const messageData = {
-        recipient: { id: senderId },
-        message: {
-            text: "Would you like to go back to the previous menu?",
-            quick_replies: [{
-                content_type: "text",
-                title: "BACK TO PREVIOUS MENU",
-                payload: "BACK_TO_PREVIOUS_MENU",
-            }, ],
-        },
-    };
-
-    axios
-        .post(
-            `https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`,
-            messageData
-        )
-        .then((response) => {
-            console.log("Back to previous menu sent:", response.data);
-        })
-        .catch((error) => {
-            console.error("Error sending back to previous menu:", error);
         });
 }
 

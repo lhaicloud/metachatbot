@@ -15,8 +15,6 @@ const __dirname = new URL('.', import.meta.url).pathname;
 app.use(express.static(path.join(__dirname, "public")));
 
 console.log(process.env.TWILIO_ACCOUNT_SID)
-console.log(process.env.MY_ENV.TWILIO_ACCOUNT_SID)
-console.log(process.MY_ENV.TWILIO_ACCOUNT_SID)
 
 // twilio credentials
 // const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);

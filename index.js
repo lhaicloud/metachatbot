@@ -4,7 +4,7 @@ import axios from "axios";
 import path from "path";
 import nodemailer from "nodemailer";
 import twilio from 'twilio';
-const github = require('github-actions');
+import github from "github-actions"
 
 const app = express();
 app.use(bodyParser.json());

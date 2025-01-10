@@ -182,23 +182,7 @@ function handlePostback(senderId, payload) {
             userSessions[senderId].updating_information = false;
             userSessions[senderId].step = "ask_otp_method";
             sendOTPChoiceMenu(senderId);
-            break; <<
-            <<
-            <<
-            <
-            HEAD
-            // Add other postback payload cases if necessary
-                ===
-                ===
-                =
-                case 'REPORT_AN_INTERRUPTION':
-            requestLocation(senderId);
-            break;
-            // Add other postback payload cases if necessary
-            >>>
-            >>>
-            >
-            45 b0e5d4d35880ca62a63abb02d35060b1793c4e
+            break; 
         default:
             sendMessage(senderId, "Sorry, I didn't understand that action.");
             break;
@@ -806,45 +790,5 @@ function capitalizeWords(str) {
         .join(" "); // Join the words back together
 }
 
-<<
-<<
-<<
-<
-HEAD
-    ===
-    ===
-    =
-    function requestLocation(senderId) {
-        const messageData = {
-            recipient: { id: senderId },
-            message: {
-                attachment: {
-                    type: "template",
-                    payload: {
-                        template_type: "button",
-                        text: "SHARE MY LOCATION",
-                        buttons: [{
-                            type: "location",
-                        }, ]
-                    }
-                }
-            }
-        };
-
-        axios.post(`https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`, messageData)
-            .then(response => {
-                console.log('Request Location sent:', response.data);
-            })
-            .catch(error => {
-                console.error('Error requesting location:', error);
-            });
-    }
-
-
-
->>>
->>>
->
-45 b0e5d4d35880ca62a63abb02d35060b1793c4e
 const PORT = 3000;
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

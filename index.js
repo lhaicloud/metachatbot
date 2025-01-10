@@ -3,7 +3,6 @@ import bodyParser from "body-parser";
 import axios from "axios";
 import path from "path";
 import nodemailer from "nodemailer";
-import twilio from 'twilio';
 
 
 const app = express();

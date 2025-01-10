@@ -6,8 +6,7 @@
         "axios": "^1.7.9",
         "dotenv": "^16.4.7",
         "express": "^4.21.2",
-        "nodemailer": "^6.9.16",
-        "twilio": "^5.4.1"
+        "nodemailer": "^6.9.16"
     },
     "type": "module"
 }

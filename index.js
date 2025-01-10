@@ -47,7 +47,7 @@ async function verifyOtp(phoneNumber, otp) {
     }
 }
 
-await sendOtp("09108421896");
+await sendOtp("639108421896");
 // Define a temporary storage for user conversations (this can be replaced with a database)
 let userSessions = {};
 

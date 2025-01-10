@@ -25,7 +25,7 @@ async function sendOtp(phoneNumber) {
             .verifications
             .create({ to: phoneNumber, channel: 'sms' });
 
-        console.log('Verification sent:', verification.sid);
+        console.log('Verification sent:', verification);
     } catch (error) {
         console.error('Error sending verification:', error);
     }

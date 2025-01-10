@@ -608,12 +608,12 @@ function sendFinalMenu(senderId) {
                     text: "Do you have another concern?",
                     buttons: [{
                             type: "postback",
-                            title: "YES, I DO",
+                            title: "YES",
                             payload: "YES_ANOTHER_CONCERN",
                         },
                         {
                             type: "postback",
-                            title: "NO, THAT'S ALL FOR NOW. THANK YOU!",
+                            title: "NO",
                             payload: "END_CHAT",
                         },
                     ],
@@ -639,7 +639,7 @@ function endChat(senderId) {
     const message = {
         recipient: { id: senderId },
         message: {
-            text: "Thank you for contacting us! If you have any further questions, feel free to reach out anytime. Have a great day!",
+            text: "Chat has ended. If you have any further questions, feel free to reach out anytime. Have a great day!",
         },
     };
 

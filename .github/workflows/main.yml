@@ -29,15 +29,15 @@ jobs:
 
       # Set environment variables from GitHub Secrets
       - name: Set environment variables
-        env:
-          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
-          TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
-          TWILIO_SERVICE_ID: ${{ secrets.TWILIO_SERVICE_ID }}
-          PAGE_ACCESS_TOKEN: ${{ secrets.PAGE_ACCESS_TOKEN }}
-          VERIFY_TOKEN: ${{ secrets.VERIFY_TOKEN }}
-          WP_SMTP_USER: ${{ secrets.WP_SMTP_USER }}
-          WP_SMTP_PASS: ${{ secrets.WP_SMTP_PASS }}
-          API_KEY: ${{ secrets.API_KEY }}
+        run: |
+          echo "TWILIO_ACCOUNT_SID=${{ secrets.TWILIO_ACCOUNT_SID }}" >> $GITHUB_ENV
+          echo "TWILIO_AUTH_TOKEN=${{ secrets.TWILIO_AUTH_TOKEN }}" >> $GITHUB_ENV
+          echo "TWILIO_SERVICE_ID=${{ secrets.TWILIO_SERVICE_ID }}" >> $GITHUB_ENV
+          echo "PAGE_ACCESS_TOKEN=${{ secrets.PAGE_ACCESS_TOKEN }}" >> $GITHUB_ENV
+          echo "VERIFY_TOKEN=${{ secrets.VERIFY_TOKEN }}" >> $GITHUB_ENV
+          echo "WP_SMTP_USER=${{ secrets.WP_SMTP_USER }}" >> $GITHUB_ENV
+          echo "WP_SMTP_PASS=${{ secrets.WP_SMTP_PASS }}" >> $GITHUB_ENV
+          echo "API_KEY=${{ secrets.API_KEY }}" >> $GITHUB_ENV
 
       # Run tests (optional)
       - name: Run tests

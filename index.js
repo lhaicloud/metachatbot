@@ -19,17 +19,17 @@ app.use(express.static(path.join(__dirname, "public")));
 // twilio credentials
 const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
-// async function sendOtp(phoneNumber) {
-//     try {
-//         const verification = await client.verify.v2.services(process.env.TWILIO_SERVICE_ID)
-//             .verifications
-//             .create({ to: phoneNumber, channel: 'sms' });
+async function sendOtp(phoneNumber) {
+    try {
+        const verification = await client.verify.v2.services(process.env.TWILIO_SERVICE_ID)
+            .verifications
+            .create({ to: phoneNumber, channel: 'sms' });
 
-//         console.log('Verification sent:', verification);
-//     } catch (error) {
-//         console.error('Error sending verification:', error);
-//     }
-// }
+        console.log('Verification sent:', verification);
+    } catch (error) {
+        console.error('Error sending verification:', error);
+    }
+}
 
 // async function verifyOtp(phoneNumber, otp) {
 //     try {
@@ -50,7 +50,7 @@ const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TO
 //     }
 // }
 
-// await sendOtp("09108421896");
+await sendOtp("09108421896");
 // Define a temporary storage for user conversations (this can be replaced with a database)
 let userSessions = {};
 

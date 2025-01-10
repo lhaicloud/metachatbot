@@ -11,6 +11,8 @@ dotenv.config();
 const app = express();
 app.use(bodyParser.json());
 
+const __dirname = new URL('.', import.meta.url).pathname;
+
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, "public")));
 

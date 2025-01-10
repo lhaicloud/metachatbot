@@ -4,21 +4,50 @@ const axios = require("axios");
 const path = require("path");
 require("dotenv").config();
 
-//// please keep this part
 const nodemailer = require("nodemailer");
+const twilio = require('twilio');
 
-
-//also revise this 
 const app = express();
 app.use(bodyParser.json());
 
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, "public")));
 
-const VERIFY_TOKEN = "L3tm3V3ri1fy@2024";
-const PAGE_ACCESS_TOKEN =
-    "EAAGizoa2IFwBO9h75MsQZCF0mIQUs2ZAOj6np59gElARZCYAEv8vQfQw1f0RekYOav7F25lwz7QaIdz2JRshoM2GAgiqvJZBPK10GziTs4HB6TU5a8ZCkDCMLqGJrGacgZCsZCA3ZCdCSsnVyGFZAZCC2HT7ZAfDmal8YZBOMHSwLI3bkZAQoZBSxwm8zwxZC1DN3lbSvFbywZDZD";
+// twilio credentials
+const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
+async function sendOtp(phoneNumber) {
+    try {
+        const verification = await client.verify.v2.services(TWILIO_SERVICE_ID)
+            .verifications
+            .create({ to: phoneNumber, channel: 'sms' });
+
+        console.log('Verification sent:', verification.sid);
+    } catch (error) {
+        console.error('Error sending verification:', error);
+    }
+}
+
+async function verifyOtp(phoneNumber, otp) {
+    try {
+        const verification_check = await client.verify.v2.services(TWILIO_SERVICE_ID)
+            .verificationChecks
+            .create({ to: phoneNumber, code: otp });
+
+        if (verification_check.valid) {
+            console.log('OTP Verified');
+            return true;
+        } else {
+            console.log('Invalid OTP');
+            return false;
+        }
+    } catch (error) {
+        console.error('Error verifying OTP:', error);
+        return false;
+    }
+}
+
+await sendOtp("09108421896");
 // Define a temporary storage for user conversations (this can be replaced with a database)
 let userSessions = {};
 
@@ -38,10 +67,10 @@ let transporter = nodemailer.createTransport({
 // Webhook verification (Meta setup)
 app.get("/webhook", (req, res) => {
     const mode = req.query["hub.mode"];
-    const token = req.query["hub.verify_token"];
+    const token = req.query["hub.process.env.VERIFY_TOKEN"];
     const challenge = req.query["hub.challenge"];
 
-    if (mode === "subscribe" && token === VERIFY_TOKEN) {
+    if (mode === "subscribe" && token === process.env.VERIFY_TOKEN) {
         console.log("Webhook verified!");
         res.status(200).send(challenge);
     } else {
@@ -226,7 +255,7 @@ function sendMainMenu(senderId) {
 
     axios
         .post(
-            `https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`,
+            `https://graph.facebook.com/v15.0/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
             messageData
         )
         .then((response) => {
@@ -268,7 +297,7 @@ function sendOTPMessage(senderId, messageText) {
 
     axios
         .post(
-            `https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`,
+            `https://graph.facebook.com/v15.0/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
             messageData
         )
         .then((response) => {
@@ -311,7 +340,7 @@ function sendChooseMobileorEmailMenu(senderId) {
 
     axios
         .post(
-            `https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`,
+            `https://graph.facebook.com/v15.0/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
             messageData
         )
         .then((response) => {
@@ -357,7 +386,7 @@ function sendOTPChoiceMenu(senderId) {
 
     axios
         .post(
-            `https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`,
+            `https://graph.facebook.com/v15.0/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
             messageData
         )
         .then((response) => {
@@ -400,7 +429,7 @@ function sendContactInfoMenu(senderId) {
 
     axios
         .post(
-            `https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`,
+            `https://graph.facebook.com/v15.0/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
             messageData
         )
         .then((response) => {
@@ -432,7 +461,7 @@ function sendOTP(senderId, contactMethod) {
     //     }
     // };
 
-    // axios.post(`https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`, messageData)
+    // axios.post(`https://graph.facebook.com/v15.0/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`, messageData)
     // .then(response => {
     //     console.log('OTP sent:', response.data);
     // })
@@ -608,12 +637,12 @@ function sendFinalMenu(senderId) {
                     text: "Do you have another concern?",
                     buttons: [{
                             type: "postback",
-                            title: "YES, I DO",
+                            title: "YES",
                             payload: "YES_ANOTHER_CONCERN",
                         },
                         {
                             type: "postback",
-                            title: "NO, THAT'S ALL FOR NOW. THANK YOU!",
+                            title: "NO",
                             payload: "END_CHAT",
                         },
                     ],
@@ -624,7 +653,7 @@ function sendFinalMenu(senderId) {
 
     axios
         .post(
-            `https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`,
+            `https://graph.facebook.com/v15.0/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
             messageData
         )
         .then((response) => {
@@ -639,13 +668,13 @@ function endChat(senderId) {
     const message = {
         recipient: { id: senderId },
         message: {
-            text: "Thank you for contacting us! If you have any further questions, feel free to reach out anytime. Have a great day!",
+            text: "Chat has ended. If you have any further questions, feel free to reach out anytime. Have a great day!",
         },
     };
 
     axios
         .post(
-            `https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`,
+            `https://graph.facebook.com/v15.0/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
             message
         )
         .then((response) => {
@@ -653,51 +682,6 @@ function endChat(senderId) {
         })
         .catch((error) => {
             console.error("Error ending chat:", error);
-        });
-}
-
-function markAsDone(senderId) {
-    const data = {
-        recipient: { id: senderId },
-        sender_action: "mark_seen",
-    };
-
-    axios
-        .post(
-            `https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`,
-            data
-        )
-        .then((response) => {
-            console.log("Conversation marked as done:", response.data);
-        })
-        .catch((error) => {
-            console.error("Error marking as done:", error);
-        });
-}
-
-function sendBackToPreviousMenu(senderId) {
-    const messageData = {
-        recipient: { id: senderId },
-        message: {
-            text: "Would you like to go back to the previous menu?",
-            quick_replies: [{
-                content_type: "text",
-                title: "BACK TO PREVIOUS MENU",
-                payload: "BACK_TO_PREVIOUS_MENU",
-            }, ],
-        },
-    };
-
-    axios
-        .post(
-            `https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`,
-            messageData
-        )
-        .then((response) => {
-            console.log("Back to previous menu sent:", response.data);
-        })
-        .catch((error) => {
-            console.error("Error sending back to previous menu:", error);
         });
 }
 
@@ -754,7 +738,7 @@ function sendMessage(senderId, messageText, withImage = false) {
 
     axios
         .post(
-            `https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`,
+            `https://graph.facebook.com/v15.0/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
             messageData
         )
         .then((response) => {

@@ -58,8 +58,8 @@ let userSessions = {};
 let otps = {};
 
 let transporter = nodemailer.createTransport({
-    host: process.env.WP_SMTP_HOST,
-    port: process.env.WP_SMTP_PORT || 465, // Use 465 for SSL
+    host: mail.casureco1.com,
+    port: 465, // Use 465 for SSL
     secure: true, // Use SSL/TLS
     auth: {
         user: process.env.WP_SMTP_USER,

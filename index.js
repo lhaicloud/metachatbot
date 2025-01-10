@@ -1,11 +1,12 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const axios = require("axios");
-const path = require("path");
-require("dotenv").config();
+import express from "express";
+import bodyParser from "body-parser";
+import axios from "axios";
+import path from "path";
+import dotenv from "dotenv";
+import nodemailer from "nodemailer";
+import twilio from 'twilio';
 
-const nodemailer = require("nodemailer");
-const twilio = require('twilio');
+dotenv.config();
 
 const app = express();
 app.use(bodyParser.json());

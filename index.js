@@ -58,7 +58,7 @@ let userSessions = {};
 let otps = {};
 
 let transporter = nodemailer.createTransport({
-    host: mail.casureco1.com,
+    host: "mail.casureco1.com",
     port: 465, // Use 465 for SSL
     secure: true, // Use SSL/TLS
     auth: {

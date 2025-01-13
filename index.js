@@ -15,7 +15,7 @@ const __dirname = new URL('.', import.meta.url).pathname;
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get('/', (req, res) => {
-    res.send('Hello World');
+    res.send(process.env.VERIFY_TOKEN);
 });
 
 // twilio credentials

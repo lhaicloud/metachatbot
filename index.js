@@ -18,6 +18,8 @@ app.get('/', (req, res) => {
     res.send("Hello World!");
 });
 
+PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN
+
 // twilio credentials
 // const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
@@ -75,7 +77,6 @@ app.get("/webhook", (req, res) => {
     const mode = req.query["hub.mode"];
     const token = req.query["hub.verify_token"];
     const challenge = req.query["hub.challenge"];
-    console.log(token)
     if (mode === "subscribe" && token === process.env.VERIFY_TOKEN) {
         console.log("Webhook verified!");
         res.status(200).send(challenge);
@@ -261,7 +262,7 @@ function sendMainMenu(senderId) {
 
     axios
         .post(
-            `https://graph.facebook.com/v15.0/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
+            `https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`,
             messageData
         )
         .then((response) => {
@@ -303,7 +304,7 @@ function sendOTPMessage(senderId, messageText) {
 
     axios
         .post(
-            `https://graph.facebook.com/v15.0/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
+            `https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`,
             messageData
         )
         .then((response) => {
@@ -346,7 +347,7 @@ function sendChooseMobileorEmailMenu(senderId) {
 
     axios
         .post(
-            `https://graph.facebook.com/v15.0/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
+            `https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`,
             messageData
         )
         .then((response) => {
@@ -392,7 +393,7 @@ function sendOTPChoiceMenu(senderId) {
 
     axios
         .post(
-            `https://graph.facebook.com/v15.0/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
+            `https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`,
             messageData
         )
         .then((response) => {
@@ -435,7 +436,7 @@ function sendContactInfoMenu(senderId) {
 
     axios
         .post(
-            `https://graph.facebook.com/v15.0/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
+            `https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`,
             messageData
         )
         .then((response) => {
@@ -467,7 +468,7 @@ function sendOTP(senderId, contactMethod) {
     //     }
     // };
 
-    // axios.post(`https://graph.facebook.com/v15.0/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`, messageData)
+    // axios.post(`https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`, messageData)
     // .then(response => {
     //     console.log('OTP sent:', response.data);
     // })
@@ -659,7 +660,7 @@ function sendFinalMenu(senderId) {
 
     axios
         .post(
-            `https://graph.facebook.com/v15.0/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
+            `https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`,
             messageData
         )
         .then((response) => {
@@ -680,7 +681,7 @@ function endChat(senderId) {
 
     axios
         .post(
-            `https://graph.facebook.com/v15.0/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
+            `https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`,
             message
         )
         .then((response) => {
@@ -744,7 +745,7 @@ function sendMessage(senderId, messageText, withImage = false) {
 
     axios
         .post(
-            `https://graph.facebook.com/v15.0/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
+            `https://graph.facebook.com/v15.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`,
             messageData
         )
         .then((response) => {

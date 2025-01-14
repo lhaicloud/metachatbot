@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
     res.send("Hello World!");
 });
 
-PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN
+const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN
 
 // twilio credentials
 // const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);

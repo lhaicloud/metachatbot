@@ -73,7 +73,7 @@ let transporter = nodemailer.createTransport({
 // Webhook verification (Meta setup)
 app.get("/webhook", (req, res) => {
     const mode = req.query["hub.mode"];
-    const token = req.query["hub.process.env.VERIFY_TOKEN"];
+    const token = req.query["hub.verify_token"];
     const challenge = req.query["hub.challenge"];
 
     if (mode === "subscribe" && token === process.env.VERIFY_TOKEN) {

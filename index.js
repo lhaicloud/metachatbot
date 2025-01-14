@@ -14,9 +14,9 @@ const __dirname = new URL('.', import.meta.url).pathname;
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, "public")));
 
-// app.get('/', (req, res) => {
-//     res.send(process.env.VERIFY_TOKEN);
-// });
+app.get('/', (req, res) => {
+    res.send("Hello World!");
+});
 
 // twilio credentials
 // const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);

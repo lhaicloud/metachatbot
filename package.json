@@ -6,7 +6,9 @@
         "axios": "^1.7.9",
         "dotenv": "^16.4.7",
         "express": "^4.21.2",
-        "nodemailer": "^6.9.16"
+        "fuzzball": "^2.1.3",
+        "nodemailer": "^6.9.16",
+        "spacy": "^0.0.4"
     },
     "type": "module"
 }

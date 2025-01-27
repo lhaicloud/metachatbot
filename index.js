@@ -229,7 +229,6 @@ async function handleUserMessage(senderId, message,category) {
     switch (userSessions[senderId].step) {
         case 'main_menu':
             if (category === "bill_inquiry") {
-                
                 userSessions[senderId].step = 'ask_if_billinquiry';
                 sendMessage(senderId, 'Do you want to know your bill?');
             } else if (category === "power_interruption") {
@@ -238,7 +237,7 @@ async function handleUserMessage(senderId, message,category) {
             } else if (category === "account_concern") {
                
             } else {
-                sendMainMenu(senderId);
+                // sendMainMenu(senderId);
             }
             break;
         case "ask_account":
@@ -438,7 +437,7 @@ async function handleUserMessage(senderId, message,category) {
             break;
         case "ask_if_power_interruption":
             const answers2 = ['yes','oo','opo','yeah','yep','yup','sure','okay','alright','absolutely','of course','correct','right'];
-
+            
             break;
         default:
             // sendMessage(senderId, 'I\'m not sure what you need. Please start again.');

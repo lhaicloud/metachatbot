@@ -1,0 +1,2084 @@
+[
+	{
+		"idpsgc" : 1,
+		"name" : "Region V",
+		"geo_code" : "050000000",
+		"geo_level" : "Reg"
+	},
+	{
+		"idpsgc" : 2,
+		"name" : "Camarines Sur",
+		"geo_code" : "051700000",
+		"geo_level" : "Prov"
+	},
+	{
+		"idpsgc" : 3,
+		"name" : "Ragay",
+		"geo_code" : "051730000",
+		"geo_level" : "Mun"
+	},
+	{
+		"idpsgc" : 4,
+		"name" : "Lupi",
+		"geo_code" : "051719000",
+		"geo_level" : "Mun"
+	},
+	{
+		"idpsgc" : 5,
+		"name" : "Sipocot",
+		"geo_code" : "051734000",
+		"geo_level" : "Mun"
+	},
+	{
+		"idpsgc" : 6,
+		"name" : "Libmanan",
+		"geo_code" : "051718000",
+		"geo_level" : "Mun"
+	},
+	{
+		"idpsgc" : 7,
+		"name" : "Cabusao",
+		"geo_code" : "051707000",
+		"geo_level" : "Mun"
+	},
+	{
+		"idpsgc" : 8,
+		"name" : "Pamplona",
+		"geo_code" : "051726000",
+		"geo_level" : "Mun"
+	},
+	{
+		"idpsgc" : 9,
+		"name" : "Pasacao",
+		"geo_code" : "051727000",
+		"geo_level" : "Mun"
+	},
+	{
+		"idpsgc" : 10,
+		"name" : "San Fernando",
+		"geo_code" : "051732000",
+		"geo_level" : "Mun"
+	},
+	{
+		"idpsgc" : 11,
+		"name" : "Camaligan",
+		"geo_code" : "051709000",
+		"geo_level" : "Mun"
+	},
+	{
+		"idpsgc" : 12,
+		"name" : "Gainza",
+		"geo_code" : "051713000",
+		"geo_level" : "Mun"
+	},
+	{
+		"idpsgc" : 13,
+		"name" : "Agao-ao",
+		"geo_code" : "051730001",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 14,
+		"name" : "Agrupacion",
+		"geo_code" : "051730002",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 15,
+		"name" : "Amomokpok",
+		"geo_code" : "051730003",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 16,
+		"name" : "Apad",
+		"geo_code" : "051730004",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 17,
+		"name" : "Apale",
+		"geo_code" : "051730005",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 18,
+		"name" : "Banga Caves",
+		"geo_code" : "051730006",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 19,
+		"name" : "Baya",
+		"geo_code" : "051730007",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 20,
+		"name" : "Binahan Proper",
+		"geo_code" : "051730008",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 21,
+		"name" : "Binahan Upper",
+		"geo_code" : "051730009",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 22,
+		"name" : "Buenasuerte",
+		"geo_code" : "051730010",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 23,
+		"name" : "Cabadisan",
+		"geo_code" : "051730011",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 24,
+		"name" : "Cabinitan",
+		"geo_code" : "051730012",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 25,
+		"name" : "Cabugao",
+		"geo_code" : "051730013",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 26,
+		"name" : "Caditaan",
+		"geo_code" : "051730014",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 27,
+		"name" : "Cale",
+		"geo_code" : "051730015",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 28,
+		"name" : "Godofredo Reyes Sr.",
+		"geo_code" : "051730016",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 29,
+		"name" : "Catabangan Proper",
+		"geo_code" : "051730017",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 30,
+		"name" : "Inandawa",
+		"geo_code" : "051730018",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 31,
+		"name" : "Laguio",
+		"geo_code" : "051730019",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 32,
+		"name" : "Lanipga-Cawayan",
+		"geo_code" : "051730020",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 33,
+		"name" : "Liboro",
+		"geo_code" : "051730021",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 34,
+		"name" : "Lohong",
+		"geo_code" : "051730022",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 35,
+		"name" : "Lower Omon",
+		"geo_code" : "051730023",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 36,
+		"name" : "Lower Santa Cruz",
+		"geo_code" : "051730024",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 37,
+		"name" : "Panaytayan",
+		"geo_code" : "051730026",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 38,
+		"name" : "Panaytayan Nuevo",
+		"geo_code" : "051730027",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 39,
+		"name" : "Patalunan",
+		"geo_code" : "051730028",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 40,
+		"name" : "Poblacion Ilaod",
+		"geo_code" : "051730029",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 41,
+		"name" : "Poblacion Iraya",
+		"geo_code" : "051730030",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 42,
+		"name" : "Port Junction Norte",
+		"geo_code" : "051730031",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 43,
+		"name" : "Port Junction Sur",
+		"geo_code" : "051730032",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 44,
+		"name" : "Salvacion",
+		"geo_code" : "051730034",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 45,
+		"name" : "Samay",
+		"geo_code" : "051730035",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 46,
+		"name" : "San Rafael",
+		"geo_code" : "051730036",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 47,
+		"name" : "F. Simeon",
+		"geo_code" : "051730037",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 48,
+		"name" : "Tagbac",
+		"geo_code" : "051730038",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 49,
+		"name" : "Upper Omon",
+		"geo_code" : "051730039",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 50,
+		"name" : "Upper Santa Cruz",
+		"geo_code" : "051730040",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 51,
+		"name" : "Alleomar",
+		"geo_code" : "051719001",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 52,
+		"name" : "Bagangan Sr.",
+		"geo_code" : "051719003",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 53,
+		"name" : "Bagong Sikat",
+		"geo_code" : "051719004",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 54,
+		"name" : "Bel-Cruz",
+		"geo_code" : "051719005",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 55,
+		"name" : "Bangon",
+		"geo_code" : "051719006",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 56,
+		"name" : "Barrera Jr.",
+		"geo_code" : "051719007",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 57,
+		"name" : "Barrera Sr.",
+		"geo_code" : "051719008",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 58,
+		"name" : "Belwang",
+		"geo_code" : "051719009",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 59,
+		"name" : "Buenasuerte",
+		"geo_code" : "051719010",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 60,
+		"name" : "Bulawan Jr.",
+		"geo_code" : "051719011",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 61,
+		"name" : "Bulawan Sr.",
+		"geo_code" : "051719012",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 62,
+		"name" : "Cabutagan",
+		"geo_code" : "051719013",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 63,
+		"name" : "Kaibigan",
+		"geo_code" : "051719014",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 64,
+		"name" : "Casay",
+		"geo_code" : "051719015",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 65,
+		"name" : "Colacling",
+		"geo_code" : "051719016",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 66,
+		"name" : "Cristo Rey",
+		"geo_code" : "051719017",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 67,
+		"name" : "Del Carmen",
+		"geo_code" : "051719018",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 68,
+		"name" : "Haguimit",
+		"geo_code" : "051719019",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 69,
+		"name" : "Haluban",
+		"geo_code" : "051719020",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 70,
+		"name" : "La Purisima",
+		"geo_code" : "051719021",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 71,
+		"name" : "Lourdes",
+		"geo_code" : "051719022",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 72,
+		"name" : "Mangcawayan",
+		"geo_code" : "051719024",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 73,
+		"name" : "Napolidan",
+		"geo_code" : "051719025",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 74,
+		"name" : "Poblacion",
+		"geo_code" : "051719027",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 75,
+		"name" : "Polantuna",
+		"geo_code" : "051719028",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 76,
+		"name" : "Sagrada",
+		"geo_code" : "051719029",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 77,
+		"name" : "Salvacion",
+		"geo_code" : "051719030",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 78,
+		"name" : "San Isidro",
+		"geo_code" : "051719031",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 79,
+		"name" : "San Jose",
+		"geo_code" : "051719032",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 80,
+		"name" : "San Pedro",
+		"geo_code" : "051719033",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 81,
+		"name" : "San Rafael Norte",
+		"geo_code" : "051719035",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 82,
+		"name" : "San Rafael Sur",
+		"geo_code" : "051719036",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 83,
+		"name" : "San Ramon",
+		"geo_code" : "051719037",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 84,
+		"name" : "San Vicente",
+		"geo_code" : "051719038",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 85,
+		"name" : "Sooc",
+		"geo_code" : "051719039",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 86,
+		"name" : "Tanawan",
+		"geo_code" : "051719040",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 87,
+		"name" : "Tible",
+		"geo_code" : "051719041",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 88,
+		"name" : "Tapi",
+		"geo_code" : "051719042",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 89,
+		"name" : "Aldezar",
+		"geo_code" : "051734001",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 90,
+		"name" : "Alteza",
+		"geo_code" : "051734002",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 91,
+		"name" : "Anib",
+		"geo_code" : "051734003",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 92,
+		"name" : "Awayan",
+		"geo_code" : "051734004",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 93,
+		"name" : "Azucena",
+		"geo_code" : "051734005",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 94,
+		"name" : "Bagong Sirang",
+		"geo_code" : "051734006",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 95,
+		"name" : "Binahian",
+		"geo_code" : "051734007",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 96,
+		"name" : "Bolo Sur",
+		"geo_code" : "051734008",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 97,
+		"name" : "Bolo Norte",
+		"geo_code" : "051734009",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 98,
+		"name" : "Bulan",
+		"geo_code" : "051734010",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 99,
+		"name" : "Bulawan",
+		"geo_code" : "051734011",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 100,
+		"name" : "Cabuyao",
+		"geo_code" : "051734012",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 101,
+		"name" : "Caima",
+		"geo_code" : "051734013",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 102,
+		"name" : "Calagbangan",
+		"geo_code" : "051734014",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 103,
+		"name" : "Calampinay",
+		"geo_code" : "051734015",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 104,
+		"name" : "Carayrayan",
+		"geo_code" : "051734016",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 105,
+		"name" : "Cotmo",
+		"geo_code" : "051734017",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 106,
+		"name" : "Gabi",
+		"geo_code" : "051734018",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 107,
+		"name" : "Gaongan",
+		"geo_code" : "051734019",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 108,
+		"name" : "Impig",
+		"geo_code" : "051734020",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 109,
+		"name" : "Lipilip",
+		"geo_code" : "051734021",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 110,
+		"name" : "Lubigan Jr.",
+		"geo_code" : "051734022",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 111,
+		"name" : "Lubigan Sr.",
+		"geo_code" : "051734023",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 112,
+		"name" : "Malaguico",
+		"geo_code" : "051734024",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 113,
+		"name" : "Malubago",
+		"geo_code" : "051734025",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 114,
+		"name" : "Manangle",
+		"geo_code" : "051734026",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 115,
+		"name" : "Mangga",
+		"geo_code" : "051734027",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 116,
+		"name" : "Mangapo",
+		"geo_code" : "051734028",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 117,
+		"name" : "Manlubang",
+		"geo_code" : "051734029",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 118,
+		"name" : "Mantila",
+		"geo_code" : "051734030",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 119,
+		"name" : "North Centro ",
+		"geo_code" : "051734031",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 120,
+		"name" : "North Villazar",
+		"geo_code" : "051734032",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 121,
+		"name" : "Sagrada Familia",
+		"geo_code" : "051734034",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 122,
+		"name" : "Salanda",
+		"geo_code" : "051734035",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 123,
+		"name" : "Salvacion",
+		"geo_code" : "051734036",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 124,
+		"name" : "San Isidro",
+		"geo_code" : "051734037",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 125,
+		"name" : "San Vicente",
+		"geo_code" : "051734038",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 126,
+		"name" : "Serranzana",
+		"geo_code" : "051734039",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 127,
+		"name" : "South Centro ",
+		"geo_code" : "051734040",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 128,
+		"name" : "South Villazar",
+		"geo_code" : "051734041",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 129,
+		"name" : "Taisan",
+		"geo_code" : "051734042",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 130,
+		"name" : "Tara",
+		"geo_code" : "051734043",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 131,
+		"name" : "Tible",
+		"geo_code" : "051734044",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 132,
+		"name" : "Tula-tula",
+		"geo_code" : "051734045",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 133,
+		"name" : "Vigaan",
+		"geo_code" : "051734046",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 134,
+		"name" : "Yabo",
+		"geo_code" : "051734048",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 135,
+		"name" : "Aslong",
+		"geo_code" : "051718001",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 136,
+		"name" : "Awayan",
+		"geo_code" : "051718002",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 137,
+		"name" : "Bagacay",
+		"geo_code" : "051718003",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 138,
+		"name" : "Bagadion",
+		"geo_code" : "051718004",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 139,
+		"name" : "Bagamelon",
+		"geo_code" : "051718005",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 140,
+		"name" : "Bagumbayan",
+		"geo_code" : "051718006",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 141,
+		"name" : "Bahao",
+		"geo_code" : "051718007",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 142,
+		"name" : "Bahay",
+		"geo_code" : "051718008",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 143,
+		"name" : "Beguito Nuevo",
+		"geo_code" : "051718009",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 144,
+		"name" : "Beguito Viejo",
+		"geo_code" : "051718010",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 145,
+		"name" : "Begajo Norte",
+		"geo_code" : "051718012",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 146,
+		"name" : "Begajo Sur",
+		"geo_code" : "051718013",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 147,
+		"name" : "Bikal",
+		"geo_code" : "051718014",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 148,
+		"name" : "Busak",
+		"geo_code" : "051718015",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 149,
+		"name" : "Caima",
+		"geo_code" : "051718016",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 150,
+		"name" : "Calabnigan",
+		"geo_code" : "051718017",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 151,
+		"name" : "Camambugan",
+		"geo_code" : "051718018",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 152,
+		"name" : "Cambalidio",
+		"geo_code" : "051718019",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 153,
+		"name" : "Candami",
+		"geo_code" : "051718020",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 154,
+		"name" : "Candato",
+		"geo_code" : "051718021",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 155,
+		"name" : "Cawayan",
+		"geo_code" : "051718022",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 156,
+		"name" : "Concepcion",
+		"geo_code" : "051718023",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 157,
+		"name" : "Cuyapi",
+		"geo_code" : "051718024",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 158,
+		"name" : "Danawan",
+		"geo_code" : "051718025",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 159,
+		"name" : "Duang Niog",
+		"geo_code" : "051718026",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 160,
+		"name" : "Handong",
+		"geo_code" : "051718027",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 161,
+		"name" : "Ibid",
+		"geo_code" : "051718028",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 162,
+		"name" : "Inalahan",
+		"geo_code" : "051718029",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 163,
+		"name" : "Labao",
+		"geo_code" : "051718030",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 164,
+		"name" : "Libod I",
+		"geo_code" : "051718031",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 165,
+		"name" : "Libod II",
+		"geo_code" : "051718032",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 166,
+		"name" : "Loba-loba",
+		"geo_code" : "051718033",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 167,
+		"name" : "Mabini",
+		"geo_code" : "051718035",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 168,
+		"name" : "Malansad Nuevo",
+		"geo_code" : "051718036",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 169,
+		"name" : "Malansad Viejo",
+		"geo_code" : "051718037",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 170,
+		"name" : "Malbogon",
+		"geo_code" : "051718038",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 171,
+		"name" : "Malinao",
+		"geo_code" : "051718039",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 172,
+		"name" : "Mambalite",
+		"geo_code" : "051718040",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 173,
+		"name" : "Mambayawas",
+		"geo_code" : "051718041",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 174,
+		"name" : "Mambulo Nuevo",
+		"geo_code" : "051718042",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 175,
+		"name" : "Mambulo Viejo",
+		"geo_code" : "051718043",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 176,
+		"name" : "Mancawayan",
+		"geo_code" : "051718044",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 177,
+		"name" : "Mandacanan",
+		"geo_code" : "051718045",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 178,
+		"name" : "Mantalisay",
+		"geo_code" : "051718046",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 179,
+		"name" : "Padlos",
+		"geo_code" : "051718047",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 180,
+		"name" : "Pag-Oring Nuevo",
+		"geo_code" : "051718048",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 181,
+		"name" : "Pag-Oring Viejo",
+		"geo_code" : "051718049",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 182,
+		"name" : "Palangon",
+		"geo_code" : "051718050",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 183,
+		"name" : "Palong",
+		"geo_code" : "051718051",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 184,
+		"name" : "Patag",
+		"geo_code" : "051718052",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 185,
+		"name" : "Planza",
+		"geo_code" : "051718053",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 186,
+		"name" : "Poblacion",
+		"geo_code" : "051718054",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 187,
+		"name" : "Potot",
+		"geo_code" : "051718055",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 188,
+		"name" : "Puro-Batia",
+		"geo_code" : "051718056",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 189,
+		"name" : "Rongos",
+		"geo_code" : "051718057",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 190,
+		"name" : "Salvacion",
+		"geo_code" : "051718058",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 191,
+		"name" : "San Isidro",
+		"geo_code" : "051718060",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 192,
+		"name" : "San Juan",
+		"geo_code" : "051718061",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 193,
+		"name" : "San Pablo",
+		"geo_code" : "051718062",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 194,
+		"name" : "San Vicente",
+		"geo_code" : "051718063",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 195,
+		"name" : "Sibujo",
+		"geo_code" : "051718064",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 196,
+		"name" : "Sigamot",
+		"geo_code" : "051718065",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 197,
+		"name" : "Station-Church Site",
+		"geo_code" : "051718066",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 198,
+		"name" : "Taban-Fundado",
+		"geo_code" : "051718067",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 199,
+		"name" : "Tampuhan",
+		"geo_code" : "051718068",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 200,
+		"name" : "Tanag",
+		"geo_code" : "051718069",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 201,
+		"name" : "Tarum",
+		"geo_code" : "051718070",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 202,
+		"name" : "Tinalmud Nuevo",
+		"geo_code" : "051718071",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 203,
+		"name" : "Tinalmud Viejo",
+		"geo_code" : "051718072",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 204,
+		"name" : "Tinangkihan",
+		"geo_code" : "051718073",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 205,
+		"name" : "Udoc",
+		"geo_code" : "051718074",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 206,
+		"name" : "Umalo",
+		"geo_code" : "051718075",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 207,
+		"name" : "Uson",
+		"geo_code" : "051718076",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 208,
+		"name" : "Villasocorro",
+		"geo_code" : "051718077",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 209,
+		"name" : "Villadima",
+		"geo_code" : "051718078",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 210,
+		"name" : "Barcelonita",
+		"geo_code" : "051707001",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 211,
+		"name" : "Biong",
+		"geo_code" : "051707002",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 212,
+		"name" : "Camagong",
+		"geo_code" : "051707004",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 213,
+		"name" : "Castillo",
+		"geo_code" : "051707005",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 214,
+		"name" : "New Poblacion",
+		"geo_code" : "051707006",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 215,
+		"name" : "Pandan",
+		"geo_code" : "051707007",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 216,
+		"name" : "San Pedro",
+		"geo_code" : "051707008",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 217,
+		"name" : "Santa Cruz",
+		"geo_code" : "051707009",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 218,
+		"name" : "Santa Lutgarda ",
+		"geo_code" : "051707010",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 219,
+		"name" : "Batang",
+		"geo_code" : "051726001",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 220,
+		"name" : "Burabod",
+		"geo_code" : "051726002",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 221,
+		"name" : "Cagbibi",
+		"geo_code" : "051726003",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 222,
+		"name" : "Cagbunga",
+		"geo_code" : "051726004",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 223,
+		"name" : "Calawat",
+		"geo_code" : "051726005",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 224,
+		"name" : "Del Rosario",
+		"geo_code" : "051726006",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 225,
+		"name" : "Patong",
+		"geo_code" : "051726007",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 226,
+		"name" : "Poblacion",
+		"geo_code" : "051726009",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 227,
+		"name" : "Salvacion",
+		"geo_code" : "051726010",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 228,
+		"name" : "San Gabriel",
+		"geo_code" : "051726011",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 229,
+		"name" : "San Isidro",
+		"geo_code" : "051726012",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 230,
+		"name" : "San Rafael",
+		"geo_code" : "051726013",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 231,
+		"name" : "San Ramon",
+		"geo_code" : "051726014",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 232,
+		"name" : "San Vicente",
+		"geo_code" : "051726015",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 233,
+		"name" : "Veneracion",
+		"geo_code" : "051726016",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 234,
+		"name" : "Tambo",
+		"geo_code" : "051726017",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 235,
+		"name" : "Tampadong",
+		"geo_code" : "051726018",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 236,
+		"name" : "Antipolo",
+		"geo_code" : "051727001",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 237,
+		"name" : "Bagong Silang",
+		"geo_code" : "051727002",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 238,
+		"name" : "Bahay",
+		"geo_code" : "051727003",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 239,
+		"name" : "Balogo",
+		"geo_code" : "051727004",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 240,
+		"name" : "Caranan",
+		"geo_code" : "051727005",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 241,
+		"name" : "Cuco",
+		"geo_code" : "051727006",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 242,
+		"name" : "Dalupaon",
+		"geo_code" : "051727007",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 243,
+		"name" : "Macad",
+		"geo_code" : "051727008",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 244,
+		"name" : "Hubo",
+		"geo_code" : "051727009",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 245,
+		"name" : "Itulan",
+		"geo_code" : "051727010",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 246,
+		"name" : "Odicon",
+		"geo_code" : "051727011",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 247,
+		"name" : "Quitang",
+		"geo_code" : "051727012",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 248,
+		"name" : "Salvacion",
+		"geo_code" : "051727013",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 249,
+		"name" : "San Antonio",
+		"geo_code" : "051727014",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 250,
+		"name" : "San Cirilo ",
+		"geo_code" : "051727015",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 251,
+		"name" : "Santa Rosa Del Norte ",
+		"geo_code" : "051727016",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 252,
+		"name" : "Santa Rosa Del Sur ",
+		"geo_code" : "051727017",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 253,
+		"name" : "Tilnac",
+		"geo_code" : "051727019",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 254,
+		"name" : "Tinalmud",
+		"geo_code" : "051727020",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 255,
+		"name" : "Alianza",
+		"geo_code" : "051732001",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 256,
+		"name" : "Beberon",
+		"geo_code" : "051732002",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 257,
+		"name" : "Bical",
+		"geo_code" : "051732003",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 258,
+		"name" : "Bocal",
+		"geo_code" : "051732004",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 259,
+		"name" : "Bonifacio ",
+		"geo_code" : "051732005",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 260,
+		"name" : "Buenavista ",
+		"geo_code" : "051732006",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 261,
+		"name" : "Calascagas",
+		"geo_code" : "051732007",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 262,
+		"name" : "Cotmo",
+		"geo_code" : "051732008",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 263,
+		"name" : "Daculang Tubig",
+		"geo_code" : "051732009",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 264,
+		"name" : "Del Pilar ",
+		"geo_code" : "051732010",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 265,
+		"name" : "G?aran",
+		"geo_code" : "051732011",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 266,
+		"name" : "Grijalvo",
+		"geo_code" : "051732012",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 267,
+		"name" : "Lupi",
+		"geo_code" : "051732013",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 268,
+		"name" : "Marag?i",
+		"geo_code" : "051732014",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 269,
+		"name" : "Pamukid",
+		"geo_code" : "051732015",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 270,
+		"name" : "Pinamasagan",
+		"geo_code" : "051732016",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 271,
+		"name" : "Pipian",
+		"geo_code" : "051732017",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 272,
+		"name" : "Planza",
+		"geo_code" : "051732018",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 273,
+		"name" : "Rizal ",
+		"geo_code" : "051732019",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 274,
+		"name" : "San Joaquin",
+		"geo_code" : "051732020",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 275,
+		"name" : "Santa Cruz",
+		"geo_code" : "051732021",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 276,
+		"name" : "Tagpocol",
+		"geo_code" : "051732022",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 277,
+		"name" : "Dugcal",
+		"geo_code" : "051709001",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 278,
+		"name" : "Marupit",
+		"geo_code" : "051709002",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 279,
+		"name" : "San Francisco",
+		"geo_code" : "051709003",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 280,
+		"name" : "San Juan-San Ramon ",
+		"geo_code" : "051709005",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 281,
+		"name" : "San Lucas ",
+		"geo_code" : "051709007",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 282,
+		"name" : "San Marcos ",
+		"geo_code" : "051709008",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 283,
+		"name" : "San Mateo ",
+		"geo_code" : "051709009",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 284,
+		"name" : "San Jose-San Pablo ",
+		"geo_code" : "051709011",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 285,
+		"name" : "San Roque",
+		"geo_code" : "051709013",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 286,
+		"name" : "Santo Domingo ",
+		"geo_code" : "051709014",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 287,
+		"name" : "Santo Tomas ",
+		"geo_code" : "051709015",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 288,
+		"name" : "Sua",
+		"geo_code" : "051709016",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 289,
+		"name" : "Tarosanan",
+		"geo_code" : "051709017",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 290,
+		"name" : "Cagbunga",
+		"geo_code" : "051713001",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 291,
+		"name" : "Dahilig",
+		"geo_code" : "051713002",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 292,
+		"name" : "Loob",
+		"geo_code" : "051713004",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 293,
+		"name" : "Malbong",
+		"geo_code" : "051713005",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 294,
+		"name" : "Namuat",
+		"geo_code" : "051713006",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 295,
+		"name" : "Sampaloc",
+		"geo_code" : "051713007",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 296,
+		"name" : "District I ",
+		"geo_code" : "051713008",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 297,
+		"name" : "District II ",
+		"geo_code" : "051713009",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 298,
+		"name" : "SANTA LUTGARDA (POB.)",
+		"geo_code" : "051707010",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 299,
+		"name" : "SAN JOSE-SAN PABLO (POB.)",
+		"geo_code" : "051709011",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 300,
+		"name" : "SAN JUAN-SAN RAMON (POB.)",
+		"geo_code" : "051709005",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 301,
+		"name" : "SAN LUCAS (POB.)",
+		"geo_code" : "051709007",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 302,
+		"name" : "SAN MARCOS (POB.)",
+		"geo_code" : "051709008",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 303,
+		"name" : "VILLADIMA (SANTA CRUZ)",
+		"geo_code" : "051718078",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 304,
+		"name" : "COLACLING (DEL ROSARIO)",
+		"geo_code" : "051719016",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 305,
+		"name" : "HALUBAN (PIGBASAGAN)",
+		"geo_code" : "051719020",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 306,
+		"name" : "TAPI (LUPI NUEVO)",
+		"geo_code" : "051719042",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 307,
+		"name" : "VENERACION (TAGUILID)",
+		"geo_code" : "051726016",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 308,
+		"name" : "MACAD (HEBRIO LOURDES)",
+		"geo_code" : "051727008",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 309,
+		"name" : "F. SIMEON (PUGOD)",
+		"geo_code" : "051730037",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 310,
+		"name" : "GODOFREDO REYES SR. (CATABANGAN CROSSING)",
+		"geo_code" : "051730016",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 311,
+		"name" : "GÑARAN",
+		"geo_code" : "051732011",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 313,
+		"name" : "MARAGÑI",
+		"geo_code" : "051732014",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 314,
+		"name" : "GNARAN",
+		"geo_code" : "051732011",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 315,
+		"name" : "MARAGNI",
+		"geo_code" : "051732014",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 316,
+		"name" : "Del Gallego",
+		"geo_code" : "051712000",
+		"geo_level" : "Mun"
+	},
+	{
+		"idpsgc" : 317,
+		"name" : "Bagong Silang",
+		"geo_code" : "051712001",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 318,
+		"name" : "Bucal",
+		"geo_code" : "051712002",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 319,
+		"name" : "Cabasag",
+		"geo_code" : "051712003",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 320,
+		"name" : "Comadaycaday",
+		"geo_code" : "051712004",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 321,
+		"name" : "Domagondong",
+		"geo_code" : "051712005",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 322,
+		"name" : "Kinalangan",
+		"geo_code" : "051712006",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 323,
+		"name" : "Comadogcadog",
+		"geo_code" : "051712007",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 324,
+		"name" : "Mabini",
+		"geo_code" : "051712008",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 325,
+		"name" : "Magais I",
+		"geo_code" : "051712009",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 326,
+		"name" : "Magais II",
+		"geo_code" : "051712010",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 327,
+		"name" : "Mansalaya",
+		"geo_code" : "051712011",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 328,
+		"name" : "Nagkalit",
+		"geo_code" : "051712012",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 329,
+		"name" : "Palaspas",
+		"geo_code" : "051712013",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 330,
+		"name" : "Pamplona",
+		"geo_code" : "051712014",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 331,
+		"name" : "Pasay",
+		"geo_code" : "051712015",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 332,
+		"name" : "Pinagdapian",
+		"geo_code" : "051712016",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 333,
+		"name" : "Pinugusan",
+		"geo_code" : "051712017",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 334,
+		"name" : "Zone I Fatima ",
+		"geo_code" : "051712018",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 335,
+		"name" : "Zone II San Antonio ",
+		"geo_code" : "051712019",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 336,
+		"name" : "Poblacion Zone III",
+		"geo_code" : "051712020",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 337,
+		"name" : "Sabang",
+		"geo_code" : "051712021",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 338,
+		"name" : "Salvacion",
+		"geo_code" : "051712022",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 339,
+		"name" : "San Juan",
+		"geo_code" : "051712023",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 340,
+		"name" : "San Pablo",
+		"geo_code" : "051712024",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 341,
+		"name" : "Santa Rita I",
+		"geo_code" : "051712025",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 342,
+		"name" : "Santa Rita II",
+		"geo_code" : "051712026",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 343,
+		"name" : "Sinagawsawan",
+		"geo_code" : "051712027",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 344,
+		"name" : "Sinuknipan I",
+		"geo_code" : "051712028",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 345,
+		"name" : "Sinuknipan II",
+		"geo_code" : "051712029",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 346,
+		"name" : "Sugsugin",
+		"geo_code" : "051712030",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 347,
+		"name" : "Tabion",
+		"geo_code" : "051712031",
+		"geo_level" : "Bgy"
+	},
+	{
+		"idpsgc" : 348,
+		"name" : "Tomagoktok",
+		"geo_code" : "051712032",
+		"geo_level" : "Bgy"
+	}
+]

@@ -6,6 +6,7 @@ import nodemailer from "nodemailer";
 import dotenv from 'dotenv';
 import { categorizeMessage } from './categorize.js';
 const fuzz = await import('fuzzball');
+import fs from 'fs';
 
 const max_attempts = 5
 dotenv.config();
@@ -27,6 +28,11 @@ let userSessions = {};
 // Temporary storage for OTP generation (to simulate OTP validation)
 let otps = {};
 
+const answers = ['yes','oo','opo','yeah','yep','yup','sure','okay','alright','absolutely','of course','correct','right'];
+var psgcData = []
+var municipalities = []
+var barangays = []
+
 let transporter = nodemailer.createTransport({
     host: "mail.casureco1.com",
     port: 465, // Use 465 for SSL
@@ -36,12 +42,6 @@ let transporter = nodemailer.createTransport({
         pass: process.env.WP_SMTP_PASS,
     },
 });
-
-function preprocessMessage(message) {
-    message = message.toLowerCase();
-    message = message.replace(/[^a-z0-9\s]/g, '');
-    return message.split(/\s+/);
-}
 
 // Webhook verification (Meta setup)
 app.get("/webhook", (req, res) => {
@@ -68,24 +68,37 @@ app.post("/webhook", (req, res) => {
                 const senderId = webhookEvent.sender.id;
                 
                 console.log(webhookEvent);
-
+                console.log(userSessions[senderId])
                 // Check if it's a postback (e.g., from a button click or quick reply)
                 if (webhookEvent.postback) {
                     const postbackPayload = webhookEvent.postback.payload;
                     console.log("Postback received:", postbackPayload);
 
-                    
-                    if(userSessions[senderId] && userSessions[senderId].step){
-                        console.log(userSessions[senderId].step)
-                        // Handle postback action
-                        handlePostback(senderId, postbackPayload);
-                    }else{
-                        userSessions[senderId] = { step: "main_menu" };
-                        // handlePostback(senderId,postbackPayload);
-                        sendMainMenu(senderId);
+                    // Ensure user session exists, initialize if not
+                    if (!userSessions[senderId]) {
+                        userSessions[senderId] = {}; // Initialize user session if it doesn't exist
+                    }
+
+                     // If user has not seen privacy policy yet, show it
+                    if (!userSessions[senderId].privacyPolicySeen) {
+                        showPrivacyPolicy(senderId); // Show privacy policy
+                        userSessions[senderId].privacyPolicySeen = true; // Mark privacy policy as seen
+                    } else {
+                        // Handle postback (e.g., Proceed button clicked)
+                        if (postbackPayload === "PROCEED") {
+                            // Set the user's step to show the main menu
+                            userSessions[senderId].step = "main_menu"; 
+                            sendMainMenu(senderId); // Show main menu
+                        } else {
+                            // Handle other postbacks here
+                            handlePostback(senderId, postbackPayload); // Handle other types of postbacks
+                        }
                     }
                     
                     
+                }else if(webhookEvent.message && webhookEvent.message.quick_reply){ // Check if it's a quick message
+                    const payload = webhookEvent.message.quick_reply.payload;
+                   
                 }
                 // Check if it's a text message
                 else if (webhookEvent.message && webhookEvent.message.text) {
@@ -121,17 +134,174 @@ app.use((req, res) => {
     res.status(404).send('<h1>404 - Page Not Found</h1>');
 });
 
+await getPSGC().then((data) => { psgcData = data; municipalities = [...data].filter((d) => d.geo_level == 'Mun') }).catch((error) => {console.error('Error:', error);});
+// setupPersistentMenu();
+
+async function setupPersistentMenu(){
+    const url = `https://graph.facebook.com/v17.0/me/messenger_profile?access_token=${process.env.PAGE_ACCESS_TOKEN}`;
+    
+    const persistentMenuPayload = {
+        persistent_menu: [
+            {
+                locale: "default",
+                composer_input_disabled: false, // Set to true if you want to disable text input
+                call_to_actions: [
+                    {
+                        type: "postback",
+                        title: "Main Menu",
+                        payload: "MAIN_MENU"
+                    },
+                    {
+                        type: "postback",
+                        title: "View Bills & Payments",
+                        payload: "VIEW_BILLS_PAYMENTS"
+                    },
+                    {
+                        type: "web_url",
+                        title: "Visit Website",
+                        url: "https://casureco1.com",
+                        webview_height_ratio: "full"
+                    },
+                    {
+                        type: "postback",
+                        title: "Chat with an Agent",
+                        payload: "CHAT_AGENT"
+                    },
+                ]
+            }
+        ]
+    };
+
+    try {
+        const response = await axios.post(url, persistentMenuPayload);
+        console.log("Persistent Menu successfully set up:", response.data);
+    } catch (error) {
+        console.error("Failed to set up Persistent Menu:", error.response ? error.response.data : error.message);
+    }
+}
+
+
+function callSendAPI(messageData){
+    axios
+        .post(
+            `https://graph.facebook.com/v21.0/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
+            messageData
+        )
+        .then((response) => {
+            console.log("Sent:", response.data);
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+}
+function showPrivacyPolicy(senderId){
+    const messageTitle = "At CASURECO 1, we respect your privacy and are strongly committed to keeping secure any information we obtain from you or about you. We may access your Facebook profile and other personal data based on the services you use to improve your experience and keep your data private, unless required by law. Read our privacy policy to know more."
+
+    const messageData = {
+        recipient: { id: senderId },
+        message: {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "button",
+                    text: messageTitle,
+                    buttons: [{
+                            type: "web_url",
+                            title: "Privacy Policy",
+                            url: "https://casureco1.com",
+                            webview_height_ratio: "full"
+                        },
+                        {
+                            type: "postback",
+                            title: "Proceed",
+                            payload: "PROCEED",
+                        },
+                    ],
+                },
+            },
+        },
+    };
+
+    callSendAPI(messageData);
+}
+
+function getPSGC() {
+    return new Promise((resolve, reject) => {
+      // Read the JSON file asynchronously
+      fs.readFile('psgc.json', 'utf8', (err, data) => {
+        if (err) {
+          reject('Error reading the file:', err);
+          return;
+        }
+  
+        try {
+          // Parse the JSON data
+          var psgcParsedData = JSON.parse(data);
+  
+          // Check if municipalities list exists
+          if (psgcParsedData) {
+            psgcParsedData = psgcParsedData.sort((a, b) => a.name.localeCompare(b.name));
+            resolve(psgcParsedData);
+          } else {
+            reject('No municipalities data found');
+          }
+        } catch (parseError) {
+          reject('Error parsing JSON:', parseError);
+        }
+      });
+    });
+}
+
+function preprocessMessage(message) {
+    message = message.toLowerCase();
+    message = message.replace(/[^a-z0-9\s]/g, '');
+    return message.split(/\s+/);
+}
+function showBillorPayment(senderId){
+    const messageData = {
+        recipient: { id: senderId },
+        message: {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "button",
+                    text: "Please choose from the options provided to view your last 3 months' bill and payment details.",
+                    buttons: [
+                        {
+                            type: "postback",
+                            title: "Bill Details",
+                            payload: "BILL_DETAILS",
+                        },
+                        {
+                            type: "postback",
+                            title: "Payment History",
+                            payload: "PAYMENT_HISTORY",
+                        },
+                        {
+                            type: "postback",
+                            title: "Back to Previous Menu",
+                            payload: "MAIN_MENU",
+                        },
+                    ],
+                },
+            },
+        },
+    };
+
+    callSendAPI(messageData);
+}
 function handlePostback(senderId, payload) {
     switch (payload) {
-        case "WELCOME_MESSAGE":
-            userSessions[senderId] = { step: "main_menu" };
+        case "MAIN_MENU":
+            userSessions[senderId].step = "main_menu" ;
             sendMainMenu(senderId);
             break;
-        case "BACK_TO_PREVIOUS_MENU":
-            userSessions[senderId].step = "main_menu"; // Go back to the main menu
-            sendMainMenu(senderId); // Send the main menu again
+        case "BILLS_PAYMENTS":
+            showBillorPayment(senderId);
+            // userSessions[senderId].step = "ask_account";
+            // sendMessage(senderId, "Please provide your 8-digit account number.");
             break;
-        case "BILL_INQUIRY":
+        case "BILL_DETAILS":
             userSessions[senderId].step = "ask_account";
             sendMessage(senderId, "Please provide your 8-digit account number.");
             break;
@@ -208,7 +378,8 @@ function handlePostback(senderId, payload) {
             sendOTPChoiceMenu(senderId);
             break; 
         case "REPORT_AN_OUTAGE":
-            requestLocation(senderId);
+            userSessions[senderId].step = "report_confirm_issue";
+            sendReportConfirmIssue(senderId);
             break;
         default:
             sendMessage(senderId, "Sorry, I didn't understand that action.");
@@ -237,7 +408,7 @@ async function handleUserMessage(senderId, message,category) {
             } else if (category === "account_concern") {
                
             } else {
-                // sendMainMenu(senderId);
+                sendMainMenu(senderId);
             }
             break;
         case "ask_account":
@@ -247,7 +418,7 @@ async function handleUserMessage(senderId, message,category) {
                 .then((isValid) => {
                     if (isValid == true) {
                         userSessions[senderId].step = "ask_account_name";
-                        sendMessage(senderId, "Please provide your account name");
+                        sendMessage(senderId, "Please provide your account name.");
                     } else {
                         userSessions[senderId].attempts += 1
                         sendMessage(senderId,"Sorry, the account number you provided is invalid. Please try again.");
@@ -428,15 +599,53 @@ async function handleUserMessage(senderId, message,category) {
             );
             break;
         case "ask_if_billinquiry":
-            const answers = ['yes','oo','opo','yeah','yep','yup','sure','okay','alright','absolutely','of course','correct','right'];
-
             if(answers.includes(message.toLowerCase().trim())){
                 userSessions[senderId].step = "ask_account";
                 sendMessage(senderId, "Thank you for your confirmation. Please provide your 8-digit account number.");
             }
             break;
         case "ask_if_power_interruption":
-            const answers2 = ['yes','oo','opo','yeah','yep','yup','sure','okay','alright','absolutely','of course','correct','right'];
+           if(answers.includes(message.toLowerCase().trim())){
+                userSessions[senderId].step = "entire_home_without_power";
+                userSessions[senderId].report_data = {};
+                sendMessage(senderId, "Thank you for your confirmation. Is your entire home without power?");
+            }
+            break;
+        case "entire_home_without_power":
+            if(answers.includes(message.toLowerCase().trim())){
+                userSessions[senderId].step = "neighbors_also_affected";
+                userSessions[senderId].report_data.entire_home = true; 
+                sendMessage(senderId, "Are your neighbors also affected?");
+            }else{
+                userSessions[senderId].report_data.entire_home = false; 
+                sendMessage(senderId, "Please check your circuit breaker or fuse box before submitting the report.");
+            }
+            break;
+        case "neighbors_also_affected":
+            if(answers.includes(message.toLowerCase().trim())){
+                userSessions[senderId].report_data.neighbors_affected = true; 
+                userSessions[senderId].step = "enter_municipality";
+                sendMunicipalityMenu(senderId);
+            }else{
+                userSessions[senderId].report_data.neighbors_affected = false; 
+            }
+            break;
+        case "enter_municipality":
+            const foundMunicipality = municipalities.filter(mun => mun.name.toLowerCase() == message.toLowerCase())
+            if(foundMunicipality){
+                userSessions[senderId].report_data.municipality_name = foundMunicipality[0].name;
+                userSessions[senderId].report_data.municipality_code = foundMunicipality[0].geo_code;
+                userSessions[senderId].step = "enter_barangay";
+                barangays = psgcData.filter(psgc => psgc.geo_code.startsWith(userSessions[senderId].report_data.municipality_code.substring(0, 6)) && psgc.geo_level == 'Bgy')
+                
+                const quickReplies = getQuickReplies(barangays);
+                sendBarangayMenu(senderId,quickReplies);
+            }else{
+                sendMessage(senderId, "Municipality not found.");
+            }
+            break;
+        case "enter_barangay":
+            const foundBarangay = barangays.filter(mun => mun.name.toLowerCase() == message.toLowerCase())
             
             break;
         default:
@@ -445,30 +654,29 @@ async function handleUserMessage(senderId, message,category) {
             break;
     }
 }
+// function requestLocation(senderId) {
+//     const messageData = {
+//         recipient: { id: senderId },
+//         message: {
+//             attachment: {
+//                 type: 'template',
+//                 payload: {
+//                     template_type: 'button',
+//                     text: 'SHARE MY LOCATION',
+//                     buttons: [{ type: 'location' }]
+//                 }
+//             }
+//         }
+//     };
 
-function requestLocation(senderId) {
-    const messageData = {
-        recipient: { id: senderId },
-        message: {
-            attachment: {
-                type: 'template',
-                payload: {
-                    template_type: 'button',
-                    text: 'SHARE MY LOCATION',
-                    buttons: [{ type: 'location' }]
-                }
-            }
-        }
-    };
-
-    axios.post(`https://graph.facebook.com/v3.3/me/messages?fields=location&access_token=${process.env.PAGE_ACCESS_TOKEN}`, messageData)
-        .then(response => {
-            console.log('Request Location sent:', response.data);
-        })
-        .catch(error => {
-            console.error('Error requesting location:', error);
-        });
-}
+//     axios.post(`https://graph.facebook.com/v3.3/me/messages?fields=location&access_token=${process.env.PAGE_ACCESS_TOKEN}`, messageData)
+//         .then(response => {
+//             console.log('Request Location sent:', response.data);
+//         })
+//         .catch(error => {
+//             console.error('Error requesting location:', error);
+//         });
+// }
 function sendConfirmationMessage(senderId, lat, long) {
     const messageData = {
         recipient: { id: senderId },
@@ -525,17 +733,17 @@ async function sendMainMenu(senderId) {
                     text: `Hi ${first_name}! How can I assist you today?`,
                     buttons: [{
                             type: "postback",
-                            title: "BILL INQUIRY",
-                            payload: "BILL_INQUIRY",
+                            title: "Bills & Payments",
+                            payload: "BILLS_PAYMENTS",
                         },
                         {
                             type: "postback",
-                            title: "OUTAGE OR INCIDENT",
+                            title: "Brownout or Incident",
                             payload: "REPORT_AN_OUTAGE",
                         },
                         {
                             type: "postback",
-                            title: "ACCOUNT CONCERN",
+                            title: "Account Concern",
                             payload: "ACCOUNT_CONCERN",
                         },
                     ],
@@ -543,19 +751,9 @@ async function sendMainMenu(senderId) {
             },
         },
     };
-
-    axios
-        .post(
-            `https://graph.facebook.com/v21.0/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
-            messageData
-        )
-        .then((response) => {
-            console.log("Button Template sent:", response.data);
-        })
-        .catch((error) => {
-            console.error("Error sending button template:", error);
-        });
+    callSendAPI(messageData)
 }
+
 
 function sendOTPMessage(senderId, messageText) {
     const buttons = [{
@@ -586,17 +784,7 @@ function sendOTPMessage(senderId, messageText) {
         },
     };
 
-    axios
-        .post(
-            `https://graph.facebook.com/v21.0/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
-            messageData
-        )
-        .then((response) => {
-            console.log("OTP choice menu sent:", response.data);
-        })
-        .catch((error) => {
-            console.error("Error sending OTP choice menu:", error);
-        });
+    callSendAPI(messageData);
 }
 
 function sendChooseMobileorEmailMenu(senderId) {
@@ -629,17 +817,7 @@ function sendChooseMobileorEmailMenu(senderId) {
         },
     };
 
-    axios
-        .post(
-            `https://graph.facebook.com/v21.0/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
-            messageData
-        )
-        .then((response) => {
-            console.log("OTP choice menu sent:", response.data);
-        })
-        .catch((error) => {
-            console.error("Error sending OTP choice menu:", error);
-        });
+    callSendAPI(messageData);
 }
 
 // Function to send OTP delivery choice menu
@@ -673,17 +851,7 @@ function sendOTPChoiceMenu(senderId) {
         },
     };
 
-    axios
-        .post(
-            `https://graph.facebook.com/v21.0/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
-            messageData
-        )
-        .then((response) => {
-            console.log("OTP choice menu sent:", response.data);
-        })
-        .catch((error) => {
-            console.error("Error sending OTP choice menu:", error);
-        });
+    callSendAPI(messageData);
 }
 
 // Function to send OTP message
@@ -716,7 +884,6 @@ function sendOTP(senderId, contactMethod) {
 
 
 async function getBalance(senderId){
-    const balance = 0;
     const cfcodeno = userSessions[senderId].account.cfcodeno
 
     try {
@@ -759,38 +926,18 @@ function sendFinalMenu(senderId) {
         },
     };
 
-    axios
-        .post(
-            `https://graph.facebook.com/v21.0/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
-            messageData
-        )
-        .then((response) => {
-            console.log("OTP choice menu sent:", response.data);
-        })
-        .catch((error) => {
-            console.error("Error sending OTP choice menu:", error);
-        });
+    callSendAPI(messageData);
 }
 
 function endChat(senderId) {
-    const message = {
+    const messageData = {
         recipient: { id: senderId },
         message: {
             text: "Chat has ended. If you have any further questions, feel free to reach out anytime. Have a great day!",
         },
     };
 
-    axios
-        .post(
-            `https://graph.facebook.com/v21.0/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
-            message
-        )
-        .then((response) => {
-            console.log("Chat ended message sent:", response.data);
-        })
-        .catch((error) => {
-            console.error("Error ending chat:", error);
-        });
+    callSendAPI(messageData);
 }
 
 function hasMaxAttempts(){
@@ -846,17 +993,7 @@ function sendMessage(senderId, messageText) {
         message: { text: messageText },
     };
 
-    axios
-        .post(
-            `https://graph.facebook.com/v21.0/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
-            messageData
-        )
-        .then((response) => {
-            console.log("Message sent:", response.data);
-        })
-        .catch((error) => {
-            console.error("Error sending message:", error);
-        });
+    callSendAPI(messageData);
 }
 
 function sendMessageWithImage(senderId, image_url = '') {
@@ -875,17 +1012,7 @@ function sendMessageWithImage(senderId, image_url = '') {
         },
     };
 
-    axios
-        .post(
-            `https://graph.facebook.com/v21.0/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
-            messageData
-        )
-        .then((response) => {
-            console.log("Message sent:", response.data);
-        })
-        .catch((error) => {
-            console.error("Error sending message:", error);
-        });
+    callSendAPI(messageData);
 }
 
 function sendEmail(to, subject, text) {
@@ -911,6 +1038,61 @@ function capitalizeWords(str) {
         .split(" ") // Split the string into words
         .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize each word
         .join(" "); // Join the words back together
+}
+
+function sendMunicipalityMenu(senderId) {
+    
+    const quickReplies = municipalities.map(municipality => {
+        return {
+            content_type: "text",
+            title: municipality.name,
+            payload: municipality.name.toUpperCase() // Convert spaces to underscores and make it uppercase for payload
+        };
+    });
+
+    const messageData = {
+        recipient: { id: senderId },
+        message: {
+            "text": "Please choose or enter municipality",
+            quick_replies: quickReplies
+        },
+    };
+
+    callSendAPI(messageData);
+}
+function getQuickReplies(data, startIndex = 0, limit = 12) {
+    // Get items between `startIndex` and `startIndex + limit`
+    const slicedItems = data.slice(startIndex, startIndex + limit);
+
+    // Map to Quick Reply format
+    const quickReplies = slicedItems.map((item) => ({
+        content_type: "text",
+        title: item.name,
+        payload: item.name.toUpperCase()
+    }));
+
+    // Add a "Load More" button if there are more items left
+    if (startIndex + limit < data.length) {
+        quickReplies.push({
+            content_type: "text",
+            title: "Load More",
+            payload: `LOAD_MORE_${startIndex + limit}`
+        });
+    }
+
+    return quickReplies;
+}
+function sendBarangayMenu(senderId,quickReplies) {
+    
+    const messageData = {
+        recipient: { id: senderId },
+        message: {
+            "text": "Please choose or enter barangay",
+            quick_replies: quickReplies
+        },
+    };
+
+    callSendAPI(messageData);
 }
 
 const PORT = 3000;

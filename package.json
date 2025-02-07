@@ -1,6 +1,6 @@
 {
     "scripts": {
-        "test": "jest",
+        "test": "echo \"No test specified\" && exit 1",
         "start": "node index.js"
     },
     "dependencies": {

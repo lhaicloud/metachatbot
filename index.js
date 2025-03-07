@@ -7,8 +7,18 @@ import dotenv from 'dotenv';
 import { categorizeMessage } from './categorize.js';
 const fuzz = await import('fuzzball');
 import fs from 'fs';
+import { insertUserSession, getUserWithAccounts, getUsers, markPrivacyPolicySeen, markPrivacyPolicyAgree, saveAccount  } from './db.js';
+
+// import { insertUserSession, getUserWithAccounts, getAllSessions, markPrivacyPolicySeen, markPrivacyPolicyAgree ,deleteUserSession, deleteTable, saveAccount } from './sqlite.js';
+
+console.log(await getUsers());
+
+// getAllSessions((user) => {
+//     console.log(user)
+// })
 
 const max_attempts = 5
+const max_accounts = 3
 dotenv.config();
 
 const app = express();
@@ -24,7 +34,7 @@ app.get('/', (req, res) => {
 
 // Define a temporary storage for user conversations (this can be replaced with a database)
 let userSessions = {};
-
+let userReports = {};
 // Temporary storage for OTP generation (to simulate OTP validation)
 let otps = {};
 
@@ -32,6 +42,28 @@ const answers = ['yes','oo','opo','yeah','yep','yup','sure','okay','alright','ab
 var psgcData = []
 var municipalities = []
 var barangays = []
+const brownout_options = [
+    {
+        text: "No Power (Entire Home)", 
+        value: "A"
+    },
+    {
+        text: "No Power (Entire Street/Block)", 
+        value: "B"
+    },
+    {
+        text: "Unstable Power" , 
+        value: "C"
+    },
+    {
+        text: "Streetlight Concern", 
+        value: "D"
+    },
+    {
+        text: "Safety Concern (e.g., wires down, exposed cables)",
+        value: "E"
+    },
+]
 
 let transporter = nodemailer.createTransport({
     host: "mail.casureco1.com",
@@ -66,64 +98,123 @@ app.post("/webhook", (req, res) => {
             if (entry.messaging && entry.messaging.length > 0) {
                 const webhookEvent = entry.messaging[0];
                 const senderId = webhookEvent.sender.id;
-                
-                console.log(webhookEvent);
-                console.log(userSessions[senderId])
-                // Check if it's a postback (e.g., from a button click or quick reply)
-                if (webhookEvent.postback) {
-                    const postbackPayload = webhookEvent.postback.payload;
-                    console.log("Postback received:", postbackPayload);
+                (async () => {
+                    // console.log(webhookEvent);
+                    // console.log(userSessions[senderId])
 
                     // Ensure user session exists, initialize if not
                     if (!userSessions[senderId]) {
-                        userSessions[senderId] = {}; // Initialize user session if it doesn't exist
-                    }
+                        var userData = await getUserWithAccounts(senderId);
 
-                     // If user has not seen privacy policy yet, show it
-                    if (!userSessions[senderId].privacyPolicySeen) {
-                        showPrivacyPolicy(senderId); // Show privacy policy
-                        userSessions[senderId].privacyPolicySeen = true; // Mark privacy policy as seen
-                    } else {
-                        // Handle postback (e.g., Proceed button clicked)
-                        if (postbackPayload === "PROCEED") {
-                            // Set the user's step to show the main menu
-                            userSessions[senderId].step = "main_menu"; 
-                            sendMainMenu(senderId); // Show main menu
-                        } else {
-                            // Handle other postbacks here
-                            handlePostback(senderId, postbackPayload); // Handle other types of postbacks
+                        if(!userData){
+                            await insertUserSession(senderId);
+                            userData = await getUserWithAccounts(senderId);
+                        }
+                        userSessions[senderId] = userData;
+                    }
+                    
+                    const user = await getUserProfile(senderId);
+                    userSessions[senderId].first_name = user ? user.first_name : '';
+                    const userName = user ? user.name : '';
+                    const userID = user ? user.id : '';
+                    if(!userSessions[senderId].brownout_details){
+                        userSessions[senderId].brownout_details = { name : userName, id : userID }
+                    }
+                    
+                    // console.log(userSessions[senderId])
+
+                    // Check if it's a postback (e.g., from a button click or quick reply)
+                    if (webhookEvent.postback) {
+                        var postbackPayload = webhookEvent.postback.payload;
+                        console.log("Postback received:", postbackPayload);
+                        if(postbackPayload == "PROCEED"){
+                            userSessions[senderId].privacyPolicyAgree = 1;
+                            postbackPayload = userSessions[senderId].lastPostBack
+                            await markPrivacyPolicyAgree(senderId);
+                        }
+                        if(!userSessions[senderId].privacyPolicyAgree){
+                            showPrivacyPolicy(senderId);
+                            userSessions[senderId].lastPostBack = postbackPayload;
+                            return;
+                        }
+
+                        handlePostback(senderId, postbackPayload);
+
+                        // If user has not seen privacy policy yet, show it
+                        // if (!userSessions[senderId].privacyPolicySeen) {
+                        //     showPrivacyPolicy(senderId); // Show privacy policy
+                        //     userSessions[senderId].privacyPolicySeen = true; // Mark privacy policy as seen
+                        // } else {
+                        //     // Handle postback (e.g., Proceed button clicked)
+                        //     if (postbackPayload === "PROCEED") {
+                        //         // Set the user's step to show the main menu
+                        //         userSessions[senderId].step = "main_menu"; 
+                        //         sendMainMenu(senderId); // Show main menu
+                        //     } else {
+                        //         // Handle other postbacks here
+                        //         handlePostback(senderId, postbackPayload); // Handle other types of postbacks
+                        //     }
+                        // }
+                        
+                        
+                    }else if(webhookEvent.message && webhookEvent.message.quick_reply){ // Check if it's a quick message
+                        const payload = webhookEvent.message.quick_reply.payload;
+                        console.log(payload)
+                        console.log(userSessions[senderId])
+                        if(payload.startsWith('account_')){
+                            const cfcodeno = payload.split("_")[1];
+                            const selectedAccount = userSessions[senderId].accounts.filter( acc => acc.cfcodeno == cfcodeno)[0];
+                            userSessions[senderId].account = selectedAccount
+                            showBalanceOrPayment(senderId);
+                            return;
+                        }
+                        if(userSessions[senderId].step == 'provide_brownout_mobile'){
+                            var mobile = payload
+                            if (mobile.startsWith("+63")) {
+                                mobile = "0" + mobile.slice(3);
+                            }else if (mobile.startsWith("63")) {
+                                mobile = "0" + mobile.slice(2);
+                            }
+                            userSessions[senderId].brownout_details.mobile = mobile
+                            if(!userSessions[senderId].brownout_details.message){
+                                userSessions[senderId].step = "provide_brownout_message";
+                                sendMessage(senderId,"Please enter your message");
+                            }else{
+                                sendBrownoutReportSummary(senderId);
+                                setTimeout(() => {
+                                    sendFinalMenu(senderId);
+                                }, 1000);
+                            }
                         }
                     }
-                    
-                    
-                }else if(webhookEvent.message && webhookEvent.message.quick_reply){ // Check if it's a quick message
-                    const payload = webhookEvent.message.quick_reply.payload;
-                   
-                }
-                // Check if it's a text message
-                else if (webhookEvent.message && webhookEvent.message.text) {
-                    console.log("Text received:", webhookEvent.message.text);
-                    const tokens = preprocessMessage(webhookEvent.message.text);
-                    const category = categorizeMessage(tokens);
-                    console.log(`Message categorized as: ${category}`);
-                    handleUserMessage(senderId, webhookEvent.message.text,category);
-                }
-                // Check if it's a location
-                else if (webhookEvent.message && webhookEvent.message.attachments) {
-                    const locationData = webhookEvent.message.attachments.find(attachment => attachment.type === 'location');
-                    if (locationData) {
-                        console.log('Location received:', locationData);
-                        // Handle location data (latitude, longitude)
-                        handleLocation(senderId, locationData);
+                    // Check if it's a text message
+                    else if (webhookEvent.message && webhookEvent.message.text) {
+                        console.log("Text received:", webhookEvent.message.text);
+                        const tokens = preprocessMessage(webhookEvent.message.text);
+                        const category = categorizeMessage(tokens);
+                        console.log(`Message categorized as: ${category}`);
+                        if(category == 'power_interruption'){
+                            userSessions[senderId].brownout_details.message = webhookEvent.message.text
+                        }
+                        handleUserMessage(senderId, webhookEvent.message.text,category);
                     }
-                } else {
-                    console.log("No text or postback message found");
-                }
+                    // Check if it's a location
+                    else if (webhookEvent.message && webhookEvent.message.attachments) {
+                        const locationData = webhookEvent.message.attachments.find(attachment => attachment.type === 'location');
+                        if (locationData) {
+                            console.log('Location received:', locationData);
+                            // Handle location data (latitude, longitude)
+                            handleLocation(senderId, locationData);
+                        }
+                    } else {
+                        console.log("No text or postback message found");
+                    }
+                })();
             } else {
                 console.log("No messaging data found in entry:", entry);
             }
         });
-
+        
         res.status(200).send("EVENT_RECEIVED");
     } else {
         res.sendStatus(404);
@@ -157,16 +248,21 @@ async function setupPersistentMenu(){
                         payload: "VIEW_BILLS_PAYMENTS"
                     },
                     {
+                        type: "postback",
+                        title: "Apply for New Connection",
+                        payload: "APPLY_NEW_CONNECTION"
+                    },
+                    {
                         type: "web_url",
                         title: "Visit Website",
                         url: "https://casureco1.com",
                         webview_height_ratio: "full"
                     },
-                    {
-                        type: "postback",
-                        title: "Chat with an Agent",
-                        payload: "CHAT_AGENT"
-                    },
+                    // {
+                    //     type: "postback",
+                    //     title: "Chat with an Agent",
+                    //     payload: "CHAT_AGENT"
+                    // },
                 ]
             }
         ]
@@ -194,8 +290,11 @@ function callSendAPI(messageData){
             console.error("Error:", error);
         });
 }
-function showPrivacyPolicy(senderId){
+async function showPrivacyPolicy(senderId){
     const messageTitle = "At CASURECO 1, we respect your privacy and are strongly committed to keeping secure any information we obtain from you or about you. We may access your Facebook profile and other personal data based on the services you use to improve your experience and keep your data private, unless required by law. Read our privacy policy to know more."
+    
+    await markPrivacyPolicySeen(senderId);
+    userSessions[senderId].privacyPolicySeen = 1;
 
     const messageData = {
         recipient: { id: senderId },
@@ -277,11 +376,11 @@ function showBillorPayment(senderId){
                             title: "Payment History",
                             payload: "PAYMENT_HISTORY",
                         },
-                        {
-                            type: "postback",
-                            title: "Back to Previous Menu",
-                            payload: "MAIN_MENU",
-                        },
+                        // {
+                        //     type: "postback",
+                        //     title: "Back to Previous Menu",
+                        //     payload: "MAIN_MENU",
+                        // },
                     ],
                 },
             },
@@ -296,14 +395,36 @@ function handlePostback(senderId, payload) {
             userSessions[senderId].step = "main_menu" ;
             sendMainMenu(senderId);
             break;
-        case "BILLS_PAYMENTS":
+        case "MAIN_MENU_OPTION_1":
             showBillorPayment(senderId);
             // userSessions[senderId].step = "ask_account";
-            // sendMessage(senderId, "Please provide your 8-digit account number.");
+            // sendMessage(senderId, "Please enter your 8-digit account number.");
+            break;
+        case "VIEW_BILLS_PAYMENTS":
+            showBillorPayment(senderId);
             break;
         case "BILL_DETAILS":
+            userSessions[senderId].bill = 1;
             userSessions[senderId].step = "ask_account";
-            sendMessage(senderId, "Please provide your 8-digit account number.");
+
+            if(userSessions[senderId].accounts && userSessions[senderId].accounts.length > 0){
+                showExistingAccount(senderId);
+                break;
+            }
+            
+            
+            sendMessage(senderId, "Please enter your 8-digit account number.");
+            break;
+        case "PAYMENT_HISTORY":
+            userSessions[senderId].step = "ask_account";
+            userSessions[senderId].payment = 1;
+
+            if(userSessions[senderId].accounts && userSessions[senderId].accounts.length > 0){
+                showExistingAccount(senderId);
+                break;
+            }
+
+            sendMessage(senderId, "Please enter your 8-digit account number.");
             break;
         case "MOBILE_NUMBER":
             userSessions[senderId].step = "validate_otp";
@@ -357,7 +478,7 @@ function handlePostback(senderId, payload) {
             sendChooseMobileorEmailMenu(senderId);
             break;
         case "END_CHAT":
-            endChat(senderId);
+            sendMessage(senderId, "Chat has ended. If you have any further questions, feel free to reach out anytime. Have a great day!");
             delete userSessions[senderId];
             break;
         case "ASK_MOBILE_NUMBER":
@@ -368,18 +489,86 @@ function handlePostback(senderId, payload) {
             userSessions[senderId].step = "ask_email_address";
             sendMessage(senderId, "Please enter your email address");
             break;
-        case "YES_ANOTHER_CONCERN":
-            userSessions[senderId] = { step: "main_menu" };
-            sendMainMenu(senderId);
-            break;
         case "BACK_TO_PREVIOUS_MENU2":
             userSessions[senderId].updating_information = false;
             userSessions[senderId].step = "ask_otp_method";
             sendOTPChoiceMenu(senderId);
             break; 
-        case "REPORT_AN_OUTAGE":
-            userSessions[senderId].step = "report_confirm_issue";
-            sendReportConfirmIssue(senderId);
+        case "MAIN_MENU_OPTION_2":
+            (async () => { 
+                const tickets = await getMyTickets(senderId);
+                
+                if(tickets && tickets.ticket_history.length > 0){
+                    if (!userSessions[senderId].tickets) {
+                        userSessions[senderId].tickets = {};
+                    }
+                    userSessions[senderId].tickets.ticket_history = tickets.ticket_history.map((t) => {
+                        return {
+                            ...t, 
+                            status_text: getStatusText(t.status) 
+                        };
+                    });
+                }
+                if(tickets && tickets.pending_ticket.length > 0){
+                    if (!userSessions[senderId].tickets) {
+                        userSessions[senderId].tickets = {};
+                    }
+                    userSessions[senderId].tickets.pending_ticket = tickets.pending_ticket.map((t) => {
+                        return {
+                            ...t, 
+                            status_text: getStatusText(t.status) 
+                        };
+                    });
+                    sendViewMyActiveTicket(senderId);
+                    return;
+                }
+                // userSessions[senderId].step = "report_or_follow_up";
+                // sendReportOrFollowUp(senderId);
+                userSessions[senderId].step = "provide_brownout_address";
+                sendMessage(senderId, "Please provide the following details: \n\nSitio/Street/Zone\nBarangay\nMunicipality");
+            })();
+            
+            // sendReportConfirmIssue(senderId);
+            break;
+        case "SAVE_ACCOUNT":
+            (async () => {
+                if(userSessions[senderId].accounts.length >= max_accounts){
+                    sendMessage(senderId, "You cannot add more accounts. The limit has been reached.");
+                    sendFinalMenu(senderId);
+                }else{
+                    saveAccount(senderId,userSessions[senderId].account);
+                    userSessions[senderId] = await getUserWithAccounts(senderId);
+                    sendFinalMenu(senderId);
+                }
+            })();
+            break;
+        case "DONT_SAVE":
+            sendFinalMenu(senderId);
+            break;
+        case "REPORT_BROWNOUT_OPTION":
+           
+            // if(!userSessions[senderId].brownout_details){
+            //     userSessions[senderId].brownout_details = { name : userSessions[senderId].name }
+            // }else{
+            //     userSessions[senderId].brownout_details.name = userSessions[senderId].name
+            // }
+            userSessions[senderId].step = "provide_brownout_address";
+            sendMessage(senderId, "Please provide the following details: \n\nSitio/Street/Zone\nBarangay\nMunicipality");
+            break;
+        case "VIEW_ACTIVE_TICKET":
+            const activeTicket = userSessions[senderId].tickets.pending_ticket[0]
+            sendMessage(senderId, `Ticket No.: \nABC123\n\nContact Information: \n${activeTicket.name}\n${activeTicket.mobile}\n\nAddress: \n${activeTicket.address}\n\nMessage: \n${activeTicket.message}\n\nStatus: \n${activeTicket.status_text}`);
+            break;
+        case "VIEW_TICKET_HISTORY":
+            const ticketHistory = userSessions[senderId].tickets.ticket_history
+            if(ticketHistory && ticketHistory.length > 0){
+                ticketHistory.slice(0, 3).forEach(history => {
+                    sendMessage(senderId, `Ticket No.: \nABC123\n\nContact Information: \n${history.name}\n${history.mobile}\n\nAddress: \n${history.address}\n\nMessage: \n${history.message}\n\nStatus: \n${history.status_text}`);
+                });
+            }else{
+                sendMessage(senderId,"No ticket history found")
+            }
+            
             break;
         default:
             sendMessage(senderId, "Sorry, I didn't understand that action.");
@@ -391,12 +580,14 @@ function handlePostback(senderId, payload) {
 // Handle user responses based on the step they are in
 async function handleUserMessage(senderId, message,category) {
     // Ensure that the user session exists
-    if (!userSessions[senderId]) {
-        userSessions[senderId] = { step: "main_menu" }; // Initialize the session with 'main_menu'
+    if (!userSessions[senderId].step) {
+        userSessions[senderId] = { step: "main_menu" }; 
+    }
+    if (!userSessions[senderId].attempts) {
         userSessions[senderId].attempts = 0;
     }
     console.log(`Handling message for sender: ${senderId}, category: ${category}`);
-
+    
     switch (userSessions[senderId].step) {
         case 'main_menu':
             if (category === "bill_inquiry") {
@@ -418,7 +609,7 @@ async function handleUserMessage(senderId, message,category) {
                 .then((isValid) => {
                     if (isValid == true) {
                         userSessions[senderId].step = "ask_account_name";
-                        sendMessage(senderId, "Please provide your account name.");
+                        sendMessage(senderId, "Please enter your account name.");
                     } else {
                         userSessions[senderId].attempts += 1
                         sendMessage(senderId,"Sorry, the account number you provided is invalid. Please try again.");
@@ -443,35 +634,47 @@ async function handleUserMessage(senderId, message,category) {
             validateAccountName(message, senderId)
             .then((isValid) => {
                 if (isValid == true) {
-                    var content = ''
-                    getBalance(senderId)
-                    .then((data) => {
-                        if(data && data.length > 0){
-                            content = `Your unpaid power bill(s): \n\n`
+                   
+                    showBalanceOrPayment(senderId);
+                    // getBalance(senderId)
+                    // .then((data) => {
+                    //     const unPaidBills = data.filter((item) => item.paid == 'No')
+                    //     const payments = data.filter((item) => item.paid == 'Yes')
+                    //     if(unPaidBills && unPaidBills.length > 0 && userSessions[senderId].bill){
+                    //         content = `Your unpaid power bill(s): \n\n`
+                    //         unPaidBills.forEach(bill => {
+                    //             var formatted_date = new Date(bill.dfdue).toLocaleDateString("en-US")
+                    //             content += `Bill Month: ${bill.billmo} ${bill.billyear}\nAmount Due: PHP ${bill.total}\nDue Date: ${formatted_date} \n\n`
+                    //         });
+                    //         content += "Enjoy FAST, SECURE & HASSLE-FREE payments through mobile applications and collection centers that are within your reach like GCash, Maya, Land Bank, ECPay & Bayad Center Authorized Payment Partners. Click this link https://www.casureco1.com/#online-payment to see the list of authorized payment partners.\n\n If you already paid your bill, please ignore this message."
+                    //     }else if(unPaidBills && unPaidBills.length == 0 && userSessions[senderId].bill){
+                    //         content = "There are no unpaid power bills on record\n\nYou may view your bills and payments through CASURECO 1 Mobile Application. To download the app click the link https://bit.ly/42bvJ83.";
+                    //     }
 
-                            data.forEach(bill => {
-                                var formatted_date = new Date(bill.dfdue).toLocaleDateString("en-US")
-                                content += `Bill Month: ${bill.billmo} ${bill.billyear}\nAmount Due: PHP ${bill.total}\nDue Date: ${formatted_date} \n\n`
-                            });
-                            content += "Enjoy FAST, SECURE & HASSLE-FREE payments through mobile applications and collection centers that are within your reach like GCash, Maya, Land Bank, ECPay & Bayad Center Authorized Payment Partners. Click this link https://www.casureco1.com/#online-payment to see the list of authorized payment partners.\n\n If you already paid your bill, please ignore this message."
-                        }else{
-                            content = "There are no unpaid power bills on record\n\nYou may view your bills and payments through CASURECO 1 Mobile Application. To download the app click the link https://bit.ly/42bvJ83.";
-                        }
-                        sendMessage(senderId,content);
-                        userSessions[senderId].step = 'done'
-                    })
-                    .catch((error) => {
-                        content = "Error occurred while getting the balance"
-                        sendMessage(senderId,content);
-                        console.error(
-                            "Error occurred while getting the balance:",
-                            error
-                        );
-                    }).finally(() => {
-                        setTimeout(() => {
-                            sendFinalMenu(senderId);
-                        }, 1000);
-                    });
+                    //     if(payments && payments.length > 0 && userSessions[senderId].payment){
+                    //         content = `Your payment history for the last 3 months: \n\n`
+                    //         payments.slice(0, 3).forEach(payment => {
+                    //             var formatted_date = new Date(payment.dfpaid).toLocaleDateString("en-US")
+                    //             content += `Bill Month: ${payment.billmo} ${payment.billyear}\nDate Paid: ${formatted_date}\nAmount Paid: PHP ${payment.total}\nReference No.: ${payment.cfreferenc} \n\n`
+                    //         });
+                    //     }else if(payments && payments.length == 0 && userSessions[senderId].payment){
+                    //         content = "There are no payments on record\n\nYou may view your bills and payments through CASURECO 1 Mobile Application. To download the app click the link https://bit.ly/42bvJ83.";
+                    //     }
+
+                    //     sendMessage(senderId,content);
+                    //     setTimeout(() => {
+                    //         sendFinalMenu(senderId);
+                    //     }, 1000);
+                    //     // userSessions[senderId].step = 'done'
+                    // })
+                    // .catch((error) => {
+                    //     content = "Error occurred while getting the balance"
+                    //     sendMessage(senderId,content);
+                    //     console.error(
+                    //         "Error occurred while getting the balance:",
+                    //         error
+                    //     );
+                    // })
                 } else {
                     sendMessage(senderId,"Sorry, the account name you provided is invalid. Account name must be exactly the same with the Billing Notice or Receipt. Please try again.");
                     // sendMessageWithImage(senderId,"https://crucial-whale-dear.ngrok-free.app/account_name.webp");
@@ -521,34 +724,35 @@ async function handleUserMessage(senderId, message,category) {
                         break;
                     }
                     userSessions[senderId].step = "verified";
-                    var content = ''
-                    getBalance(senderId)
-                    .then((data) => {
-                        if(data && data.length > 0){
-                            content = `Your unpaid power bill(s): \n\n`
+                    showBalanceOrPayment(senderId);
+                    // var content = ''
+                    // getBalance(senderId)
+                    // .then((data) => {
+                    //     if(data && data.length > 0){
+                    //         content = `Your unpaid power bill(s): \n\n`
 
-                            data.forEach(bill => {
-                                var formatted_date = new Date(bill.dfdue).toLocaleDateString("en-US")
-                                content += `Bill Month: ${bill.billmo} ${bill.billyear}\nAmount Due: PHP ${bill.total}\nDue Date: ${formatted_date} \n\n`
-                            });
-                            content += "Enjoy FAST, SECURE & HASSLE-FREE payments through mobile applications and collection centers that are within your reach like GCash, Maya, Land Bank, ECPay & Bayad Center Authorized Payment Partners. Click this link https://www.casureco1.com/#online-payment to see the list of authorized payment partners.\n\n If you already paid your bill, please ignore this message."
-                        }else{
-                            content = "There are no unpaid power bills on record\n\nYou may view your bills and payments through CASURECO 1 Mobile Application. To download the app click the link https://bit.ly/42bvJ83.";
-                        }
-                        sendMessage(senderId,content);
-                    })
-                    .catch((error) => {
-                        content = "Error occurred while getting the balance"
-                        sendMessage(senderId,content);
-                        console.error(
-                            "Error occurred while getting the balance:",
-                            error
-                        );
-                    }).finally(() => {
-                        setTimeout(() => {
-                            sendFinalMenu(senderId);
-                        }, 1000);
-                    });
+                    //         data.forEach(bill => {
+                    //             var formatted_date = new Date(bill.dfdue).toLocaleDateString("en-US")
+                    //             content += `Bill Month: ${bill.billmo} ${bill.billyear}\nAmount Due: PHP ${bill.total}\nDue Date: ${formatted_date} \n\n`
+                    //         });
+                    //         content += "Enjoy FAST, SECURE & HASSLE-FREE payments through mobile applications and collection centers that are within your reach like GCash, Maya, Land Bank, ECPay & Bayad Center Authorized Payment Partners. Click this link https://www.casureco1.com/#online-payment to see the list of authorized payment partners.\n\n If you already paid your bill, please ignore this message."
+                    //     }else{
+                    //         content = "There are no unpaid power bills on record\n\nYou may view your bills and payments through CASURECO 1 Mobile Application. To download the app click the link https://bit.ly/42bvJ83.";
+                    //     }
+                    //     sendMessage(senderId,content);
+                    // })
+                    // .catch((error) => {
+                    //     content = "Error occurred while getting the balance"
+                    //     sendMessage(senderId,content);
+                    //     console.error(
+                    //         "Error occurred while getting the balance:",
+                    //         error
+                    //     );
+                    // }).finally(() => {
+                    //     setTimeout(() => {
+                    //         sendFinalMenu(senderId);
+                    //     }, 1000);
+                    // });
                     
                 } else {
                     sendOTPMessage(
@@ -601,14 +805,18 @@ async function handleUserMessage(senderId, message,category) {
         case "ask_if_billinquiry":
             if(answers.includes(message.toLowerCase().trim())){
                 userSessions[senderId].step = "ask_account";
-                sendMessage(senderId, "Thank you for your confirmation. Please provide your 8-digit account number.");
+                sendMessage(senderId, "Thank you for your confirmation. Please enter your 8-digit account number.");
             }
             break;
         case "ask_if_power_interruption":
            if(answers.includes(message.toLowerCase().trim())){
-                userSessions[senderId].step = "entire_home_without_power";
-                userSessions[senderId].report_data = {};
-                sendMessage(senderId, "Thank you for your confirmation. Is your entire home without power?");
+                // userSessions[senderId].step = "entire_home_without_power";
+                // userSessions[senderId].report_data = {};
+                // sendMessage(senderId, "Thank you for your confirmation. Is your entire home without power?");
+                // userSessions[senderId].step = "report_or_follow_up";
+                // sendReportOrFollowUp(senderId);
+                userSessions[senderId].step = "provide_brownout_address";
+                sendMessage(senderId, "Please provide the following details: \n\nSitio/Street/Zone\nBarangay\nMunicipality");
             }
             break;
         case "entire_home_without_power":
@@ -646,6 +854,34 @@ async function handleUserMessage(senderId, message,category) {
             break;
         case "enter_barangay":
             const foundBarangay = barangays.filter(mun => mun.name.toLowerCase() == message.toLowerCase())
+            
+            break;
+        case "provide_brownout_address":
+            console.log(message);
+            const address = message.replace(/\n/g, ', ');
+            userSessions[senderId].brownout_details.address = address
+            userSessions[senderId].step = "provide_brownout_mobile";
+            sendShareNumber(senderId);
+            // sendMessage(senderId,"Please enter your mobile number");
+            break;
+        case "provide_brownout_mobile":
+            
+            if(!validateMobileNumber(message)){
+                sendMessage(senderId,"Invalid Mobile Number. Please try again.");
+                break;
+            }
+            userSessions[senderId].brownout_details.mobile = message
+            if(!userSessions[senderId].brownout_details.message){
+                sendMessage(senderId,"Please enter your message");
+                userSessions[senderId].step = "provide_brownout_message";
+            }
+            console.log(userSessions[senderId].brownout_details);
+            break;
+        case "provide_brownout_message":
+            userSessions[senderId].brownout_details.message = message
+            console.log(userSessions[senderId].brownout_details);
+            submitBrownoutReport(senderId);
+
             
             break;
         default:
@@ -707,22 +943,18 @@ async function getUserProfile(senderId) {
     try {
       const response = await axios.get(`https://graph.facebook.com/v16.0/${senderId}`, {
         params: {
-          fields: 'first_name',
+          fields: 'first_name,name',
           access_token: process.env.PAGE_ACCESS_TOKEN
         }
       });
       return response.data; // Contains first_name and last_name
     } catch (error) {
-      console.error('Error fetching user profile:', error.response.data);
+      console.error('Error ing user profile:', error.response.data);
       return null;
     }
   }
 // Function to send the main menu with Bill Inquiry option
 async function sendMainMenu(senderId) {
-
-    const user = await getUserProfile(senderId);
-    const first_name = user ? user.first_name : '';
-
     const messageData = {
         recipient: { id: senderId },
         message: {
@@ -730,21 +962,21 @@ async function sendMainMenu(senderId) {
                 type: "template",
                 payload: {
                     template_type: "button",
-                    text: `Hi ${first_name}! How can I assist you today?`,
+                    text: `Hi ${userSessions[senderId].first_name}! How can I assist you today?`,
                     buttons: [{
                             type: "postback",
                             title: "Bills & Payments",
-                            payload: "BILLS_PAYMENTS",
+                            payload: "MAIN_MENU_OPTION_1",
                         },
                         {
                             type: "postback",
-                            title: "Brownout or Incident",
-                            payload: "REPORT_AN_OUTAGE",
+                            title: "Brownout",
+                            payload: "MAIN_MENU_OPTION_2",
                         },
                         {
                             type: "postback",
                             title: "Account Concern",
-                            payload: "ACCOUNT_CONCERN",
+                            payload: "MAIN_MENU_OPTION_3",
                         },
                     ],
                 },
@@ -913,7 +1145,7 @@ function sendFinalMenu(senderId) {
                     buttons: [{
                             type: "postback",
                             title: "YES",
-                            payload: "YES_ANOTHER_CONCERN",
+                            payload: "MAIN_MENU",
                         },
                         {
                             type: "postback",
@@ -1060,6 +1292,7 @@ function sendMunicipalityMenu(senderId) {
 
     callSendAPI(messageData);
 }
+
 function getQuickReplies(data, startIndex = 0, limit = 12) {
     // Get items between `startIndex` and `startIndex + limit`
     const slicedItems = data.slice(startIndex, startIndex + limit);
@@ -1093,6 +1326,313 @@ function sendBarangayMenu(senderId,quickReplies) {
     };
 
     callSendAPI(messageData);
+}
+function showExistingAccount(senderId){
+    // const accno = userSessions[senderId].account.cfrotcode + '-' + userSessions[senderId].account.cfacctno;
+
+    const quickReplies = userSessions[senderId].accounts.map(account => {
+        return {
+            content_type: "text",
+            title: account.cfrotcode+'-'+account.cfacctno,
+            payload: "account_"+account.cfcodeno
+        };
+    });
+    console.log(quickReplies);
+    const messageData = {
+        recipient: { id: senderId },
+        message: {
+            "text": "Please enter your 8-digit account number or select a saved account below",
+            quick_replies: quickReplies
+        },
+    };
+
+    callSendAPI(messageData);
+}
+function showBalanceOrPayment(senderId){
+    var content = ''
+    getBalance(senderId)
+        .then((data) => {
+            const unPaidBills = data.filter((item) => item.paid == 'No')
+            const payments = data.filter((item) => item.paid == 'Yes')
+            if(unPaidBills && unPaidBills.length > 0 && userSessions[senderId].bill){
+                content = `Your unpaid power bill(s): \n\n`
+                unPaidBills.forEach(bill => {
+                    var formatted_date = new Date(bill.dfdue).toLocaleDateString("en-US")
+                    content += `Bill Month: ${bill.billmo} ${bill.billyear}\nAmount Due: PHP ${bill.total}\nDue Date: ${formatted_date} \n\n`
+                });
+                content += "Enjoy FAST, SECURE & HASSLE-FREE payments through mobile applications and collection centers that are within your reach like GCash, Maya, Land Bank, ECPay & Bayad Center Authorized Payment Partners. Click this link https://www.casureco1.com/#online-payment to see the list of authorized payment partners.\n\n If you already paid your bill, please ignore this message."
+            }else if(unPaidBills && unPaidBills.length == 0 && userSessions[senderId].bill){
+                content = "There are no unpaid power bills on record\n\nYou may view your bills and payments through CASURECO 1 Mobile Application. To download the app click the link https://bit.ly/42bvJ83.";
+            }
+
+            if(payments && payments.length > 0 && userSessions[senderId].payment){
+                content = `Your payment history for the last 3 months: \n\n`
+                payments.slice(0, 3).forEach(payment => {
+                    var formatted_date = new Date(payment.dfpaid).toLocaleDateString("en-US")
+                    content += `Bill Month: ${payment.billmo} ${payment.billyear}\nDate Paid: ${formatted_date}\nAmount Paid: PHP ${payment.total}\nReference No.: ${payment.cfreferenc} \n\n`
+                });
+                content += "Enjoy FAST, SECURE & HASSLE-FREE payments through mobile applications and collection centers that are within your reach like GCash, Maya, Land Bank, ECPay & Bayad Center Authorized Payment Partners. Click this link https://www.casureco1.com/#online-payment to see the list of authorized payment partners.\n\n If you already paid your bill, please ignore this message."
+            }else if(payments && payments.length == 0 && userSessions[senderId].payment){
+                content = "There are no payments on record\n\nYou may view your bills and payments through CASURECO 1 Mobile Application. To download the app click the link https://bit.ly/42bvJ83.";
+            }
+
+            userSessions[senderId].bill = 0;
+            userSessions[senderId].payment = 0;
+            (async () => {
+                await sendMessage(senderId,content);
+
+                const account = userSessions[senderId].accounts.find(acc => acc.cfcodeno === userSessions[senderId].account.cfcodeno);
+                if(!account || userSessions[senderId].accounts.length == 0){
+                    setTimeout(() => {
+                        sendSaveAccountForFutureUse(senderId);
+                    }, 1000);
+                }else{
+                    setTimeout(() => {
+                        sendFinalMenu(senderId);
+                    }, 1000);
+                }
+            })();
+
+            // userSessions[senderId].step = 'done'
+        })
+        .catch((error) => {
+            content = "Error occurred while getting the balance"
+            sendMessage(senderId,content);
+            console.error(
+                "Error occurred while getting the balance:",
+                error
+            );
+        })
+}
+function sendSaveAccountForFutureUse(senderId){
+    const messageData = {
+        recipient: { id: senderId },
+        message: {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "button",
+                    text: "Do you want to save this account for future use?",
+                    buttons: [{
+                            type: "postback",
+                            title: "Yes, Save it!",
+                            payload: "SAVE_ACCOUNT",
+                        },
+                        {
+                            type: "postback",
+                            title: "No, Thank you.",
+                            payload: "DONT_SAVE",
+                        },
+                    ],
+                },
+            },
+        },
+    };
+
+    callSendAPI(messageData);
+}
+function sendReportOrFollowUp(senderId){
+    const messageData = {
+        recipient: { id: senderId },
+        message: {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "button",
+                    text: "Please choose from the options below:",
+                    buttons: [{
+                            type: "postback",
+                            title: "Report A Brownout",
+                            payload: "REPORT_BROWNOUT_OPTION",
+                        },
+                        {
+                            type: "postback",
+                            title: "Follow up My Report",
+                            payload: "FOLLOW_UP_OPTION",
+                        },
+                        // {
+                        //     type: "postback",
+                        //     title: "Back to Previous Menu",
+                        //     payload: "MAIN_MENU",
+                        // },
+                    ],
+                },
+            },
+        },
+    };
+
+    callSendAPI(messageData);
+}
+
+function sendBrownoutOptions_bak(senderId){
+    const quickReplies = brownout_options.map(option => {
+        return {
+            content_type: "text",
+            title: option.value,
+            payload: option.value // Convert spaces to underscores and make it uppercase for payload
+        };
+    });
+    const txtOptions = brownout_options.map(option => {
+        return `\n${option.value}. ${option.text}`;
+    });
+
+    const messageData = {
+        recipient: { id: senderId },
+        message: {
+            "text": `Please from the options below: \n${txtOptions}`,
+            quick_replies: quickReplies
+        },
+    };
+
+    callSendAPI(messageData);
+}
+function sendBrownoutOptions(senderId){
+    const quickReplies = brownout_options.map(option => {
+        return {
+            content_type: "text",
+            title: option.value,
+            payload: option.value // Convert spaces to underscores and make it uppercase for payload
+        };
+    });
+    const txtOptions = brownout_options.map(option => {
+        return `\n${option.value}. ${option.text}`;
+    });
+
+    const messageData = {
+        recipient: { id: senderId },
+        message: {
+            "text": `Please from the options below: \n${txtOptions}`,
+            quick_replies: quickReplies
+        },
+    };
+
+    callSendAPI(messageData);
+}
+function sendShareNumber(senderId) {
+    
+    const messageData = {
+        recipient: { id: senderId },
+        message: {
+            "text": "Please share your mobile number",
+            quick_replies: [
+                {
+                    "content_type": "user_phone_number"
+                }
+            ]
+        },
+    };
+
+    callSendAPI(messageData);
+}
+
+function submitBrownoutReport(senderId){
+    const curr_datetime = new Date();
+    const formData = {
+        created_at: curr_datetime.toISOString(),
+        name: userSessions[senderId].brownout_details.name,
+        address: userSessions[senderId].brownout_details.address,
+        mobile: userSessions[senderId].brownout_details.mobile,
+        latitude: '',
+        longitude: '',
+        message: userSessions[senderId].brownout_details.message,
+        uuid: userSessions[senderId].brownout_details.id.toString()
+        // uuid: "1231234567"
+    }
+
+    axios.post(`${process.env.TICKET_API}/ticket/create`, formData)
+        .then((response) => {
+            if(response.status == 200){
+                sendBrownoutReportSummary(senderId);
+                setTimeout(() => {
+                    sendFinalMenu(senderId);
+                }, 1000);
+            }
+        })
+        .catch((error) => {
+            console.log(error.response)
+            switch (error.response.status) {
+                case 409:
+                    sendMessage(senderId,error.response.data.detail);
+                    break;
+                default:
+                    sendMessage(senderId,"There was an error occurred. Please try again");
+                    break;
+            }
+            
+        })
+
+}
+
+function sendBrownoutReportSummary(senderId){
+    const summary_data = userSessions[senderId].brownout_details
+    const messageText = `Thank you! Your brownout report has been submitted.\n\nHere is your summary report:\n\nContact Information: \n${summary_data.name}\n${summary_data.mobile}\n\nAddress: \n${summary_data.address}\n\nMessage: \n${summary_data.message}\n\nTicket No. \nABC20250307`;
+    const messageData = {
+        recipient: { id: senderId },
+        message: { text: messageText },
+    };
+
+    callSendAPI(messageData);
+}
+
+async function getMyTickets(senderId) {
+    try {
+        const response = await axios.get(`${process.env.TICKET_API}/ticket/get_my_ticket/${senderId}`);
+        console.log(response.data)
+        return response.data; 
+    } catch (error) {
+        console.error(error.response);
+        return false;  
+    }
+}
+
+function sendViewMyActiveTicket(senderId) {
+    const messageData = {
+        recipient: { id: senderId },
+        message: {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "button",
+                    text: "You have an active ticket. Click here to view the details.",
+                    buttons: [{
+                            type: "postback",
+                            title: "View Active Ticket",
+                            payload: "VIEW_ACTIVE_TICKET",
+                        },
+                        {
+                            type: "postback",
+                            title: "View Ticket History",
+                            payload: "VIEW_TICKET_HISTORY",
+                        }
+                    ],
+                },
+            },
+        },
+    };
+
+    callSendAPI(messageData);
+}
+function getStatusText(status) {
+    switch (status) {
+        case 0: return "OPEN";
+        case 1: return "ACKNOWLEDGE";
+        case 2: return "TROUBLESHOOTING";
+        case 3: return "RESOLVED";
+        case 4: return "CLOSED";
+        default: return "UNKNOWN";
+    }
+}
+
+function validateMobileNumber(mobile) {
+    // Remove spaces and dashes (optional formatting characters)
+    mobile = mobile.replace(/[\s-+]/g, "");
+    // Convert +63 to 0 if it starts with +63
+    if (mobile.startsWith("63")) {
+        mobile = "0" + mobile.slice(2);
+    }
+    // Validate that it follows the 11-digit PH mobile format
+    const regex = /^09\d{9}$/;
+    return regex.test(mobile) ? true : false;
 }
 
 const PORT = 3000;

@@ -571,7 +571,7 @@ function handlePostback(senderId, payload) {
             
             break;
         default:
-            sendMessage(senderId, "Sorry, I didn't understand that action.");
+            // sendMessage(senderId, "Sorry, I didn't understand that action.");
             break;
     }
 }

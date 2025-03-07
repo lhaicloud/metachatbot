@@ -571,6 +571,9 @@ function handlePostback(senderId, payload) {
             
             break;
         default:
+            if(!userSessions[senderId].step){
+                sendMainMenu(senderId);
+            }
             // sendMessage(senderId, "Sorry, I didn't understand that action.");
             break;
     }

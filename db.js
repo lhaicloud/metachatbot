@@ -5,7 +5,7 @@ const pool = mysql.createPool({
   host: '10.2.2.1',      // Change to your MySQL host
   user: 'root',           // Your MySQL username
   password: 'casurecoapp8080', // Your MySQL password
-  database: 'metachatbot', // Your database name
+  database: 'e_services', // Your database name
   waitForConnections: true,
   connectionLimit: 10,    // Max connections in pool
   queueLimit: 0
@@ -135,6 +135,25 @@ export async function saveAccount(userid, account) {
         }
     } catch (err) {
         console.error('Error inserting account:', err.message);
+        throw err;
+    }
+}
+export async function removeAccount(userid, account) {
+    try {
+        const [result] = await pool.execute(
+            `DELETE FROM useraccounts WHERE userid = ? AND cfcodeno = ?`,
+            [userid, account.cfcodeno]
+        );
+
+        if (result.affectedRows > 0) {
+            console.log(`Account removed successfully for user ID ${userid}.`);
+            return true;
+        } else {
+            console.log(`No matching account found to remove for user ID ${userid}.`);
+            return false;
+        }
+    } catch (err) {
+        console.error('Error deleting account:', err.message);
         throw err;
     }
 }

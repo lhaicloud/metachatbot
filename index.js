@@ -7,7 +7,9 @@ import dotenv from 'dotenv';
 import { categorizeMessage } from './categorize.js';
 const fuzz = await import('fuzzball');
 import fs from 'fs';
-import { insertUserSession, getUserWithAccounts, getUsers, markPrivacyPolicySeen, markPrivacyPolicyAgree, saveAccount  } from './db.js';
+import { insertUserSession, getUserWithAccounts, getUsers, markPrivacyPolicySeen, markPrivacyPolicyAgree, saveAccount, removeAccount  } from './db.js';
+import Fuse from 'fuse.js';
+import CryptoJS from 'crypto-js';
 
 // import { insertUserSession, getUserWithAccounts, getAllSessions, markPrivacyPolicySeen, markPrivacyPolicyAgree ,deleteUserSession, deleteTable, saveAccount } from './sqlite.js';
 
@@ -17,8 +19,8 @@ console.log(await getUsers());
 //     console.log(user)
 // })
 
-const max_attempts = 5
-const max_accounts = 3
+const max_attempts = process.env.MAX_ATTEMPTS ? parseInt(process.env.MAX_ATTEMPTS) : 5;
+const max_accounts = process.env.MAX_ACCOUNTS ? parseInt(process.env.MAX_ACCOUNTS) : 3;
 dotenv.config();
 
 const app = express();
@@ -42,6 +44,7 @@ const answers = ['yes','oo','opo','yeah','yep','yup','sure','okay','alright','ab
 var psgcData = []
 var municipalities = []
 var barangays = []
+var coordinates = []
 const brownout_options = [
     {
         text: "No Power (Entire Home)", 
@@ -115,6 +118,7 @@ app.post("/webhook", (req, res) => {
                     
                     const user = await getUserProfile(senderId);
                     userSessions[senderId].first_name = user ? user.first_name : '';
+                    userSessions[senderId].name = user ? user.name : '';
                     const userName = user ? user.name : '';
                     const userID = user ? user.id : '';
                     if(!userSessions[senderId].brownout_details){
@@ -159,14 +163,47 @@ app.post("/webhook", (req, res) => {
                         
                     }else if(webhookEvent.message && webhookEvent.message.quick_reply){ // Check if it's a quick message
                         const payload = webhookEvent.message.quick_reply.payload;
-                        console.log(payload)
-                        console.log(userSessions[senderId])
+                        // console.log(payload)
+                        // console.log(userSessions[senderId])
                         if(payload.startsWith('account_')){
                             const cfcodeno = payload.split("_")[1];
                             const selectedAccount = userSessions[senderId].accounts.filter( acc => acc.cfcodeno == cfcodeno)[0];
-                            userSessions[senderId].account = selectedAccount
-                            showBalanceOrPayment(senderId);
+                            if(userSessions[senderId].step == 'ask_account'){
+                                userSessions[senderId].account = selectedAccount
+                                showBalanceOrPayment(senderId);
+                            }
+                            if(userSessions[senderId].step == 'remove_saved_account'){
+                               (async () => {
+                                    const success = await removeAccount(senderId, selectedAccount);
+                                    if (success) {
+                                        sendMessage(senderId, `The account ${selectedAccount.cfrotcode}-${selectedAccount.cfacctno} has been successfully removed.`);
+                                    } else {
+                                        sendMessage(senderId, `Failed to remove the account ${selectedAccount.cfrotcode}-${selectedAccount.cfacctno}.`);
+                                    }
+                                    userSessions[senderId] = await getUserWithAccounts(senderId);
+                                    await sendFinalMenu(senderId);
+                                })();
+                                
+                            }
                             return;
+                        }
+                        if(payload.startsWith('+63') || payload.startsWith('63')){
+                            var mobile = payload
+                            if (mobile.startsWith("+63")) {
+                                mobile = "0" + mobile.slice(3);
+                            }else if (mobile.startsWith("63")) {
+                                mobile = "0" + mobile.slice(2);
+                            }
+                            userSessions[senderId].mobile = mobile
+
+                            if(userSessions[senderId].step == 'ask_mobile_number'){
+                                const encryptedBase64  = encryptMessengerId(senderId, process.env.APP_AES_KEY);
+                                const queryParamValue = encodeURIComponent(encryptedBase64);
+                                const name = encodeURIComponent(userSessions[senderId].name);
+                                const mobile = encodeURIComponent(userSessions[senderId].mobile);
+                                sendMessage(senderId, `To proceed, Please click the link provided below:\n\nhttps://eservices.casureco1.com/report-brownout?token=${queryParamValue}&name=${name}&mobile=${mobile}`);
+                            
+                            }
                         }
                         if(userSessions[senderId].step == 'provide_brownout_mobile'){
                             var mobile = payload
@@ -180,10 +217,10 @@ app.post("/webhook", (req, res) => {
                                 userSessions[senderId].step = "provide_brownout_message";
                                 sendMessage(senderId,"Please enter your message");
                             }else{
-                                sendBrownoutReportSummary(senderId);
-                                setTimeout(() => {
-                                    sendFinalMenu(senderId);
-                                }, 1000);
+                                (async () => {
+                                    await sendBrownoutReportSummary(senderId);
+                                    await sendFinalMenu(senderId);
+                                })
                             }
                         }
                     }
@@ -249,8 +286,8 @@ async function setupPersistentMenu(){
                     },
                     {
                         type: "postback",
-                        title: "Apply for New Connection",
-                        payload: "APPLY_NEW_CONNECTION"
+                        title: "Apply for Connection",
+                        payload: "APPLY_CONNECTION"
                     },
                     {
                         type: "web_url",
@@ -277,17 +314,19 @@ async function setupPersistentMenu(){
 }
 
 
-function callSendAPI(messageData){
-    axios
+function callSendAPI(messageData) {
+    return axios
         .post(
             `https://graph.facebook.com/v21.0/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
             messageData
         )
         .then((response) => {
             console.log("Sent:", response.data);
+            return response.data;
         })
         .catch((error) => {
             console.error("Error:", error);
+            throw error;
         });
 }
 async function showPrivacyPolicy(senderId){
@@ -350,6 +389,31 @@ function getPSGC() {
       });
     });
 }
+function getBrgyWithCoordinates() {
+    return new Promise((resolve, reject) => {
+      // Read the JSON file asynchronously
+      fs.readFile('coordinates.json', 'utf8', (err, data) => {
+        if (err) {
+          reject('Error reading the file:', err);
+          return;
+        }
+  
+        try {
+          // Parse the JSON data
+          var coordParsedData = JSON.parse(data);
+  
+          // Check if municipalities list exists
+          if (coordParsedData) {
+            resolve(coordParsedData);
+          } else {
+            reject('No coordinates data found');
+          }
+        } catch (parseError) {
+          reject('Error parsing JSON:', parseError);
+        }
+      });
+    });
+}
 
 function preprocessMessage(message) {
     message = message.toLowerCase();
@@ -376,11 +440,11 @@ function showBillorPayment(senderId){
                             title: "Payment History",
                             payload: "PAYMENT_HISTORY",
                         },
-                        // {
-                        //     type: "postback",
-                        //     title: "Back to Previous Menu",
-                        //     payload: "MAIN_MENU",
-                        // },
+                        {
+                            type: "postback",
+                            title: "Remove Saved Account",
+                            payload: "REMOVE_SAVED_ACCOUNT",
+                        },
                     ],
                 },
             },
@@ -403,6 +467,9 @@ function handlePostback(senderId, payload) {
         case "VIEW_BILLS_PAYMENTS":
             showBillorPayment(senderId);
             break;
+        case "APPLY_CONNECTION":
+            sendMessage(senderId, "To proceed, Please click the link provided below:\n\nhttps://eservices.casureco1.com/new-connection-application");
+            break;
         case "BILL_DETAILS":
             userSessions[senderId].bill = 1;
             userSessions[senderId].step = "ask_account";
@@ -411,7 +478,6 @@ function handlePostback(senderId, payload) {
                 showExistingAccount(senderId);
                 break;
             }
-            
             
             sendMessage(senderId, "Please enter your 8-digit account number.");
             break;
@@ -483,7 +549,8 @@ function handlePostback(senderId, payload) {
             break;
         case "ASK_MOBILE_NUMBER":
             userSessions[senderId].step = "ask_mobile_number";
-            sendMessage(senderId, "Please enter your mobile number");
+            sendShareNumber(senderId);
+            sendMessage(senderId, "Please enter or select your mobile number");
             break;
         case "ASK_EMAIL_ADDRESS":
             userSessions[senderId].step = "ask_email_address";
@@ -522,21 +589,31 @@ function handlePostback(senderId, payload) {
                     sendViewMyActiveTicket(senderId);
                     return;
                 }
-                // userSessions[senderId].step = "report_or_follow_up";
-                // sendReportOrFollowUp(senderId);
-                userSessions[senderId].step = "provide_brownout_address";
-                sendMessage(senderId, "Please provide the following details: \n\nSitio/Street/Zone\nBarangay\nMunicipality");
+                userSessions[senderId].step = 'ask_mobile_number';
+                sendShareNumber(senderId);
+                
+                // userSessions[senderId].step = "provide_brownout_address";
+                // sendMessage(senderId, "Please provide the following details: \n\nSitio/Street/Zone\nBarangay\nMunicipality");
             })();
             
             // sendReportConfirmIssue(senderId);
             break;
+        case "MAIN_MENU_OPTION_3":
+            sendApplicationMenu(senderId);
+            break;
+        case "NEW_APPLICATION":
+            sendMessage(senderId, "To proceed, Please click the link provided below:\n\nhttps://eservices.casureco1.com/new-connection-application");
+            break;
+        case "FOLLOW_UP_APPLICATION":
+            sendMessage(senderId, "To proceed, Please click the link provided below:\n\nhttps://eservices.casureco1.com/existing-application");
+            break;
         case "SAVE_ACCOUNT":
             (async () => {
                 if(userSessions[senderId].accounts.length >= max_accounts){
-                    sendMessage(senderId, "You cannot add more accounts. The limit has been reached.");
+                    await sendMessage(senderId, "You cannot add more accounts. The limit has been reached.");
                     sendFinalMenu(senderId);
                 }else{
-                    saveAccount(senderId,userSessions[senderId].account);
+                    await saveAccount(senderId,userSessions[senderId].account);
                     userSessions[senderId] = await getUserWithAccounts(senderId);
                     sendFinalMenu(senderId);
                 }
@@ -552,8 +629,15 @@ function handlePostback(senderId, payload) {
             // }else{
             //     userSessions[senderId].brownout_details.name = userSessions[senderId].name
             // }
-            userSessions[senderId].step = "provide_brownout_address";
-            sendMessage(senderId, "Please provide the following details: \n\nSitio/Street/Zone\nBarangay\nMunicipality");
+
+            const encryptedBase64  = encryptMessengerId(senderId, process.env.APP_AES_KEY);
+            const queryParamValue = encodeURIComponent(encryptedBase64);
+            const name = encodeURIComponent(userSessions[senderId].name);
+            sendMessage(senderId, `To proceed, Please click the link provided below:\n\nhttps://eservices.casureco1.com/report-brownout?token=${queryParamValue}&name=${name}`);
+            
+
+            // userSessions[senderId].step = "provide_brownout_address";
+            // sendMessage(senderId, "Please provide the following details: \n\nSitio/Street/Zone\nBarangay\nMunicipality");
             break;
         case "VIEW_ACTIVE_TICKET":
             const activeTicket = userSessions[senderId].tickets.pending_ticket[0]
@@ -569,6 +653,17 @@ function handlePostback(senderId, payload) {
                 sendMessage(senderId,"No ticket history found")
             }
             
+            break;
+        case "REMOVE_SAVED_ACCOUNT":
+            if(userSessions[senderId].accounts && userSessions[senderId].accounts.length > 0){
+                userSessions[senderId].step = 'remove_saved_account';
+                showExistingAccount(senderId);
+                break;
+            }
+            sendMessage(senderId,"Looks like you haven’t saved an account yet.");
+            setTimeout(() => {
+                sendFinalMenu(senderId);
+            }, 500);
             break;
         default:
             if(!userSessions[senderId].step){
@@ -606,26 +701,46 @@ async function handleUserMessage(senderId, message,category) {
             }
             break;
         case "ask_account":
-            
+            if (
+                userSessions[senderId] &&
+                Array.isArray(userSessions[senderId].accounts) &&
+                userSessions[senderId].accounts.length > 0
+                ) {
+                const cleaned = message.replace(/[^a-zA-Z0-9]/g, '');
+                
+                const matched = userSessions[senderId].accounts.find(account =>
+                    (account.cfrotcode + account.cfacctno) === cleaned
+                );
+
+                if (matched) {
+                    userSessions[senderId].account = matched;
+                    showBalanceOrPayment(senderId);
+                    break;
+                }
+            }
+            if (hasMaxAttempts(senderId)) {
+                return false; // Stop early if max attempts reached
+            }
             // Validate the account number (replace with your actual verification logic)
             validateAccountNumber(message, senderId)
-                .then((isValid) => {
-                    if (isValid == true) {
-                        userSessions[senderId].step = "ask_account_name";
-                        sendMessage(senderId, "Please enter your account name.");
-                    } else {
-                        userSessions[senderId].attempts += 1
-                        sendMessage(senderId,"Sorry, the account number you provided is invalid. Please try again.");
-                        // sendMessageWithImage(senderId,"https://crucial-whale-dear.ngrok-free.app/account_number.webp");
-                        
-                    }
-                })
-                .catch((error) => {
-                    console.error(
-                        "Error occurred while validating account number:",
-                        error
-                    );
-                });
+            .then((isValid) => {
+                if (isValid == true) {
+                    userSessions[senderId].step = "ask_account_name";
+                    sendMessage(senderId, "Please enter your account name.");
+                } else {
+                    userSessions[senderId].attempts += 1;
+                    sendMessage(senderId,"Sorry, the account number you provided is invalid. Please try again.");
+                    // sendMessageWithImage(senderId,"https://crucial-whale-dear.ngrok-free.app/account_number.webp");
+                }
+            })
+            .catch((error) => {
+                console.error(
+                    "Error occurred while validating account number:",
+                    error
+                );
+            });
+            
+            
             // if (validateAccountNumber(message,senderId) == true) {
             //     userSessions[senderId].step = 'ask_otp_method';
             //     sendOTPChoiceMenu(senderId);
@@ -790,12 +905,19 @@ async function handleUserMessage(senderId, message,category) {
             }
             break;
         case "ask_mobile_number":
-            userSessions[senderId].step = "validate_otp";
-            sendOTP(senderId, "MOBILE NUMBER");
-            sendOTPMessage(
-                senderId,
-                "Thank you. Please enter the One-time Password (OTP) send to your registered mobile number."
-            );
+            // userSessions[senderId].step = "validate_otp";
+            // sendOTP(senderId, "MOBILE NUMBER");
+            // sendOTPMessage(
+            //     senderId,
+            //     "Thank you. Please enter the One-time Password (OTP) send to your registered mobile number."
+            // );
+
+            const encryptedBase64  = encryptMessengerId(senderId, process.env.APP_AES_KEY);
+            const queryParamValue = encodeURIComponent(encryptedBase64);
+            const name = encodeURIComponent(userSessions[senderId].name);
+            const mobile = encodeURIComponent(message);
+            sendMessage(senderId, `To proceed, Please click the link provided below:\n\nhttps://eservices.casureco1.com/report-brownout?token=${queryParamValue}&name=${name}&mobile=${mobile}`);
+            
             break;
         case "ask_email_address":
             userSessions[senderId].step = "validate_otp";
@@ -818,8 +940,14 @@ async function handleUserMessage(senderId, message,category) {
                 // sendMessage(senderId, "Thank you for your confirmation. Is your entire home without power?");
                 // userSessions[senderId].step = "report_or_follow_up";
                 // sendReportOrFollowUp(senderId);
-                userSessions[senderId].step = "provide_brownout_address";
-                sendMessage(senderId, "Please provide the following details: \n\nSitio/Street/Zone\nBarangay\nMunicipality");
+                const encryptedBase64  = encryptMessengerId(senderId, process.env.APP_AES_KEY);
+                const queryParamValue = encodeURIComponent(encryptedBase64);
+                const name = encodeURIComponent(userSessions[senderId].name);
+                sendMessage(senderId, `To proceed, Please click the link provided below:\n\nhttps://eservices.casureco1.com/report-brownout?token=${queryParamValue}&name=${name}`);
+            
+            
+                // userSessions[senderId].step = "provide_brownout_address";
+                // sendMessage(senderId, "Please provide the following details: \n\nSitio/Street/Zone\nBarangay\nMunicipality");
             }
             break;
         case "entire_home_without_power":
@@ -860,11 +988,22 @@ async function handleUserMessage(senderId, message,category) {
             
             break;
         case "provide_brownout_address":
-            console.log(message);
+            const result = await fuzzyFindLocation(message);
+
+            if (result) {
+                userSessions[senderId].brownout_details.latitude = result.latitude;
+                userSessions[senderId].brownout_details.longitude = result.longitude;
+            } 
+            // else {
+            //     userSessions[senderId].brownout_details.latitude = 13.700425005272738;
+            //     userSessions[senderId].brownout_details.longitude = 123.03870112086288;
+            // }
+            
             const address = message.replace(/\n/g, ', ');
             userSessions[senderId].brownout_details.address = address
             userSessions[senderId].step = "provide_brownout_mobile";
             sendShareNumber(senderId);
+
             // sendMessage(senderId,"Please enter your mobile number");
             break;
         case "provide_brownout_mobile":
@@ -882,7 +1021,7 @@ async function handleUserMessage(senderId, message,category) {
             break;
         case "provide_brownout_message":
             userSessions[senderId].brownout_details.message = message
-            console.log(userSessions[senderId].brownout_details);
+            // console.log(userSessions[senderId].brownout_details);
             submitBrownoutReport(senderId);
 
             
@@ -952,12 +1091,14 @@ async function getUserProfile(senderId) {
       });
       return response.data; // Contains first_name and last_name
     } catch (error) {
-      console.error('Error ing user profile:', error.response.data);
+      console.error('Error ing user profile:', error.response);
       return null;
     }
   }
+  
 // Function to send the main menu with Bill Inquiry option
 async function sendMainMenu(senderId) {
+    
     const messageData = {
         recipient: { id: senderId },
         message: {
@@ -971,14 +1112,14 @@ async function sendMainMenu(senderId) {
                             title: "Bills & Payments",
                             payload: "MAIN_MENU_OPTION_1",
                         },
+                        // {
+                        //     type: "postback",
+                        //     title: "Brownout",
+                        //     payload: "MAIN_MENU_OPTION_2",
+                        // },
                         {
                             type: "postback",
-                            title: "Brownout",
-                            payload: "MAIN_MENU_OPTION_2",
-                        },
-                        {
-                            type: "postback",
-                            title: "Account Concern",
+                            title: "Apply For Connection",
                             payload: "MAIN_MENU_OPTION_3",
                         },
                     ],
@@ -1122,6 +1263,7 @@ async function getBalance(senderId){
     const cfcodeno = userSessions[senderId].account.cfcodeno
 
     try {
+        await sendTypingIndicator(senderId);
         const response = await axios.get(
             `https://casureco1api.com/billinquiry/getBalance`, {
                 params: { account: cfcodeno },
@@ -1147,12 +1289,12 @@ function sendFinalMenu(senderId) {
                     text: "Do you have another concern?",
                     buttons: [{
                             type: "postback",
-                            title: "YES",
+                            title: "Yes",
                             payload: "MAIN_MENU",
                         },
                         {
                             type: "postback",
-                            title: "NO",
+                            title: "None",
                             payload: "END_CHAT",
                         },
                     ],
@@ -1161,7 +1303,7 @@ function sendFinalMenu(senderId) {
         },
     };
 
-    callSendAPI(messageData);
+    return callSendAPI(messageData);
 }
 
 function endChat(senderId) {
@@ -1175,7 +1317,7 @@ function endChat(senderId) {
     callSendAPI(messageData);
 }
 
-function hasMaxAttempts(){
+function hasMaxAttempts(senderId){
     var isMax = false
     if(userSessions[senderId].attempts >= max_attempts && Date.now() - userSessions[senderId].max_attempt_time > 5 * 60 * 1000){ 
         userSessions[senderId].attempts = 0;
@@ -1191,9 +1333,11 @@ function hasMaxAttempts(){
 }
 // Function to validate account number (replace with actual logic)
 async function validateAccountNumber(accountNumber, senderId) {
+    
     const cleanedAccountNumber = accountNumber.replace(/[^0-9]/g, ""); // Keeps only digits
-    if(hasMaxAttempts)
+    
     try {
+        await sendTypingIndicator(senderId);
         const response = await axios.get(
             `https://casureco1api.com/billinquiry/findCAN`, {
                 params: { account_number: cleanedAccountNumber },
@@ -1213,6 +1357,8 @@ async function validateAccountNumber(accountNumber, senderId) {
         console.error("Error:", error.message);
         return false; // Return false in case of an error
     }
+    
+    
 }
 // Function to validate account number (replace with actual logic)
 async function validateAccountName(accountName, senderId) {
@@ -1228,7 +1374,7 @@ function sendMessage(senderId, messageText) {
         message: { text: messageText },
     };
 
-    callSendAPI(messageData);
+    return callSendAPI(messageData);
 }
 
 function sendMessageWithImage(senderId, image_url = '') {
@@ -1352,6 +1498,7 @@ function showExistingAccount(senderId){
     callSendAPI(messageData);
 }
 function showBalanceOrPayment(senderId){
+    
     var content = ''
     getBalance(senderId)
         .then((data) => {
@@ -1381,20 +1528,17 @@ function showBalanceOrPayment(senderId){
 
             userSessions[senderId].bill = 0;
             userSessions[senderId].payment = 0;
+
+            const account = userSessions[senderId].accounts.find(acc => acc.cfcodeno === userSessions[senderId].account.cfcodeno);
             (async () => {
                 await sendMessage(senderId,content);
-
-                const account = userSessions[senderId].accounts.find(acc => acc.cfcodeno === userSessions[senderId].account.cfcodeno);
-                if(!account || userSessions[senderId].accounts.length == 0){
-                    setTimeout(() => {
-                        sendSaveAccountForFutureUse(senderId);
-                    }, 1000);
+                 if(!account || userSessions[senderId].accounts.length == 0){
+                    sendSaveAccountForFutureUse(senderId);
                 }else{
-                    setTimeout(() => {
-                        sendFinalMenu(senderId);
-                    }, 1000);
+                    sendFinalMenu(senderId);
                 }
             })();
+
 
             // userSessions[senderId].step = 'done'
         })
@@ -1432,7 +1576,7 @@ function sendSaveAccountForFutureUse(senderId){
         },
     };
 
-    callSendAPI(messageData);
+    return callSendAPI(messageData);
 }
 function sendReportOrFollowUp(senderId){
     const messageData = {
@@ -1443,7 +1587,8 @@ function sendReportOrFollowUp(senderId){
                 payload: {
                     template_type: "button",
                     text: "Please choose from the options below:",
-                    buttons: [{
+                    buttons: [
+                        {
                             type: "postback",
                             title: "Report A Brownout",
                             payload: "REPORT_BROWNOUT_OPTION",
@@ -1525,30 +1670,33 @@ function sendShareNumber(senderId) {
         },
     };
 
-    callSendAPI(messageData);
+    return callSendAPI(messageData);
 }
 
 function submitBrownoutReport(senderId){
     const curr_datetime = new Date();
+    const details = userSessions[senderId].brownout_details
     const formData = {
         created_at: curr_datetime.toISOString(),
-        name: userSessions[senderId].brownout_details.name,
-        address: userSessions[senderId].brownout_details.address,
-        mobile: userSessions[senderId].brownout_details.mobile,
-        latitude: '',
-        longitude: '',
-        message: userSessions[senderId].brownout_details.message,
-        uuid: userSessions[senderId].brownout_details.id.toString()
+        name: details.name,
+        address: details.address,
+        mobile: details.mobile,
+        location: {
+            type: "Point",
+            coordinates:[details.longitude,details.latitude]
+        },
+        message: details.message,
+        uuid: details.id.toString()
         // uuid: "1231234567"
     }
 
     axios.post(`${process.env.TICKET_API}/ticket/create`, formData)
         .then((response) => {
             if(response.status == 200){
-                sendBrownoutReportSummary(senderId);
-                setTimeout(() => {
-                    sendFinalMenu(senderId);
-                }, 1000);
+                (async () => {
+                    await sendBrownoutReportSummary(senderId);
+                });
+                sendFinalMenu(senderId);
             }
         })
         .catch((error) => {
@@ -1574,11 +1722,12 @@ function sendBrownoutReportSummary(senderId){
         message: { text: messageText },
     };
 
-    callSendAPI(messageData);
+    return callSendAPI(messageData);
 }
 
 async function getMyTickets(senderId) {
     try {
+        await sendTypingIndicator(senderId);
         const response = await axios.get(`${process.env.TICKET_API}/ticket/get_my_ticket/${senderId}`);
         console.log(response.data)
         return response.data; 
@@ -1637,6 +1786,94 @@ function validateMobileNumber(mobile) {
     const regex = /^09\d{9}$/;
     return regex.test(mobile) ? true : false;
 }
+function parseUserInput(input) {
+    const parts = input
+      .toLowerCase()
+      .replace(/,/g, '')  // remove commas
+      .split(/\s+/);      // split by spaces
+  
+    return parts;
+}
+async function fuzzyFindLocation(rawInput) {
+    
+    
+    if(!coordinates || coordinates.length === 0){
+        console.log("Fetching coordinates from API...");
+        await getBrgyWithCoordinates().then((data) => { coordinates = data;}).catch((error) => {console.error('Error:', error);});
+    }
 
+    // const parts = parseUserInput(rawInput);
+
+    // Set up fuzzy search for barangay and municipality
+    const fuse = new Fuse(coordinates, {
+      keys: ['full_text'],
+      threshold: 0.3,
+      includeScore: true,
+    });
+
+    const normalizedInput = rawInput
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '') // remove accents
+        .replace(/,/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+  
+    // Try to find the best match using parts
+    // let bestMatch = null;
+    // let highestScore = Infinity;
+  
+    const results = fuse.search(normalizedInput);
+  
+    return results.length ? results[0].item : null;
+
+}
+function sendApplicationMenu(senderId) {
+    const messageData = {
+        recipient: { id: senderId },
+        message: {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "button",
+                    text: "Please choose from the options below:",
+                    buttons: [{
+                            type: "postback",
+                            title: "New Application",
+                            payload: "NEW_APPLICATION",
+                        },
+                        {
+                            type: "postback",
+                            title: "Follow Up Application",
+                            payload: "FOLLOW_UP_APPLICATION",
+                        },
+                    ],
+                },
+            },
+        },
+    };
+
+    callSendAPI(messageData);
+}
+function encryptMessengerId(plainText, hexKey) {
+    const key = CryptoJS.enc.Hex.parse(hexKey); // 32 bytes (64 hex characters)
+    const iv = CryptoJS.lib.WordArray.random(16); // 16 bytes IV
+
+    const encrypted = CryptoJS.AES.encrypt(plainText, key, {
+        iv: iv,
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7
+    });
+
+    // Combine IV and ciphertext, then Base64 encode
+    const result = iv.concat(encrypted.ciphertext);
+    return CryptoJS.enc.Base64.stringify(result);
+}
+async function sendTypingIndicator(senderId) {
+    await axios.post(`https://graph.facebook.com/v18.0/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`, {
+        recipient: { id: senderId },
+        sender_action: 'typing_on'
+    });
+}
 const PORT = 3000;
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

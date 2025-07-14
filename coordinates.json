@@ -1,0 +1,2221 @@
+[
+    {
+        "municipality": "libmanan",
+        "barangay": "Aslong",
+        "latitude": 13.6781,
+        "longitude": 123.032,
+        "full_text": "Aslong libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Awayan",
+        "latitude": 13.743,
+        "longitude": 123.0005,
+        "full_text": "Awayan libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Bagacay",
+        "latitude": 13.6445,
+        "longitude": 123.0243,
+        "full_text": "Bagacay libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Bagadion",
+        "latitude": 13.6382,
+        "longitude": 123.0502,
+        "full_text": "Bagadion libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Bagamelon",
+        "latitude": 13.5992,
+        "longitude": 123.0205,
+        "full_text": "Bagamelon libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Bagumbayan",
+        "latitude": 13.698,
+        "longitude": 123.0602,
+        "full_text": "Bagumbayan libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Bahao",
+        "latitude": 13.6476,
+        "longitude": 122.8255,
+        "full_text": "Bahao libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Bahay",
+        "latitude": 13.6686,
+        "longitude": 123.0312,
+        "full_text": "Bahay libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Begajo Norte",
+        "latitude": 13.6987,
+        "longitude": 123.0626,
+        "full_text": "Begajo Norte libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Begajo Sur",
+        "latitude": 13.6985,
+        "longitude": 123.0693,
+        "full_text": "Begajo Sur libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Beguito Nuevo",
+        "latitude": 13.7306,
+        "longitude": 122.981,
+        "full_text": "Beguito Nuevo libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Beguito Viejo",
+        "latitude": 13.7363,
+        "longitude": 122.9747,
+        "full_text": "Beguito Viejo libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Bikal",
+        "latitude": 13.7215,
+        "longitude": 122.9813,
+        "full_text": "Bikal libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Busak",
+        "latitude": 13.6517,
+        "longitude": 123.019,
+        "full_text": "Busak libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Caima",
+        "latitude": 13.6727,
+        "longitude": 122.8839,
+        "full_text": "Caima libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Calabnigan",
+        "latitude": 13.6938,
+        "longitude": 122.926,
+        "full_text": "Calabnigan libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Camambugan",
+        "latitude": 13.7197,
+        "longitude": 123.0359,
+        "full_text": "Camambugan libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Cambalidio",
+        "latitude": 13.628,
+        "longitude": 122.8989,
+        "full_text": "Cambalidio libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Candami",
+        "latitude": 13.7534,
+        "longitude": 123.0165,
+        "full_text": "Candami libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Candato",
+        "latitude": 13.7113,
+        "longitude": 123.0576,
+        "full_text": "Candato libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Cawayan",
+        "latitude": 13.649,
+        "longitude": 122.8894,
+        "full_text": "Cawayan libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Concepcion",
+        "latitude": 13.6825,
+        "longitude": 123.0824,
+        "full_text": "Concepcion libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Cuyapi",
+        "latitude": 13.6962,
+        "longitude": 123.1132,
+        "full_text": "Cuyapi libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Danawan",
+        "latitude": 13.6427,
+        "longitude": 123.0742,
+        "full_text": "Danawan libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Duang Niog",
+        "latitude": 13.6096,
+        "longitude": 123.0019,
+        "full_text": "Duang Niog libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Handong",
+        "latitude": 13.6868,
+        "longitude": 123.0694,
+        "full_text": "Handong libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Ibid",
+        "latitude": 13.7014,
+        "longitude": 123.0922,
+        "full_text": "Ibid libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Inalahan",
+        "latitude": 13.6825,
+        "longitude": 123.0629,
+        "full_text": "Inalahan libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Labao",
+        "latitude": 13.7055,
+        "longitude": 123.0813,
+        "full_text": "Labao libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Libod 1",
+        "latitude": 13.6944,
+        "longitude": 123.0618,
+        "full_text": "Libod 1 libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Libod 2",
+        "latitude": 13.6948,
+        "longitude": 123.0642,
+        "full_text": "Libod 2 libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Loba Loba",
+        "latitude": 13.6845,
+        "longitude": 123.001,
+        "full_text": "Loba Loba libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Mabini",
+        "latitude": 13.6795,
+        "longitude": 122.9995,
+        "full_text": "Mabini libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Malansad Nuevo",
+        "latitude": 13.644,
+        "longitude": 123.0614,
+        "full_text": "Malansad Nuevo libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Malansad Viejo",
+        "latitude": 13.653,
+        "longitude": 123.0606,
+        "full_text": "Malansad Viejo libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Malbogon",
+        "latitude": 13.6695,
+        "longitude": 123.0719,
+        "full_text": "Malbogon libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Malinao",
+        "latitude": 13.6743,
+        "longitude": 122.975,
+        "full_text": "Malinao libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Mambalite",
+        "latitude": 13.7033,
+        "longitude": 123.0149,
+        "full_text": "Mambalite libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Mambayawas",
+        "latitude": 13.7184,
+        "longitude": 123.002,
+        "full_text": "Mambayawas libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Mambulo Nuevo",
+        "latitude": 13.6172,
+        "longitude": 123.0382,
+        "full_text": "Mambulo Nuevo libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Mambulo Viejo",
+        "latitude": 13.6198,
+        "longitude": 123.0692,
+        "full_text": "Mambulo Viejo libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Mancawayan",
+        "latitude": 13.6741,
+        "longitude": 123.06,
+        "full_text": "Mancawayan libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Mandacanan",
+        "latitude": 13.6606,
+        "longitude": 123.0325,
+        "full_text": "Mandacanan libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Mantalisay",
+        "latitude": 13.7361,
+        "longitude": 123.0234,
+        "full_text": "Mantalisay libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Padlos",
+        "latitude": 13.7049,
+        "longitude": 123.0291,
+        "full_text": "Padlos libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Pag Oring Nuevo",
+        "latitude": 13.6552,
+        "longitude": 122.9854,
+        "full_text": "Pag Oring Nuevo libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Pag Oring Viejo",
+        "latitude": 13.6584,
+        "longitude": 122.997,
+        "full_text": "Pag Oring Viejo libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Palangon",
+        "latitude": 13.691,
+        "longitude": 123.0158,
+        "full_text": "Palangon libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Palong",
+        "latitude": 13.6333,
+        "longitude": 122.97,
+        "full_text": "Palong libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Patag",
+        "latitude": 13.7277,
+        "longitude": 123.0558,
+        "full_text": "Patag libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Planza",
+        "latitude": 13.6755,
+        "longitude": 123.0497,
+        "full_text": "Planza libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Poblacion",
+        "latitude": 13.6933,
+        "longitude": 123.0619,
+        "full_text": "Poblacion libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Potot",
+        "latitude": 13.6876,
+        "longitude": 123.0432,
+        "full_text": "Potot libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Puro Batia",
+        "latitude": 13.6954,
+        "longitude": 123.0421,
+        "full_text": "Puro Batia libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Rongos",
+        "latitude": 13.662,
+        "longitude": 123.0639,
+        "full_text": "Rongos libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Salvacion",
+        "latitude": 13.6613,
+        "longitude": 122.8447,
+        "full_text": "Salvacion libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "San Isidro",
+        "latitude": 13.6688,
+        "longitude": 123.0102,
+        "full_text": "San Isidro libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "San Juan",
+        "latitude": 13.6931,
+        "longitude": 123.0722,
+        "full_text": "San Juan libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "San Pablo",
+        "latitude": 13.6497,
+        "longitude": 123.0429,
+        "full_text": "San Pablo libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "San Vicente",
+        "latitude": 13.6425,
+        "longitude": 123.0847,
+        "full_text": "San Vicente libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Sibujo",
+        "latitude": 13.6901,
+        "longitude": 122.9914,
+        "full_text": "Sibujo libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Sigamot",
+        "latitude": 13.7042,
+        "longitude": 122.9874,
+        "full_text": "Sigamot libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Station Church Site",
+        "latitude": 13.6924,
+        "longitude": 123.059,
+        "full_text": "Station Church Site libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Taban Fundado",
+        "latitude": 13.6919,
+        "longitude": 123.0561,
+        "full_text": "Taban Fundado libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Tampuhan",
+        "latitude": 13.7049,
+        "longitude": 123.0016,
+        "full_text": "Tampuhan libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Tanag",
+        "latitude": 13.6366,
+        "longitude": 122.9383,
+        "full_text": "Tanag libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Tarum",
+        "latitude": 13.7354,
+        "longitude": 123.0365,
+        "full_text": "Tarum libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Tinalmud Nuevo",
+        "latitude": 13.6247,
+        "longitude": 122.8567,
+        "full_text": "Tinalmud Nuevo libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Tinalmud Viejo",
+        "latitude": 13.602,
+        "longitude": 122.8802,
+        "full_text": "Tinalmud Viejo libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Tinangkihan",
+        "latitude": 13.631,
+        "longitude": 123.0368,
+        "full_text": "Tinangkihan libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Udoc",
+        "latitude": 13.7089,
+        "longitude": 122.959,
+        "full_text": "Udoc libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Umalo",
+        "latitude": 13.6904,
+        "longitude": 123.0975,
+        "full_text": "Umalo libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Uson",
+        "latitude": 13.715,
+        "longitude": 123.0197,
+        "full_text": "Uson libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Villadima",
+        "latitude": 13.6666,
+        "longitude": 122.864,
+        "full_text": "Villadima libmanan"
+    },
+    {
+        "municipality": "libmanan",
+        "barangay": "Villasocorro",
+        "latitude": 13.665,
+        "longitude": 122.9358,
+        "full_text": "Villasocorro libmanan"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Agao Ao",
+        "latitude": 13.8805,
+        "longitude": 122.8643,
+        "full_text": "Agao Ao ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Agrupacion",
+        "latitude": 13.7944,
+        "longitude": 122.8075,
+        "full_text": "Agrupacion ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Amomokpok",
+        "latitude": 13.8293,
+        "longitude": 122.7718,
+        "full_text": "Amomokpok ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Apad",
+        "latitude": 13.8168,
+        "longitude": 122.7698,
+        "full_text": "Apad ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Apale",
+        "latitude": 13.8011,
+        "longitude": 122.7878,
+        "full_text": "Apale ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Banga Caves",
+        "latitude": 13.7741,
+        "longitude": 122.8254,
+        "full_text": "Banga Caves ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Baya",
+        "latitude": 13.8599,
+        "longitude": 122.7992,
+        "full_text": "Baya ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Binahan Proper",
+        "latitude": 13.8133,
+        "longitude": 122.7484,
+        "full_text": "Binahan Proper ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Binahan Upper",
+        "latitude": 13.8503,
+        "longitude": 122.7544,
+        "full_text": "Binahan Upper ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Buenasuerte",
+        "latitude": 13.7794,
+        "longitude": 122.7681,
+        "full_text": "Buenasuerte ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Cabadisan",
+        "latitude": 13.9399,
+        "longitude": 122.7955,
+        "full_text": "Cabadisan ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Cabinitan",
+        "latitude": 13.7768,
+        "longitude": 122.8116,
+        "full_text": "Cabinitan ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Cabugao",
+        "latitude": 13.7658,
+        "longitude": 122.7949,
+        "full_text": "Cabugao ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Caditaan",
+        "latitude": 13.8623,
+        "longitude": 122.7381,
+        "full_text": "Caditaan ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Cale",
+        "latitude": 13.8027,
+        "longitude": 122.7733,
+        "full_text": "Cale ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Catabangan Proper",
+        "latitude": 13.8678,
+        "longitude": 122.6515,
+        "full_text": "Catabangan Proper ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "F Simeon",
+        "latitude": 13.8477,
+        "longitude": 122.701,
+        "full_text": "F Simeon ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Godofredo Reyes Sr",
+        "latitude": 13.8798,
+        "longitude": 122.6648,
+        "full_text": "Godofredo Reyes Sr ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Inandawa",
+        "latitude": 13.8786,
+        "longitude": 122.7,
+        "full_text": "Inandawa ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Laguio",
+        "latitude": 13.8291,
+        "longitude": 122.8058,
+        "full_text": "Laguio ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Lanipga Cawayan",
+        "latitude": 13.8335,
+        "longitude": 122.8552,
+        "full_text": "Lanipga Cawayan ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Liboro",
+        "latitude": 13.8252,
+        "longitude": 122.73,
+        "full_text": "Liboro ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Lohong",
+        "latitude": 13.8412,
+        "longitude": 122.6416,
+        "full_text": "Lohong ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Lower Omon",
+        "latitude": 13.8223,
+        "longitude": 122.6658,
+        "full_text": "Lower Omon ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Lower Santa Cruz",
+        "latitude": 13.8316,
+        "longitude": 122.8304,
+        "full_text": "Lower Santa Cruz ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Panaytayan",
+        "latitude": 13.8346,
+        "longitude": 122.7833,
+        "full_text": "Panaytayan ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Panaytayan Nuevo",
+        "latitude": 13.8806,
+        "longitude": 122.8001,
+        "full_text": "Panaytayan Nuevo ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Patalunan",
+        "latitude": 13.8678,
+        "longitude": 122.8431,
+        "full_text": "Patalunan ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Poblacion Ilaod",
+        "latitude": 13.8179,
+        "longitude": 122.7901,
+        "full_text": "Poblacion Ilaod ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Poblacion Iraya",
+        "latitude": 13.8214,
+        "longitude": 122.7926,
+        "full_text": "Poblacion Iraya ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Port Junction Norte",
+        "latitude": 13.8606,
+        "longitude": 122.6731,
+        "full_text": "Port Junction Norte ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Port Junction Sur",
+        "latitude": 13.8487,
+        "longitude": 122.6776,
+        "full_text": "Port Junction Sur ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Salvacion",
+        "latitude": 13.8583,
+        "longitude": 122.8202,
+        "full_text": "Salvacion ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Samay",
+        "latitude": 13.8667,
+        "longitude": 122.7214,
+        "full_text": "Samay ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "San Rafael",
+        "latitude": 13.8135,
+        "longitude": 122.7307,
+        "full_text": "San Rafael ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Tagbac",
+        "latitude": 13.7565,
+        "longitude": 122.8152,
+        "full_text": "Tagbac ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Upper Omon",
+        "latitude": 13.8358,
+        "longitude": 122.6888,
+        "full_text": "Upper Omon ragay"
+    },
+    {
+        "municipality": "ragay",
+        "barangay": "Upper Santa Cruz",
+        "latitude": 13.8115,
+        "longitude": 122.8374,
+        "full_text": "Upper Santa Cruz ragay"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "Alleomar",
+        "latitude": 13.8126,
+        "longitude": 122.8674,
+        "full_text": "Alleomar lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "Bagangan Sr",
+        "latitude": 13.8377,
+        "longitude": 122.8929,
+        "full_text": "Bagangan Sr lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "Bagong Sikat",
+        "latitude": 13.7598,
+        "longitude": 122.8398,
+        "full_text": "Bagong Sikat lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "Bangon",
+        "latitude": 13.7362,
+        "longitude": 122.8481,
+        "full_text": "Bangon lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "Barrera Jr",
+        "latitude": 13.7999,
+        "longitude": 122.9202,
+        "full_text": "Barrera Jr lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "Barrera Sr",
+        "latitude": 13.8217,
+        "longitude": 122.9294,
+        "full_text": "Barrera Sr lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "Bel Cruz",
+        "latitude": 13.7767,
+        "longitude": 122.8608,
+        "full_text": "Bel Cruz lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "Belwang",
+        "latitude": 13.9255,
+        "longitude": 122.8996,
+        "full_text": "Belwang lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "Buenasuerte",
+        "latitude": 13.8927,
+        "longitude": 122.9091,
+        "full_text": "Buenasuerte lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "Bulawan Jr",
+        "latitude": 13.7587,
+        "longitude": 122.8639,
+        "full_text": "Bulawan Jr lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "Bulawan Sr",
+        "latitude": 13.7747,
+        "longitude": 122.8871,
+        "full_text": "Bulawan Sr lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "Cabutagan",
+        "latitude": 13.7773,
+        "longitude": 122.9082,
+        "full_text": "Cabutagan lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "Casay",
+        "latitude": 13.8318,
+        "longitude": 122.8742,
+        "full_text": "Casay lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "Colacling",
+        "latitude": 13.7795,
+        "longitude": 122.8708,
+        "full_text": "Colacling lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "Cristo Rey",
+        "latitude": 13.8257,
+        "longitude": 122.9143,
+        "full_text": "Cristo Rey lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "Del Carmen",
+        "latitude": 13.8589,
+        "longitude": 122.901,
+        "full_text": "Del Carmen lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "Haguimit",
+        "latitude": 13.8511,
+        "longitude": 122.8712,
+        "full_text": "Haguimit lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "Haluban",
+        "latitude": 13.8433,
+        "longitude": 122.9141,
+        "full_text": "Haluban lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "Kaibigan",
+        "latitude": 13.8055,
+        "longitude": 122.9349,
+        "full_text": "Kaibigan lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "La Purisima",
+        "latitude": 13.8481,
+        "longitude": 122.9303,
+        "full_text": "La Purisima lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "Lourdes",
+        "latitude": 13.7943,
+        "longitude": 122.8618,
+        "full_text": "Lourdes lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "Mangcawayan",
+        "latitude": 13.8821,
+        "longitude": 122.8915,
+        "full_text": "Mangcawayan lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "Napolidan",
+        "latitude": 13.8973,
+        "longitude": 122.9285,
+        "full_text": "Napolidan lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "Poblacion",
+        "latitude": 13.7907,
+        "longitude": 122.9116,
+        "full_text": "Poblacion lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "Polantuna",
+        "latitude": 13.9269,
+        "longitude": 122.9192,
+        "full_text": "Polantuna lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "Sagrada",
+        "latitude": 13.8599,
+        "longitude": 122.8802,
+        "full_text": "Sagrada lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "Salvacion",
+        "latitude": 13.8026,
+        "longitude": 122.878,
+        "full_text": "Salvacion lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "San Isidro",
+        "latitude": 13.8192,
+        "longitude": 122.8952,
+        "full_text": "San Isidro lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "San Jose",
+        "latitude": 13.9169,
+        "longitude": 122.9341,
+        "full_text": "San Jose lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "San Pedro",
+        "latitude": 13.8026,
+        "longitude": 122.9023,
+        "full_text": "San Pedro lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "San Rafael Norte",
+        "latitude": 13.9186,
+        "longitude": 122.8755,
+        "full_text": "San Rafael Norte lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "San Rafael Sur",
+        "latitude": 13.7932,
+        "longitude": 122.889,
+        "full_text": "San Rafael Sur lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "San Ramon",
+        "latitude": 13.9018,
+        "longitude": 122.9178,
+        "full_text": "San Ramon lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "San Vicente",
+        "latitude": 13.9603,
+        "longitude": 122.8872,
+        "full_text": "San Vicente lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "Sooc",
+        "latitude": 13.8726,
+        "longitude": 122.9319,
+        "full_text": "Sooc lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "Tanawan",
+        "latitude": 13.7765,
+        "longitude": 122.8487,
+        "full_text": "Tanawan lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "Tapi",
+        "latitude": 13.7842,
+        "longitude": 122.92,
+        "full_text": "Tapi lupi"
+    },
+    {
+        "municipality": "lupi",
+        "barangay": "Tible",
+        "latitude": 13.9007,
+        "longitude": 122.8731,
+        "full_text": "Tible lupi"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Aldezar",
+        "latitude": 13.8347,
+        "longitude": 123.0279,
+        "full_text": "Aldezar sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Alteza",
+        "latitude": 13.7919,
+        "longitude": 122.9716,
+        "full_text": "Alteza sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Anib",
+        "latitude": 13.8023,
+        "longitude": 123.0445,
+        "full_text": "Anib sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Awayan",
+        "latitude": 13.7467,
+        "longitude": 122.9913,
+        "full_text": "Awayan sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Azucena",
+        "latitude": 13.7772,
+        "longitude": 122.966,
+        "full_text": "Azucena sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Bagong Sirang",
+        "latitude": 13.7187,
+        "longitude": 122.9025,
+        "full_text": "Bagong Sirang sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Binahian",
+        "latitude": 13.7099,
+        "longitude": 122.8588,
+        "full_text": "Binahian sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Bolo Norte",
+        "latitude": 13.8194,
+        "longitude": 122.9592,
+        "full_text": "Bolo Norte sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Bolo Sur",
+        "latitude": 13.8042,
+        "longitude": 122.9582,
+        "full_text": "Bolo Sur sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Bulan",
+        "latitude": 13.7939,
+        "longitude": 122.9987,
+        "full_text": "Bulan sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Bulawan",
+        "latitude": 13.7499,
+        "longitude": 122.8883,
+        "full_text": "Bulawan sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Cabuyao",
+        "latitude": 13.8126,
+        "longitude": 122.9867,
+        "full_text": "Cabuyao sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Caima",
+        "latitude": 13.6855,
+        "longitude": 122.8722,
+        "full_text": "Caima sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Calagbangan",
+        "latitude": 13.8405,
+        "longitude": 122.9569,
+        "full_text": "Calagbangan sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Calampinay",
+        "latitude": 13.7926,
+        "longitude": 123.04,
+        "full_text": "Calampinay sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Carayrayan",
+        "latitude": 13.7193,
+        "longitude": 122.8765,
+        "full_text": "Carayrayan sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Cotmo",
+        "latitude": 13.8157,
+        "longitude": 123.0389,
+        "full_text": "Cotmo sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Gabi",
+        "latitude": 13.7372,
+        "longitude": 122.8696,
+        "full_text": "Gabi sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Gaongan",
+        "latitude": 13.76,
+        "longitude": 122.9666,
+        "full_text": "Gaongan sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Impig",
+        "latitude": 13.7884,
+        "longitude": 122.9853,
+        "full_text": "Impig sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Lipilip",
+        "latitude": 13.6946,
+        "longitude": 122.8894,
+        "full_text": "Lipilip sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Lubigan Jr",
+        "latitude": 13.7308,
+        "longitude": 122.9206,
+        "full_text": "Lubigan Jr sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Lubigan Sr",
+        "latitude": 13.743,
+        "longitude": 122.9391,
+        "full_text": "Lubigan Sr sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Malaguico",
+        "latitude": 13.7882,
+        "longitude": 122.9518,
+        "full_text": "Malaguico sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Malubago",
+        "latitude": 13.7707,
+        "longitude": 122.9828,
+        "full_text": "Malubago sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Manangle",
+        "latitude": 13.7681,
+        "longitude": 122.9188,
+        "full_text": "Manangle sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Mangapo",
+        "latitude": 13.7569,
+        "longitude": 122.9888,
+        "full_text": "Mangapo sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Mangga",
+        "latitude": 13.7804,
+        "longitude": 123.0406,
+        "full_text": "Mangga sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Manlubang",
+        "latitude": 13.7068,
+        "longitude": 122.8847,
+        "full_text": "Manlubang sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Mantila",
+        "latitude": 13.7817,
+        "longitude": 123.0203,
+        "full_text": "Mantila sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "North Centro",
+        "latitude": 13.7699,
+        "longitude": 122.976,
+        "full_text": "North Centro sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "North Villazar",
+        "latitude": 13.8735,
+        "longitude": 122.956,
+        "full_text": "North Villazar sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Sagrada Familia",
+        "latitude": 13.813,
+        "longitude": 122.9984,
+        "full_text": "Sagrada Familia sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Salanda",
+        "latitude": 13.8056,
+        "longitude": 122.9463,
+        "full_text": "Salanda sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Salvacion",
+        "latitude": 13.8233,
+        "longitude": 123.0168,
+        "full_text": "Salvacion sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "San Isidro",
+        "latitude": 13.7656,
+        "longitude": 123.0015,
+        "full_text": "San Isidro sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "San Vicente",
+        "latitude": 13.8374,
+        "longitude": 123.0451,
+        "full_text": "San Vicente sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Serranzana",
+        "latitude": 13.8032,
+        "longitude": 123.0193,
+        "full_text": "Serranzana sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "South Centro",
+        "latitude": 13.7642,
+        "longitude": 122.9758,
+        "full_text": "South Centro sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "South Villazar",
+        "latitude": 13.8547,
+        "longitude": 122.952,
+        "full_text": "South Villazar sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Taisan",
+        "latitude": 13.768,
+        "longitude": 122.9486,
+        "full_text": "Taisan sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Tara",
+        "latitude": 13.7474,
+        "longitude": 122.9736,
+        "full_text": "Tara sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Tible",
+        "latitude": 13.8918,
+        "longitude": 122.9645,
+        "full_text": "Tible sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Tula Tula",
+        "latitude": 13.8495,
+        "longitude": 123.0071,
+        "full_text": "Tula Tula sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Vigaan",
+        "latitude": 13.8442,
+        "longitude": 122.9839,
+        "full_text": "Vigaan sipocot"
+    },
+    {
+        "municipality": "sipocot",
+        "barangay": "Yabo",
+        "latitude": 13.7934,
+        "longitude": 122.9325,
+        "full_text": "Yabo sipocot"
+    },
+    {
+        "municipality": "cabusao",
+        "barangay": "Barcelonita",
+        "latitude": 13.7716,
+        "longitude": 123.0472,
+        "full_text": "Barcelonita cabusao"
+    },
+    {
+        "municipality": "cabusao",
+        "barangay": "Biong",
+        "latitude": 13.7478,
+        "longitude": 123.0526,
+        "full_text": "Biong cabusao"
+    },
+    {
+        "municipality": "cabusao",
+        "barangay": "Camagong",
+        "latitude": 13.7204,
+        "longitude": 123.1065,
+        "full_text": "Camagong cabusao"
+    },
+    {
+        "municipality": "cabusao",
+        "barangay": "Castillo",
+        "latitude": 13.732,
+        "longitude": 123.1162,
+        "full_text": "Castillo cabusao"
+    },
+    {
+        "municipality": "cabusao",
+        "barangay": "New Poblacion",
+        "latitude": 13.726,
+        "longitude": 123.1136,
+        "full_text": "New Poblacion cabusao"
+    },
+    {
+        "municipality": "cabusao",
+        "barangay": "Pandan",
+        "latitude": 13.7406,
+        "longitude": 123.0859,
+        "full_text": "Pandan cabusao"
+    },
+    {
+        "municipality": "cabusao",
+        "barangay": "San Pedro",
+        "latitude": 13.7665,
+        "longitude": 123.0247,
+        "full_text": "San Pedro cabusao"
+    },
+    {
+        "municipality": "cabusao",
+        "barangay": "Santa Cruz",
+        "latitude": 13.7203,
+        "longitude": 123.1187,
+        "full_text": "Santa Cruz cabusao"
+    },
+    {
+        "municipality": "cabusao",
+        "barangay": "Santa Lutgarda",
+        "latitude": 13.7222,
+        "longitude": 123.1171,
+        "full_text": "Santa Lutgarda cabusao"
+    },
+    {
+        "municipality": "pamplona",
+        "barangay": "Batang",
+        "latitude": 13.5694,
+        "longitude": 123.0613,
+        "full_text": "Batang pamplona"
+    },
+    {
+        "municipality": "pamplona",
+        "barangay": "Burabod",
+        "latitude": 13.5889,
+        "longitude": 123.1044,
+        "full_text": "Burabod pamplona"
+    },
+    {
+        "municipality": "pamplona",
+        "barangay": "Cagbibi",
+        "latitude": 13.6279,
+        "longitude": 123.1029,
+        "full_text": "Cagbibi pamplona"
+    },
+    {
+        "municipality": "pamplona",
+        "barangay": "Cagbunga",
+        "latitude": 13.639,
+        "longitude": 123.1077,
+        "full_text": "Cagbunga pamplona"
+    },
+    {
+        "municipality": "pamplona",
+        "barangay": "Calawat",
+        "latitude": 13.5862,
+        "longitude": 123.0415,
+        "full_text": "Calawat pamplona"
+    },
+    {
+        "municipality": "pamplona",
+        "barangay": "Del Rosario",
+        "latitude": 13.5738,
+        "longitude": 123.0874,
+        "full_text": "Del Rosario pamplona"
+    },
+    {
+        "municipality": "pamplona",
+        "barangay": "Patong",
+        "latitude": 13.6131,
+        "longitude": 123.0906,
+        "full_text": "Patong pamplona"
+    },
+    {
+        "municipality": "pamplona",
+        "barangay": "Poblacion",
+        "latitude": 13.5921,
+        "longitude": 123.0816,
+        "full_text": "Poblacion pamplona"
+    },
+    {
+        "municipality": "pamplona",
+        "barangay": "Salvacion",
+        "latitude": 13.5912,
+        "longitude": 123.0612,
+        "full_text": "Salvacion pamplona"
+    },
+    {
+        "municipality": "pamplona",
+        "barangay": "San Gabriel",
+        "latitude": 13.5706,
+        "longitude": 123.1009,
+        "full_text": "San Gabriel pamplona"
+    },
+    {
+        "municipality": "pamplona",
+        "barangay": "San Isidro",
+        "latitude": 13.5689,
+        "longitude": 123.107,
+        "full_text": "San Isidro pamplona"
+    },
+    {
+        "municipality": "pamplona",
+        "barangay": "San Rafael",
+        "latitude": 13.5946,
+        "longitude": 123.112,
+        "full_text": "San Rafael pamplona"
+    },
+    {
+        "municipality": "pamplona",
+        "barangay": "San Ramon",
+        "latitude": 13.6045,
+        "longitude": 123.0475,
+        "full_text": "San Ramon pamplona"
+    },
+    {
+        "municipality": "pamplona",
+        "barangay": "San Vicente",
+        "latitude": 13.5951,
+        "longitude": 123.053,
+        "full_text": "San Vicente pamplona"
+    },
+    {
+        "municipality": "pamplona",
+        "barangay": "Tambo",
+        "latitude": 13.5762,
+        "longitude": 123.0657,
+        "full_text": "Tambo pamplona"
+    },
+    {
+        "municipality": "pamplona",
+        "barangay": "Tampadong",
+        "latitude": 13.5601,
+        "longitude": 123.0392,
+        "full_text": "Tampadong pamplona"
+    },
+    {
+        "municipality": "pamplona",
+        "barangay": "Veneracion",
+        "latitude": 13.5596,
+        "longitude": 123.0595,
+        "full_text": "Veneracion pamplona"
+    },
+    {
+        "municipality": "pasacao",
+        "barangay": "Antipolo",
+        "latitude": 13.5727,
+        "longitude": 122.9665,
+        "full_text": "Antipolo pasacao"
+    },
+    {
+        "municipality": "pasacao",
+        "barangay": "Bagong Silang",
+        "latitude": 13.586,
+        "longitude": 122.9642,
+        "full_text": "Bagong Silang pasacao"
+    },
+    {
+        "municipality": "pasacao",
+        "barangay": "Bahay",
+        "latitude": 13.5405,
+        "longitude": 123.0426,
+        "full_text": "Bahay pasacao"
+    },
+    {
+        "municipality": "pasacao",
+        "barangay": "Balogo",
+        "latitude": 13.5008,
+        "longitude": 123.0621,
+        "full_text": "Balogo pasacao"
+    },
+    {
+        "municipality": "pasacao",
+        "barangay": "Caranan",
+        "latitude": 13.519,
+        "longitude": 123.0157,
+        "full_text": "Caranan pasacao"
+    },
+    {
+        "municipality": "pasacao",
+        "barangay": "Cuco",
+        "latitude": 13.5692,
+        "longitude": 123.0205,
+        "full_text": "Cuco pasacao"
+    },
+    {
+        "municipality": "pasacao",
+        "barangay": "Dalupaon",
+        "latitude": 13.5515,
+        "longitude": 122.9586,
+        "full_text": "Dalupaon pasacao"
+    },
+    {
+        "municipality": "pasacao",
+        "barangay": "Hubo",
+        "latitude": 13.5701,
+        "longitude": 122.9945,
+        "full_text": "Hubo pasacao"
+    },
+    {
+        "municipality": "pasacao",
+        "barangay": "Itulan",
+        "latitude": 13.5478,
+        "longitude": 123.0367,
+        "full_text": "Itulan pasacao"
+    },
+    {
+        "municipality": "pasacao",
+        "barangay": "Macad",
+        "latitude": 13.5525,
+        "longitude": 122.9852,
+        "full_text": "Macad pasacao"
+    },
+    {
+        "municipality": "pasacao",
+        "barangay": "Odicon",
+        "latitude": 13.5358,
+        "longitude": 123.0699,
+        "full_text": "Odicon pasacao"
+    },
+    {
+        "municipality": "pasacao",
+        "barangay": "Quitang",
+        "latitude": 13.5505,
+        "longitude": 123.0522,
+        "full_text": "Quitang pasacao"
+    },
+    {
+        "municipality": "pasacao",
+        "barangay": "Salvacion",
+        "latitude": 13.6006,
+        "longitude": 122.9243,
+        "full_text": "Salvacion pasacao"
+    },
+    {
+        "municipality": "pasacao",
+        "barangay": "San Antonio",
+        "latitude": 13.5856,
+        "longitude": 122.9136,
+        "full_text": "San Antonio pasacao"
+    },
+    {
+        "municipality": "pasacao",
+        "barangay": "San Cirilo",
+        "latitude": 13.5103,
+        "longitude": 123.0449,
+        "full_text": "San Cirilo pasacao"
+    },
+    {
+        "municipality": "pasacao",
+        "barangay": "Santa Rosa Del Norte",
+        "latitude": 13.5127,
+        "longitude": 123.0426,
+        "full_text": "Santa Rosa Del Norte pasacao"
+    },
+    {
+        "municipality": "pasacao",
+        "barangay": "Santa Rosa Del Sur",
+        "latitude": 13.5086,
+        "longitude": 123.0412,
+        "full_text": "Santa Rosa Del Sur pasacao"
+    },
+    {
+        "municipality": "pasacao",
+        "barangay": "Tilnac",
+        "latitude": 13.5797,
+        "longitude": 122.9378,
+        "full_text": "Tilnac pasacao"
+    },
+    {
+        "municipality": "pasacao",
+        "barangay": "Tinalmud",
+        "latitude": 13.5934,
+        "longitude": 122.8898,
+        "full_text": "Tinalmud pasacao"
+    },
+    {
+        "municipality": "san-fernando",
+        "barangay": "Alianza",
+        "latitude": 13.5515,
+        "longitude": 123.1073,
+        "full_text": "Alianza san-fernando"
+    },
+    {
+        "municipality": "san-fernando",
+        "barangay": "Beberon",
+        "latitude": 13.5435,
+        "longitude": 123.1441,
+        "full_text": "Beberon san-fernando"
+    },
+    {
+        "municipality": "san-fernando",
+        "barangay": "Bical",
+        "latitude": 13.4888,
+        "longitude": 123.098,
+        "full_text": "Bical san-fernando"
+    },
+    {
+        "municipality": "san-fernando",
+        "barangay": "Bocal",
+        "latitude": 13.5246,
+        "longitude": 123.1267,
+        "full_text": "Bocal san-fernando"
+    },
+    {
+        "municipality": "san-fernando",
+        "barangay": "Bonifacio",
+        "latitude": 13.5616,
+        "longitude": 123.1406,
+        "full_text": "Bonifacio san-fernando"
+    },
+    {
+        "municipality": "san-fernando",
+        "barangay": "Buenavista",
+        "latitude": 13.5669,
+        "longitude": 123.1473,
+        "full_text": "Buenavista san-fernando"
+    },
+    {
+        "municipality": "san-fernando",
+        "barangay": "Calascagas",
+        "latitude": 13.5257,
+        "longitude": 123.1,
+        "full_text": "Calascagas san-fernando"
+    },
+    {
+        "municipality": "san-fernando",
+        "barangay": "Cotmo",
+        "latitude": 13.4656,
+        "longitude": 123.1363,
+        "full_text": "Cotmo san-fernando"
+    },
+    {
+        "municipality": "san-fernando",
+        "barangay": "Daculang Tubig",
+        "latitude": 13.5081,
+        "longitude": 123.1155,
+        "full_text": "Daculang Tubig san-fernando"
+    },
+    {
+        "municipality": "san-fernando",
+        "barangay": "Del Pilar",
+        "latitude": 13.5674,
+        "longitude": 123.1462,
+        "full_text": "Del Pilar san-fernando"
+    },
+    {
+        "municipality": "san-fernando",
+        "barangay": "Gnaran",
+        "latitude": 13.4762,
+        "longitude": 123.1145,
+        "full_text": "Gnaran san-fernando"
+    },
+    {
+        "municipality": "san-fernando",
+        "barangay": "Grijalvo",
+        "latitude": 13.5485,
+        "longitude": 123.1318,
+        "full_text": "Grijalvo san-fernando"
+    },
+    {
+        "municipality": "san-fernando",
+        "barangay": "Lupi",
+        "latitude": 13.5351,
+        "longitude": 123.1493,
+        "full_text": "Lupi san-fernando"
+    },
+    {
+        "municipality": "san-fernando",
+        "barangay": "Maragni",
+        "latitude": 13.5095,
+        "longitude": 123.0895,
+        "full_text": "Maragni san-fernando"
+    },
+    {
+        "municipality": "san-fernando",
+        "barangay": "Pamukid",
+        "latitude": 13.5572,
+        "longitude": 123.1234,
+        "full_text": "Pamukid san-fernando"
+    },
+    {
+        "municipality": "san-fernando",
+        "barangay": "Pinamasagan",
+        "latitude": 13.4728,
+        "longitude": 123.1236,
+        "full_text": "Pinamasagan san-fernando"
+    },
+    {
+        "municipality": "san-fernando",
+        "barangay": "Pipian",
+        "latitude": 13.5288,
+        "longitude": 123.1371,
+        "full_text": "Pipian san-fernando"
+    },
+    {
+        "municipality": "san-fernando",
+        "barangay": "Planza",
+        "latitude": 13.5644,
+        "longitude": 123.1129,
+        "full_text": "Planza san-fernando"
+    },
+    {
+        "municipality": "san-fernando",
+        "barangay": "Rizal",
+        "latitude": 13.5612,
+        "longitude": 123.1438,
+        "full_text": "Rizal san-fernando"
+    },
+    {
+        "municipality": "san-fernando",
+        "barangay": "San Joaquin",
+        "latitude": 13.5413,
+        "longitude": 123.1169,
+        "full_text": "San Joaquin san-fernando"
+    },
+    {
+        "municipality": "san-fernando",
+        "barangay": "Santa Cruz",
+        "latitude": 13.5699,
+        "longitude": 123.1318,
+        "full_text": "Santa Cruz san-fernando"
+    },
+    {
+        "municipality": "san-fernando",
+        "barangay": "Tagpocol",
+        "latitude": 13.4948,
+        "longitude": 123.1394,
+        "full_text": "Tagpocol san-fernando"
+    },
+    {
+        "municipality": "camaligan",
+        "barangay": "Dugcal",
+        "latitude": 13.6242,
+        "longitude": 123.1554,
+        "full_text": "Dugcal camaligan"
+    },
+    {
+        "municipality": "camaligan",
+        "barangay": "Marupit",
+        "latitude": 13.6283,
+        "longitude": 123.1691,
+        "full_text": "Marupit camaligan"
+    },
+    {
+        "municipality": "camaligan",
+        "barangay": "San Francisco",
+        "latitude": 13.615,
+        "longitude": 123.1676,
+        "full_text": "San Francisco camaligan"
+    },
+    {
+        "municipality": "camaligan",
+        "barangay": "San Jose San Pablo",
+        "latitude": 13.6197,
+        "longitude": 123.1662,
+        "full_text": "San Jose San Pablo camaligan"
+    },
+    {
+        "municipality": "camaligan",
+        "barangay": "San Juan San Ramon",
+        "latitude": 13.623,
+        "longitude": 123.1676,
+        "full_text": "San Juan San Ramon camaligan"
+    },
+    {
+        "municipality": "camaligan",
+        "barangay": "San Lucas",
+        "latitude": 13.6221,
+        "longitude": 123.1655,
+        "full_text": "San Lucas camaligan"
+    },
+    {
+        "municipality": "camaligan",
+        "barangay": "San Marcos",
+        "latitude": 13.6196,
+        "longitude": 123.1707,
+        "full_text": "San Marcos camaligan"
+    },
+    {
+        "municipality": "camaligan",
+        "barangay": "San Mateo",
+        "latitude": 13.6206,
+        "longitude": 123.1629,
+        "full_text": "San Mateo camaligan"
+    },
+    {
+        "municipality": "camaligan",
+        "barangay": "San Roque",
+        "latitude": 13.6206,
+        "longitude": 123.1731,
+        "full_text": "San Roque camaligan"
+    },
+    {
+        "municipality": "camaligan",
+        "barangay": "Santo Domingo",
+        "latitude": 13.6197,
+        "longitude": 123.1687,
+        "full_text": "Santo Domingo camaligan"
+    },
+    {
+        "municipality": "camaligan",
+        "barangay": "Santo Tomas",
+        "latitude": 13.6217,
+        "longitude": 123.1642,
+        "full_text": "Santo Tomas camaligan"
+    },
+    {
+        "municipality": "camaligan",
+        "barangay": "Sua",
+        "latitude": 13.6214,
+        "longitude": 123.139,
+        "full_text": "Sua camaligan"
+    },
+    {
+        "municipality": "camaligan",
+        "barangay": "Tarosanan",
+        "latitude": 13.6148,
+        "longitude": 123.1732,
+        "full_text": "Tarosanan camaligan"
+    },
+    {
+        "municipality": "gainza",
+        "barangay": "Cagbunga",
+        "latitude": 13.6155,
+        "longitude": 123.1535,
+        "full_text": "Cagbunga gainza"
+    },
+    {
+        "municipality": "gainza",
+        "barangay": "Dahilig",
+        "latitude": 13.6151,
+        "longitude": 123.1624,
+        "full_text": "Dahilig gainza"
+    },
+    {
+        "municipality": "gainza",
+        "barangay": "District 1",
+        "latitude": 13.6158,
+        "longitude": 123.144,
+        "full_text": "District 1 gainza"
+    },
+    {
+        "municipality": "gainza",
+        "barangay": "District 2",
+        "latitude": 13.6152,
+        "longitude": 123.1399,
+        "full_text": "District 2 gainza"
+    },
+    {
+        "municipality": "gainza",
+        "barangay": "Loob",
+        "latitude": 13.6075,
+        "longitude": 123.1188,
+        "full_text": "Loob gainza"
+    },
+    {
+        "municipality": "gainza",
+        "barangay": "Malbong",
+        "latitude": 13.6139,
+        "longitude": 123.1306,
+        "full_text": "Malbong gainza"
+    },
+    {
+        "municipality": "gainza",
+        "barangay": "Namuat",
+        "latitude": 13.6096,
+        "longitude": 123.1531,
+        "full_text": "Namuat gainza"
+    },
+    {
+        "municipality": "gainza",
+        "barangay": "Sampaloc",
+        "latitude": 13.6014,
+        "longitude": 123.1313,
+        "full_text": "Sampaloc gainza"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "Bagong Silang",
+        "latitude": 13.9842,
+        "longitude": 122.7459,
+        "full_text": "Bagong Silang del-gallego"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "Bucal",
+        "latitude": 13.958,
+        "longitude": 122.5859,
+        "full_text": "Bucal del-gallego"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "Cabasag",
+        "latitude": 13.9318,
+        "longitude": 122.6152,
+        "full_text": "Cabasag del-gallego"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "Comadaycaday",
+        "latitude": 13.9158,
+        "longitude": 122.6116,
+        "full_text": "Comadaycaday del-gallego"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "Comadogcadog",
+        "latitude": 13.9366,
+        "longitude": 122.5947,
+        "full_text": "Comadogcadog del-gallego"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "Domagondong",
+        "latitude": 13.9291,
+        "longitude": 122.6435,
+        "full_text": "Domagondong del-gallego"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "Kinalangan",
+        "latitude": 13.9544,
+        "longitude": 122.6174,
+        "full_text": "Kinalangan del-gallego"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "Mabini",
+        "latitude": 13.9155,
+        "longitude": 122.6697,
+        "full_text": "Mabini del-gallego"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "Magais 1",
+        "latitude": 13.9289,
+        "longitude": 122.5745,
+        "full_text": "Magais 1 del-gallego"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "Magais 2",
+        "latitude": 13.9423,
+        "longitude": 122.5716,
+        "full_text": "Magais 2 del-gallego"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "Mansalaya",
+        "latitude": 13.9677,
+        "longitude": 122.6403,
+        "full_text": "Mansalaya del-gallego"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "Nagkalit",
+        "latitude": 13.8988,
+        "longitude": 122.6673,
+        "full_text": "Nagkalit del-gallego"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "Palaspas",
+        "latitude": 13.9185,
+        "longitude": 122.6937,
+        "full_text": "Palaspas del-gallego"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "Pamplona",
+        "latitude": 13.9524,
+        "longitude": 122.7249,
+        "full_text": "Pamplona del-gallego"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "Pasay",
+        "latitude": 13.9447,
+        "longitude": 122.5616,
+        "full_text": "Pasay del-gallego"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "Pinagdapian",
+        "latitude": 13.9175,
+        "longitude": 122.6287,
+        "full_text": "Pinagdapian del-gallego"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "Pinugusan",
+        "latitude": 13.9508,
+        "longitude": 122.5964,
+        "full_text": "Pinugusan del-gallego"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "Poblacion Zone 3",
+        "latitude": 13.9215,
+        "longitude": 122.5979,
+        "full_text": "Poblacion Zone 3 del-gallego"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "Sabang",
+        "latitude": 13.898,
+        "longitude": 122.5881,
+        "full_text": "Sabang del-gallego"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "Salvacion",
+        "latitude": 13.8903,
+        "longitude": 122.6498,
+        "full_text": "Salvacion del-gallego"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "San Juan",
+        "latitude": 13.9068,
+        "longitude": 122.6016,
+        "full_text": "San Juan del-gallego"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "San Pablo",
+        "latitude": 13.9341,
+        "longitude": 122.6779,
+        "full_text": "San Pablo del-gallego"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "Santa Rita 1",
+        "latitude": 13.9521,
+        "longitude": 122.6392,
+        "full_text": "Santa Rita 1 del-gallego"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "Santa Rita 2",
+        "latitude": 13.9448,
+        "longitude": 122.6335,
+        "full_text": "Santa Rita 2 del-gallego"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "Sinagawsawan",
+        "latitude": 13.8994,
+        "longitude": 122.6197,
+        "full_text": "Sinagawsawan del-gallego"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "Sinuknipan 1",
+        "latitude": 13.9086,
+        "longitude": 122.6423,
+        "full_text": "Sinuknipan 1 del-gallego"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "Sinuknipan 2",
+        "latitude": 13.8904,
+        "longitude": 122.6346,
+        "full_text": "Sinuknipan 2 del-gallego"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "Sugsugin",
+        "latitude": 13.9552,
+        "longitude": 122.609,
+        "full_text": "Sugsugin del-gallego"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "Tabion",
+        "latitude": 13.9476,
+        "longitude": 122.6626,
+        "full_text": "Tabion del-gallego"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "Tomagoktok",
+        "latitude": 13.9129,
+        "longitude": 122.6531,
+        "full_text": "Tomagoktok del-gallego"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "Zone 1 Fatima",
+        "latitude": 13.9213,
+        "longitude": 122.5955,
+        "full_text": "Zone 1 Fatima del-gallego"
+    },
+    {
+        "municipality": "del-gallego",
+        "barangay": "Zone 2 San Antonio",
+        "latitude": 13.9207,
+        "longitude": 122.5939,
+        "full_text": "Zone 2 San Antonio del-gallego"
+    }
+]

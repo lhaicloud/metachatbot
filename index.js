@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 import { categorizeMessage } from './categorize.js';
 const fuzz = await import('fuzzball');
 import fs from 'fs';
-import { insertUserSession, getUserWithAccounts, getUsers, markPrivacyPolicySeen, markPrivacyPolicyAgree, saveAccount, removeAccount  } from './db.js';
+import { insertUserSession, getUserWithAccounts, getUsers, markPrivacyPolicySeen, markPrivacyPolicyAgree, saveAccount, removeAccount, getUnpaidBill, getPayments,validateAccountNumber  } from './db.js';
 import Fuse from 'fuse.js';
 import CryptoJS from 'crypto-js';
 
@@ -721,16 +721,19 @@ async function handleUserMessage(senderId, message,category) {
             if (hasMaxAttempts(senderId)) {
                 return false; // Stop early if max attempts reached
             }
+
+            const cleanedAccountNumber = message.replace(/[^0-9]/g, ""); // Keeps only digits
+
             // Validate the account number (replace with your actual verification logic)
-            validateAccountNumber(message, senderId)
-            .then((isValid) => {
-                if (isValid == true) {
+            await validateAccountNumber(cleanedAccountNumber)
+            .then((response) => {
+                if (response.length == 1) {
+                    userSessions[senderId].account = response[0];
                     userSessions[senderId].step = "ask_account_name";
                     sendMessage(senderId, "Please enter your account name.");
                 } else {
                     userSessions[senderId].attempts += 1;
                     sendMessage(senderId,"Sorry, the account number you provided is invalid. Please try again.");
-                    // sendMessageWithImage(senderId,"https://crucial-whale-dear.ngrok-free.app/account_number.webp");
                 }
             })
             .catch((error) => {
@@ -1263,16 +1266,19 @@ async function getBalance(senderId){
     const cfcodeno = userSessions[senderId].account.cfcodeno
 
     try {
-        await sendTypingIndicator(senderId);
-        const response = await axios.get(
-            `https://casureco1api.com/billinquiry/getBalance`, {
-                params: { account: cfcodeno },
-                headers: {
-                    Authorization: `Bearer ${process.env.API_KEY}`, // Authorization Bearer Token
-                },
-            }
-        );
-        return response.data
+        const response = await getUnpaidBill(cfcodeno);
+        console.log(response)
+        // await sendTypingIndicator(senderId);
+        // const response = await axios.get(
+        //     `https://casureco1api.com/billinquiry/getBalance`, {
+        //         params: { account: cfcodeno },
+        //         headers: {
+        //             Authorization: `Bearer ${process.env.API_KEY}`, // Authorization Bearer Token
+        //         },
+        //     }
+        // );
+        
+        // return response.data
     } catch (error) {
         console.error("Error:", error.message);
         return false; // Return false in case of an error
@@ -1332,34 +1338,34 @@ function hasMaxAttempts(senderId){
     return isMax
 }
 // Function to validate account number (replace with actual logic)
-async function validateAccountNumber(accountNumber, senderId) {
+// async function validateAccountNumber(accountNumber, senderId) {
     
-    const cleanedAccountNumber = accountNumber.replace(/[^0-9]/g, ""); // Keeps only digits
+//     const cleanedAccountNumber = accountNumber.replace(/[^0-9]/g, ""); // Keeps only digits
     
-    try {
-        await sendTypingIndicator(senderId);
-        const response = await axios.get(
-            `https://casureco1api.com/billinquiry/findCAN`, {
-                params: { account_number: cleanedAccountNumber },
-                headers: {
-                    Authorization: `Bearer ${process.env.API_KEY}`, // Authorization Bearer Token
-                },
-            }
-        );
+//     try {
+//         // await sendTypingIndicator(senderId);
+//         const response = await axios.get(
+//             `https://casureco1api.com/billinquiry/findCAN`, {
+//                 params: { account_number: cleanedAccountNumber },
+//                 headers: {
+//                     Authorization: `Bearer ${process.env.API_KEY}`, // Authorization Bearer Token
+//                 },
+//             }
+//         );
 
-        if (response.data.success === true) {
-            userSessions[senderId].account = response.data.data;
-            return true; // Return true for valid account number
-        } else {
-            return false; // Return false for invalid account number
-        }
-    } catch (error) {
-        console.error("Error:", error.message);
-        return false; // Return false in case of an error
-    }
+//         if (response.data.success === true) {
+//             userSessions[senderId].account = response.data.data;
+//             return true; // Return true for valid account number
+//         } else {
+//             return false; // Return false for invalid account number
+//         }
+//     } catch (error) {
+//         console.error("Error:", error.message);
+//         return false; // Return false in case of an error
+//     }
     
     
-}
+// }
 // Function to validate account number (replace with actual logic)
 async function validateAccountName(accountName, senderId) {
     const masterAccountName = userSessions[senderId].account.cflastname+', '+userSessions[senderId].account.cffirstnam;
@@ -1497,41 +1503,78 @@ function showExistingAccount(senderId){
 
     callSendAPI(messageData);
 }
-function showBalanceOrPayment(senderId){
+async function showBalanceOrPayment(senderId){
     
     var content = ''
-    getBalance(senderId)
-        .then((data) => {
-            const unPaidBills = data.filter((item) => item.paid == 'No')
-            const payments = data.filter((item) => item.paid == 'Yes')
-            if(unPaidBills && unPaidBills.length > 0 && userSessions[senderId].bill){
-                content = `Your unpaid power bill(s): \n\n`
-                unPaidBills.forEach(bill => {
-                    var formatted_date = new Date(bill.dfdue).toLocaleDateString("en-US")
-                    content += `Bill Month: ${bill.billmo} ${bill.billyear}\nAmount Due: PHP ${bill.total}\nDue Date: ${formatted_date} \n\n`
+
+    const cfcodeno = userSessions[senderId].account.cfcodeno
+
+    // inquire for bill
+    if(userSessions[senderId].bill){
+        await getUnpaidBill(cfcodeno).then((data) => {
+            if(data.length > 0){
+                data.forEach(bill => {
+                    const due_date = new Date(bill.dfdue).toLocaleDateString("en-US")
+                    content += `Here are your bill details:\n\nBill Month: ${formatBillingMonth(bill.cfbillmo)}\nAmount Due: PHP ${bill.nfbillamt}\nDue Date: ${due_date} \n\n`
                 });
-                content += "Enjoy FAST, SECURE & HASSLE-FREE payments through mobile applications and collection centers that are within your reach like GCash, Maya, Land Bank, ECPay & Bayad Center Authorized Payment Partners. Click this link https://www.casureco1.com/#online-payment to see the list of authorized payment partners.\n\n If you already paid your bill, please ignore this message."
-            }else if(unPaidBills && unPaidBills.length == 0 && userSessions[senderId].bill){
+                content += "If you already paid your bill, please ignore this message."
+            }else if(data.length == 0){
                 content = "There are no unpaid power bills on record\n\nYou may view your bills and payments through CASURECO 1 Mobile Application. To download the app click the link https://bit.ly/42bvJ83.";
             }
+        }).catch((error) => {
+            content = "Error occurred while getting the balance";
+            console.log("bill not found");
+        });
+    }
 
-            if(payments && payments.length > 0 && userSessions[senderId].payment){
-                content = `Your payment history for the last 3 months: \n\n`
-                payments.slice(0, 3).forEach(payment => {
-                    var formatted_date = new Date(payment.dfpaid).toLocaleDateString("en-US")
-                    content += `Bill Month: ${payment.billmo} ${payment.billyear}\nDate Paid: ${formatted_date}\nAmount Paid: PHP ${payment.total}\nReference No.: ${payment.cfreferenc} \n\n`
+    // inquire for payment
+    if(userSessions[senderId].payment){
+        await getPayments(cfcodeno).then((data) => {
+            if(data.length > 0){
+                content = `Your payment details for the last 3 months: \n\n`
+                data.forEach(payment => {
+                    const dfpaid = new Date(payment.dfpaid).toLocaleDateString("en-US")
+                    content += `Date Paid: ${dfpaid}\nAmount Paid: PHP ${payment.total_paid}\nReference No.: ${payment.cfreferenc}\n\n`
                 });
-                content += "Enjoy FAST, SECURE & HASSLE-FREE payments through mobile applications and collection centers that are within your reach like GCash, Maya, Land Bank, ECPay & Bayad Center Authorized Payment Partners. Click this link https://www.casureco1.com/#online-payment to see the list of authorized payment partners.\n\n If you already paid your bill, please ignore this message."
-            }else if(payments && payments.length == 0 && userSessions[senderId].payment){
+            }else{
                 content = "There are no payments on record\n\nYou may view your bills and payments through CASURECO 1 Mobile Application. To download the app click the link https://bit.ly/42bvJ83.";
             }
+        })
+    }
+
+    // getBalance(senderId)
+    //     .then((data) => {
+            // const unPaidBills = data.filter((item) => item.paid == 'No')
+            // const payments = data.filter((item) => item.paid == 'Yes')
+            // if(unPaidBills && unPaidBills.length > 0 && userSessions[senderId].bill){
+            //     content = `Your unpaid power bill(s): \n\n`
+            //     unPaidBills.forEach(bill => {
+            //         var formatted_date = new Date(bill.dfdue).toLocaleDateString("en-US")
+            //         content += `Bill Month: ${bill.billmo} ${bill.billyear}\nAmount Due: PHP ${bill.total}\nDue Date: ${formatted_date} \n\n`
+            //     });
+            //     content += "Enjoy FAST, SECURE & HASSLE-FREE payments through mobile applications and collection centers that are within your reach like GCash, Maya, Land Bank, ECPay & Bayad Center Authorized Payment Partners. Click this link https://www.casureco1.com/#online-payment to see the list of authorized payment partners.\n\n If you already paid your bill, please ignore this message."
+            // }else if(unPaidBills && unPaidBills.length == 0 && userSessions[senderId].bill){
+            //     content = "There are no unpaid power bills on record\n\nYou may view your bills and payments through CASURECO 1 Mobile Application. To download the app click the link https://bit.ly/42bvJ83.";
+            // }
+
+            // if(payments && payments.length > 0 && userSessions[senderId].payment){
+            //     content = `Your payment history for the last 3 months: \n\n`
+            //     payments.slice(0, 3).forEach(payment => {
+            //         var formatted_date = new Date(payment.dfpaid).toLocaleDateString("en-US")
+            //         content += `Bill Month: ${payment.billmo} ${payment.billyear}\nDate Paid: ${formatted_date}\nAmount Paid: PHP ${payment.total}\nReference No.: ${payment.cfreferenc} \n\n`
+            //     });
+            //     content += "Enjoy FAST, SECURE & HASSLE-FREE payments through mobile applications and collection centers that are within your reach like GCash, Maya, Land Bank, ECPay & Bayad Center Authorized Payment Partners. Click this link https://www.casureco1.com/#online-payment to see the list of authorized payment partners.\n\n If you already paid your bill, please ignore this message."
+            // }else if(payments && payments.length == 0 && userSessions[senderId].payment){
+            //     content = "There are no payments on record\n\nYou may view your bills and payments through CASURECO 1 Mobile Application. To download the app click the link https://bit.ly/42bvJ83.";
+            // }
 
             userSessions[senderId].bill = 0;
             userSessions[senderId].payment = 0;
 
-            const account = userSessions[senderId].accounts.find(acc => acc.cfcodeno === userSessions[senderId].account.cfcodeno);
+            const account = userSessions[senderId].accounts && userSessions[senderId].accounts.length > 0 ? userSessions[senderId].accounts.find(acc => acc.cfcodeno === userSessions[senderId].account.cfcodeno) : [];
             (async () => {
                 await sendMessage(senderId,content);
+                await sendMessage(senderId, "Enjoy FAST, SECURE & HASSLE-FREE payments through mobile applications and collection centers that are within your reach like GCash, Maya, Land Bank, ECPay & Bayad Center Authorized Payment Partners. Click this link https://www.casureco1.com/#online-payment to see the list of authorized payment partners.")
                  if(!account || userSessions[senderId].accounts.length == 0){
                     sendSaveAccountForFutureUse(senderId);
                 }else{
@@ -1540,16 +1583,16 @@ function showBalanceOrPayment(senderId){
             })();
 
 
-            // userSessions[senderId].step = 'done'
-        })
-        .catch((error) => {
-            content = "Error occurred while getting the balance"
-            sendMessage(senderId,content);
-            console.error(
-                "Error occurred while getting the balance:",
-                error
-            );
-        })
+        //     // userSessions[senderId].step = 'done'
+        // })
+        // .catch((error) => {
+        //     content = "Error occurred while getting the balance"
+        //     sendMessage(senderId,content);
+        //     console.error(
+        //         "Error occurred while getting the balance:",
+        //         error
+        //     );
+        // })
 }
 function sendSaveAccountForFutureUse(senderId){
     const messageData = {
@@ -1727,7 +1770,7 @@ function sendBrownoutReportSummary(senderId){
 
 async function getMyTickets(senderId) {
     try {
-        await sendTypingIndicator(senderId);
+        // await sendTypingIndicator(senderId);
         const response = await axios.get(`${process.env.TICKET_API}/ticket/get_my_ticket/${senderId}`);
         console.log(response.data)
         return response.data; 
@@ -1874,6 +1917,12 @@ async function sendTypingIndicator(senderId) {
         recipient: { id: senderId },
         sender_action: 'typing_on'
     });
+}
+function formatBillingMonth(billmo) {
+  const year = billmo.slice(0, 4);
+  const month = billmo.slice(4, 6);
+  const date = new Date(`${year}-${month}-01`);
+  return date.toLocaleString('en-US', { month: 'long', year: 'numeric' });
 }
 const PORT = 3000;
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
